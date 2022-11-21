@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
+  experimental: {
+    transpilePackages: ["holy-retroarch"],
+  },
 }
 
 module.exports = nextConfig
