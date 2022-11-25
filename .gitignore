@@ -3,6 +3,9 @@
 
 /public/roms
 /roms
+/prisma/in
+/prisma/dev.db
+
 # dependencies
 /node_modules
 /.pnp

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,10 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Contact {
-  id String @id @default(cuid())
-  firstName String
-  lastName String
-  email String
-  avatar String
+model Rom {
+  id          String  @id @default(cuid())
+  title       String
+  file        String
+  description String?
+  crc32       String
+  sha1        String  @unique
+  tags        String
+  images      String?
+}
+
+model Tag {
+  id   String @id @default(cuid())
+  name String @unique
 }
