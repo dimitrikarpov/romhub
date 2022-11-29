@@ -1,4 +1,4 @@
-export type Rom = {
+export type RomEntity = {
   title: string
   description?: string
   tags?: string[]
@@ -7,3 +7,5 @@ export type Rom = {
   crc32: string
   sha1: string
 }
+
+export type Rom = RomEntity & { id: string }

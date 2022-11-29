@@ -15,11 +15,16 @@ const transformRomTags = (
   return tags ? JSON.parse(tags) : undefined
 }
 
-const transformRom = (rom: Rom) => {
+const transfromFile = (file: string): string => {
+  return createUrl(file)
+}
+
+export const transformRom = (rom: Rom) => {
   const images = transformRomImages(rom.images)
   const tags = transformRomTags(rom.tags)
+  const file = transfromFile(rom.file)
 
-  return { ...rom, ...(images && { images }), ...(tags && { tags }) }
+  return { ...rom, file, ...(images && { images }), ...(tags && { tags }) }
 }
 
 export default async function handler(

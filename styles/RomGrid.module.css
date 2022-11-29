@@ -1,0 +1,28 @@
+.container {
+  padding: 0 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-rows: minmax(200px, auto);
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.article {
+  padding: 1rem;
+}
+
+.image {
+  image-rendering: pixelated;
+}
+
+.tag {
+  border: 1px solid cadetblue;
+  display: inline-block;
+  background: darkslateblue;
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 15%;
+  text-transform: lowercase;
+  margin-right: 0.5rem;
+}

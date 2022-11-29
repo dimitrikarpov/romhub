@@ -3,20 +3,7 @@ import { copyFile, readdir, readFile } from "node:fs/promises"
 import { PrismaClient } from "@prisma/client"
 import { Rom } from "../types"
 
-// function pause(ms: number) {
-//   return new Promise((resolve) => setTimeout(resolve, ms))
-// }
-
 const prisma = new PrismaClient()
-
-// type Meta = {
-//   title: string
-//   tags: string[]
-//   images: string[]
-//   file: string
-//   crc32: string
-//   sha1: string
-// }
 
 async function main() {
   try {
@@ -36,17 +23,11 @@ async function main() {
         })
         const meta: Rom = JSON.parse(infoData)
 
-        // console.log({ meta })
-
-        // await pause(100)
-
         /* copying rom file */
         await copyFile(
           path.join(inDir, meta.file),
           path.join(outDir, meta.file),
         )
-
-        // await pause(100)
 
         /* copying images of rom */
         meta.images?.forEach(async (file) => {

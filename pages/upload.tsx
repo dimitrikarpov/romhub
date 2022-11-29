@@ -78,17 +78,3 @@ export default function Upload() {
     </form>
   )
 }
-
-/*
-{
-  title: "Bishoujo Senshi Sailor Moon (Japan)",
-  tags: ["sfc", "Japan"],
-  images: [
-    "1AH2UrS5zrNdV7QXYJpUGz-snap.png",
-    "1AH2UrS5zrNdV7QXYJpUGz-title.png",
-  ],
-  file: "1AH2UrS5zrNdV7QXYJpUGz.sfc",
-  crc32: "a56323c1",
-  sha1: "330844563db7d208d57bc2bb95c7fbc0a830eff5",
-}
-*/

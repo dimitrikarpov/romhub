@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import { Retroarch } from "holy-retroarch"
 
-type RAStatuses = "not-inited" | "in-init-progress" | "inited" | "error"
+export type RAStatuses = "not-inited" | "in-init-progress" | "inited" | "error"
 
 export const useRetroarch = (
   coreUrl: string | undefined,

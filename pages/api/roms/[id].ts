@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
+import { transformRom } from "."
 import { prisma } from "../../../prisma/db"
 
 export default async function handler(
@@ -11,5 +12,7 @@ export default async function handler(
     where: { id: String(id) },
   })
 
-  res.status(200).json(rom)
+  if (!rom) return res.status(404)
+
+  res.status(200).json(transformRom(rom))
 }
