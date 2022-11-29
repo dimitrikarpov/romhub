@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"npx serve -l 4000 ./storage --cors\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -30,12 +30,14 @@
     "prisma-query-log": "^3.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "serve": "^14.1.2",
     "short-uuid": "^4.2.2",
     "typescript": "4.8.4"
   },
   "devDependencies": {
     "@types/formidable": "^2.0.5",
     "@types/mime": "^3.0.1",
+    "concurrently": "^7.6.0",
     "prisma": "^4.6.1",
     "ts-loader": "^9.4.1"
   }

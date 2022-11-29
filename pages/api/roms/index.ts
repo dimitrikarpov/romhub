@@ -6,7 +6,9 @@ import { prisma } from "../../../prisma/db"
 const transformRomImages = (
   images: string | null | undefined,
 ): string[] | undefined => {
-  return images ? JSON.parse(images).map(createUrl) : undefined
+  return images
+    ? JSON.parse(images).map((image: string) => createUrl(image, "roms"))
+    : undefined
 }
 
 const transformRomTags = (
@@ -16,7 +18,7 @@ const transformRomTags = (
 }
 
 const transfromFile = (file: string): string => {
-  return createUrl(file)
+  return createUrl(file, "roms")
 }
 
 export const transformRom = (rom: Rom) => {

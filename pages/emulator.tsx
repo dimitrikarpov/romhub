@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next"
 import { Rom } from "../types"
 import { transformRom } from "./api/roms"
 import styles from "../styles/Emulator.module.css"
+import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
 
 const prisma = new PrismaClient()
 
@@ -28,8 +29,7 @@ type Props = { rom: Rom | undefined }
 
 export default function Emulator({ rom }: Props) {
   const { rom: buffer } = useRomDownloader(rom?.file)
-  const coreUrl =
-    "https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores/fceumm_libretro.js"
+  const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
 
   return (
     <div className={styles.pageContainer}>
@@ -142,7 +142,3 @@ export default function Emulator({ rom }: Props) {
     </div>
   )
 }
-
-/*
-http://localhost:3000/emulator?romUrl=http://localhost:3000/api/storage/Excitebike.nes&coreUrl=https://cdn.statically.io/gh/dimitrikarpov/holy-retroarch@master/cores/fceumm_libretro.js
-*/

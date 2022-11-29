@@ -3,6 +3,7 @@
 
 /public/roms
 /roms
+/storage/roms
 /prisma/in
 /prisma/dev.db
 
