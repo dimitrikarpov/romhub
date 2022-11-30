@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 async function main() {
   try {
     const inDir = path.join(__dirname, "in")
-    const outDir = path.join(__dirname, "..", "roms")
+    const outDir = path.join(__dirname, "..", "storage", "roms")
 
     const files = await readdir(inDir)
 
@@ -18,6 +18,8 @@ async function main() {
         (fileName) => path.extname(path.join(inDir, fileName)) === ".json",
       )
       .forEach(async (fileName) => {
+        console.log({ fileName })
+
         const infoData = await readFile(path.join(inDir, fileName), {
           encoding: "utf8",
         })

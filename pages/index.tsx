@@ -9,7 +9,7 @@ import { transformRom } from "./api/roms"
 const prisma = new PrismaClient()
 
 export async function getServerSideProps() {
-  const roms = await prisma.rom.findMany()
+  const roms = await prisma.rom.findMany({ take: 16 })
 
   return {
     props: {
