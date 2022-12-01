@@ -1,13 +1,11 @@
-import { PrismaClient } from "@prisma/client"
+import { GetServerSideProps } from "next"
 import { EmulatorComponent } from "../components/emulator/EmulatorComponent"
 import { useRomDownloader } from "../components/emulator/useRomDownloader"
-import { GetServerSideProps } from "next"
 import { Rom } from "../types"
 import { transformRom } from "./api/roms"
-import styles from "../styles/Emulator.module.css"
 import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
-
-const prisma = new PrismaClient()
+import { prisma } from "../prisma/db"
+import styles from "../styles/Emulator.module.css"
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id

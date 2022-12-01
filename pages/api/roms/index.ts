@@ -33,7 +33,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const roms = await prisma.rom.findMany()
+  // console.log("req", req.query)
 
-  res.status(200).json(roms.map(transformRom))
+  const { skip = 0, take = 15 } = req.query
+
+  const total = await prisma.rom.count()
+  const roms = await prisma.rom.findMany({
+    skip: Number(skip),
+    take: Number(take),
+  })
+
+  console.log({ total })
+
+  res.status(200).json({ total, take, skip, data: roms.map(transformRom) })
 }

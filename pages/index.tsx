@@ -1,28 +1,57 @@
 import { PrismaClient } from "@prisma/client"
 import Head from "next/head"
 import Image from "next/image"
+import { Rom } from "../types"
+import { prisma } from "../prisma/db"
+import { transformRom } from "./api/roms"
 import { RomGrid } from "../components/rom-grid/RomGrid"
 import styles from "../styles/Home.module.css"
-import { Rom } from "../types"
-import { transformRom } from "./api/roms"
-
-const prisma = new PrismaClient()
+import { useState } from "react"
 
 export async function getServerSideProps() {
-  const roms = await prisma.rom.findMany({ take: 16 })
+  const total = await prisma.rom.count()
+  const roms = await prisma.rom.findMany({ take: 15 })
 
   return {
     props: {
       initialRoms: roms.map(transformRom),
+      total,
     },
   }
 }
 
 type Props = {
   initialRoms: Rom[]
+  total: number
 }
 
-export default function Home({ initialRoms }: Props) {
+const pageSize = 15
+
+export default function Home({ initialRoms, total }: Props) {
+  console.log({ initialRoms, total })
+
+  const [roms, setRoms] = useState<Rom[]>()
+  const [romsQuerySkip, setRomsQuerySkip] = useState(0)
+
+  const fetchRoms = async (destination: "prev" | "next") => {
+    const skip =
+      destination === "prev"
+        ? romsQuerySkip - pageSize
+        : romsQuerySkip + pageSize
+
+    if (skip >= total || skip < 0) return
+
+    const response = await fetch(
+      "/api/roms" +
+        "?" +
+        new URLSearchParams({ skip: String(skip), take: String(pageSize) }),
+    )
+
+    const data = await response.json()
+    setRomsQuerySkip(skip)
+    setRoms(data.data)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -32,7 +61,11 @@ export default function Home({ initialRoms }: Props) {
       </Head>
 
       <main className={styles.main}>
-        <RomGrid roms={initialRoms} />
+        <RomGrid roms={roms || initialRoms} />
+        <div>
+          <button onClick={() => fetchRoms("prev")}>prev</button>
+          <button onClick={() => fetchRoms("next")}>next</button>
+        </div>
       </main>
     </div>
   )
