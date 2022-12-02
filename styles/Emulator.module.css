@@ -12,13 +12,17 @@
   align-items: center;
   justify-content: space-between;
 
-  color: slategrey;
+  color: #ffc107;
 }
 
 .pageTopBar a {
   width: 40px;
   height: 40px;
   display: inline-block;
+}
+
+.pageTopBar svg path {
+  fill: #ffc107;
 }
 
 .pageRomMeta {
@@ -52,4 +56,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.tagBox {
+  padding: 1rem 0;
+}
+
+.tag {
+  border: 1px solid cadetblue;
+  display: inline-block;
+  background: darkslateblue;
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 15%;
+  text-transform: lowercase;
+  margin-right: 0.5rem;
 }

@@ -7,8 +7,6 @@ type Props = {
 }
 
 export const RomGrid: React.FunctionComponent<Props> = ({ roms = [] }) => {
-  // console.log({rom})
-
   return (
     <div className={styles.container}>
       <div className={styles.grid}>

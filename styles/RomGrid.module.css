@@ -4,25 +4,43 @@
 
 .grid {
   display: grid;
-  grid-template-rows: minmax(200px, auto);
   grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .article {
-  padding: 1rem;
+  width: 400px;
+  border: 1px solid #ffc107;
 }
 
 .image {
-  image-rendering: pixelated;
+  /* image-rendering: pixelated; */
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.3;
+  object-fit: cover;
+  display: block;
 }
 
-.tag {
-  border: 1px solid cadetblue;
+.title {
   display: inline-block;
-  background: darkslateblue;
-  color: white;
-  padding: 0.3rem 0.5rem;
-  border-radius: 15%;
-  text-transform: lowercase;
-  margin-right: 0.5rem;
+  width: 100%;
+  background-color: #1b263a;
+  margin: 0;
+  padding: 0.5rem 0.7rem;
+  color: #ffc107;
+  font-family: "Press Start 2P", cursive;
+}
+
+.paginationContainer {
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationContainer > *:not(:last-child) {
+  margin-right: 1rem;
 }

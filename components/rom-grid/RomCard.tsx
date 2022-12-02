@@ -15,16 +15,12 @@ export const RomCard: React.FunctionComponent<Props> = ({ rom }) => {
 
   return (
     <article className={styles.article} onClick={() => onClick(rom.id)}>
-      <h4>{rom.title}</h4>
-      <img src={rom.images?.[0]} className={styles.image} alt="asd" />
-      <div>
-        {rom.tags?.map((tag, index) => (
-          <span className={styles.tag} key={index}>
-            {tag}
-          </span>
-        ))}
-      </div>
-      {rom.description && <p>{rom.description}</p>}
+      <img
+        src={rom.images?.[0] || "/assets/placeholder.png"}
+        className={styles.image}
+        alt="asd"
+      />
+      <p className={styles.title}>{rom.title}</p>
     </article>
   )
 }

@@ -1,3 +1,5 @@
+import styles from "../../styles/RomGrid.module.css"
+
 type Props = {
   canFetchNext: boolean
   canFetchPrev: boolean
@@ -16,7 +18,7 @@ export const RomGridPaginator: React.FunctionComponent<Props> = ({
   totalPages,
 }) => {
   return (
-    <div>
+    <div className={styles.paginationContainer}>
       <button disabled={!canFetchPrev} onClick={prevPage}>
         prev
       </button>
