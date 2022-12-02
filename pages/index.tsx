@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client"
 import Head from "next/head"
 import Image from "next/image"
 import { Rom } from "../types"
@@ -6,7 +5,8 @@ import { prisma } from "../prisma/db"
 import { transformRom } from "./api/roms"
 import { RomGrid } from "../components/rom-grid/RomGrid"
 import styles from "../styles/Home.module.css"
-import { useState } from "react"
+import { useRomsFetcher } from "../components/useRomsFetcher"
+import { RomGridPaginator } from "../components/rom-grid/RomGridPaginator"
 
 export async function getServerSideProps() {
   const total = await prisma.rom.count()
@@ -25,32 +25,16 @@ type Props = {
   total: number
 }
 
-const pageSize = 15
-
 export default function Home({ initialRoms, total }: Props) {
-  console.log({ initialRoms, total })
-
-  const [roms, setRoms] = useState<Rom[]>()
-  const [romsQuerySkip, setRomsQuerySkip] = useState(0)
-
-  const fetchRoms = async (destination: "prev" | "next") => {
-    const skip =
-      destination === "prev"
-        ? romsQuerySkip - pageSize
-        : romsQuerySkip + pageSize
-
-    if (skip >= total || skip < 0) return
-
-    const response = await fetch(
-      "/api/roms" +
-        "?" +
-        new URLSearchParams({ skip: String(skip), take: String(pageSize) }),
-    )
-
-    const data = await response.json()
-    setRomsQuerySkip(skip)
-    setRoms(data.data)
-  }
+  const {
+    roms,
+    canFetchNext,
+    canFetchPrev,
+    nextPage,
+    prevPage,
+    currentPage,
+    totalPages,
+  } = useRomsFetcher(initialRoms, total)
 
   return (
     <div className={styles.container}>
@@ -62,10 +46,14 @@ export default function Home({ initialRoms, total }: Props) {
 
       <main className={styles.main}>
         <RomGrid roms={roms || initialRoms} />
-        <div>
-          <button onClick={() => fetchRoms("prev")}>prev</button>
-          <button onClick={() => fetchRoms("next")}>next</button>
-        </div>
+        <RomGridPaginator
+          canFetchNext={canFetchNext}
+          canFetchPrev={canFetchPrev}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          nextPage={nextPage}
+          prevPage={prevPage}
+        />
       </main>
     </div>
   )
