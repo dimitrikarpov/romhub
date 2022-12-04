@@ -1,4 +1,4 @@
-import { Rom } from "@prisma/client"
+import { Prisma, Rom } from "@prisma/client"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { createUrl } from "../../../lib/storage"
 import { prisma } from "../../../prisma/db"
@@ -29,21 +29,47 @@ export const transformRom = (rom: Rom) => {
   return { ...rom, file, ...(images && { images }), ...(tags && { tags }) }
 }
 
+const parseWheres = (
+  whereString: string | string[] | undefined,
+): Prisma.RomWhereInput | undefined => {
+  if (!whereString) return undefined
+
+  const wheresStringsArray = Array.isArray(whereString)
+    ? whereString
+    : [whereString]
+
+  const result = wheresStringsArray.reduce((acc: any[], condString: string) => {
+    try {
+      const json = JSON.parse(condString)
+      return [...acc, json]
+    } catch (e) {
+      return acc
+    }
+  }, [])
+
+  if (!result.length) return undefined
+
+  return { AND: result }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // console.log("req", req.query)
+  const { skip = 0, take = 15, where } = req.query
 
-  const { skip = 0, take = 15 } = req.query
+  const wheres = parseWheres(where)
 
-  const total = await prisma.rom.count()
-  const roms = await prisma.rom.findMany({
-    skip: Number(skip),
-    take: Number(take),
-  })
+  try {
+    const total = await prisma.rom.count({ ...(wheres && { where: wheres }) })
+    const roms = await prisma.rom.findMany({
+      ...(wheres && { where: wheres }),
+      skip: Number(skip),
+      take: Number(take),
+    })
 
-  console.log({ total })
-
-  res.status(200).json({ total, take, skip, data: roms.map(transformRom) })
+    res.status(200).json({ total, take, skip, data: roms.map(transformRom) })
+  } catch (e) {
+    res.status(404).send("Not found!")
+  }
 }

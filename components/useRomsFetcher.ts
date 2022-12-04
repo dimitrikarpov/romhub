@@ -1,46 +1,88 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Rom } from "../types"
 
 const pageSize = 15
+
+const createWhereContainseQueryString = (key: string, value: string) => {
+  return JSON.stringify({ [key]: { contains: value } })
+}
 
 const canFetchNext = (total: number, skip: number) => {
   return skip + pageSize <= total
 }
 
 const canFetchPrev = (skip: number) => {
-  return skip - pageSize >= 0
+  return skip >= pageSize
 }
 
 export const useRomsFetcher = (initialRoms: Rom[], total: number) => {
+  const [isFirstRender, setIsFirstRender] = useState(true)
   const [roms, setRoms] = useState<Rom[]>(initialRoms)
   const [skip, setSkip] = useState(0)
+  const [platform, setPlatform] = useState<string>()
 
-  const fetchRoms = async (skip: number) => {
+  const fetchRoms = async () => {
     const response = await fetch(
       "/api/roms" +
         "?" +
-        new URLSearchParams({ skip: String(skip), take: String(pageSize) }),
+        new URLSearchParams({
+          skip: String(skip),
+          take: String(pageSize),
+          ...(platform && {
+            where: createWhereContainseQueryString("tags", platform),
+          }),
+        }),
     )
 
     const data = await response.json()
-    setSkip(skip)
     setRoms(data.data)
   }
+
+  useEffect(() => {
+    setIsFirstRender(false)
+  }, [])
+
+  useEffect(() => {
+    if (isFirstRender) return
+
+    fetchRoms()
+  }, [skip])
+
+  useEffect(() => {
+    if (isFirstRender) return
+
+    if (skip === 0) {
+      fetchRoms()
+
+      return
+    }
+
+    if (skip !== 0) {
+      setSkip(0)
+      fetchRoms()
+
+      return
+    }
+  }, [platform])
 
   const nextPage = async () => {
     if (!canFetchNext(total, skip)) return
 
-    await fetchRoms(skip + pageSize)
+    setSkip(skip + pageSize)
   }
 
   const prevPage = async () => {
     if (!canFetchPrev(skip)) return
 
-    await fetchRoms(skip - pageSize)
+    setSkip(skip - pageSize)
   }
 
   const currentPage = skip / pageSize + 1
   const totalPages = Math.ceil(total / pageSize) + 1
+
+  const setPlaformFilter = (platform: string | undefined) => {
+    setPlatform(platform)
+  }
 
   return {
     roms,
@@ -51,5 +93,6 @@ export const useRomsFetcher = (initialRoms: Rom[], total: number) => {
     prevPage,
     currentPage,
     totalPages,
+    setPlaformFilter,
   }
 }

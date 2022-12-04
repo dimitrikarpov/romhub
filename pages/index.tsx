@@ -6,6 +6,7 @@ import { RomGrid } from "../components/rom-grid/RomGrid"
 import styles from "../styles/Home.module.css"
 import { useRomsFetcher } from "../components/useRomsFetcher"
 import { RomGridPaginator } from "../components/rom-grid/RomGridPaginator"
+import React from "react"
 
 export async function getServerSideProps() {
   const total = await prisma.rom.count()
@@ -33,7 +34,16 @@ export default function Home({ initialRoms, total }: Props) {
     prevPage,
     currentPage,
     totalPages,
+    setPlaformFilter,
   } = useRomsFetcher(initialRoms, total)
+
+  const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+
+    console.log({ value })
+
+    setPlaformFilter(value === "all" ? undefined : value)
+  }
 
   return (
     <div className={styles.container}>
@@ -50,6 +60,15 @@ export default function Home({ initialRoms, total }: Props) {
       </header>
 
       <main className={styles.main}>
+        <div>
+          <select onChange={onPlatformChange}>
+            <option value="all">all</option>
+            <option value="nes">NES </option>
+            <option value="md">Sega Genesis</option>
+            <option value="sfc">SNES</option>
+          </select>
+        </div>
+
         <RomGrid roms={roms || initialRoms} />
         <RomGridPaginator
           canFetchNext={canFetchNext}
