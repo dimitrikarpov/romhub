@@ -44,3 +44,26 @@
 .paginationContainer > *:not(:last-child) {
   margin-right: 1rem;
 }
+
+.controlsContainer {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.controlsContainerPlatform {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.controlsContainerPlatform select {
+  font-size: 16px;
+  padding: 10px 35px 10px 15%;
+  appearance: none;
+  background: url(/assets/down-arrow-svgrepo-com.svg);
+  background-repeat: no-repeat;
+  background-size: 10%;
+  background-position: 93% 50%;
+  background-color: orange;
+}
