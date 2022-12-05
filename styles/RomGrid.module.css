@@ -46,7 +46,9 @@
 
 .controlsContainer {
   padding: 1rem 0;
-  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .controlsContainerPlatform {

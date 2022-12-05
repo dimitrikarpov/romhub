@@ -107,6 +107,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
     prevPage,
     currentPage,
     totalPages,
+    platform,
     setPlatform,
     setTitleStartsWith,
   }

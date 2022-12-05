@@ -2,54 +2,63 @@ import React, { useRef } from "react"
 import styles from "../../styles/RomGrid.module.css"
 
 type Props = {
-  onPlatformChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
-  onSearch: (value: string | undefined) => void
+  platform: string
+  setPlatform: (value: string) => void
+  setTitleStartsWith: (value: string | undefined) => void
 }
 
 export const RomGridControls: React.FunctionComponent<Props> = ({
-  onPlatformChange,
-  onSearch,
+  platform,
+  setPlatform,
+  setTitleStartsWith,
 }) => {
+  const selectRef = useRef<HTMLSelectElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    setPlatform(value)
+  }
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    onSearch(value === "" ? undefined : value)
+    setTitleStartsWith(value === "" ? undefined : value)
   }
 
   const onSearchClear = (e: React.SyntheticEvent) => {
     inputRef!.current!.value = ""
-    onSearch(undefined)
+    setTitleStartsWith(undefined)
   }
 
   return (
     <div className={styles.controlsContainer}>
       <label className={styles.controlsContainerPlatform}>
         Platform
-        <select onChange={onPlatformChange}>
+        <select ref={selectRef} value={platform} onChange={onPlatformChange}>
           <option value="all">----</option>
           <option value="nes">NES </option>
           <option value="md">Sega Genesis</option>
           <option value="sfc">SNES</option>
         </select>
-        <div className={styles.constrolsContainerSearchBox}>
-          <div className={styles.constrolsContainerSearchIconSearch}>
-            <SearchIcon />
-          </div>
-          <input
-            type="text"
-            placeholder="search...."
-            onChange={onSearchChange}
-            ref={inputRef}
-          />
-          <div
-            className={styles.controlsContainerCloseBox}
-            onClick={onSearchClear}
-          >
-            <CrossIcon />
-          </div>
-        </div>
       </label>
+
+      <div className={styles.constrolsContainerSearchBox}>
+        <div className={styles.constrolsContainerSearchIconSearch}>
+          <SearchIcon />
+        </div>
+        <input
+          type="text"
+          placeholder="search...."
+          ref={inputRef}
+          onChange={onSearchChange}
+        />
+        <div
+          className={styles.controlsContainerCloseBox}
+          onClick={onSearchClear}
+        >
+          <CrossIcon />
+        </div>
+      </div>
     </div>
   )
 }

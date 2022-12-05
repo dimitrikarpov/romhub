@@ -35,18 +35,10 @@ export default function Home({ initialRoms, initialTotal }: Props) {
     prevPage,
     currentPage,
     totalPages,
+    platform,
     setPlatform,
     setTitleStartsWith,
   } = useRomsFetcher(initialRoms, initialTotal)
-
-  const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value
-    setPlatform(value)
-  }
-
-  const onSearch = (value: string | undefined) => {
-    setTitleStartsWith(value)
-  }
 
   return (
     <div className={styles.container}>
@@ -64,8 +56,9 @@ export default function Home({ initialRoms, initialTotal }: Props) {
 
       <main className={styles.main}>
         <RomGridControls
-          onPlatformChange={onPlatformChange}
-          onSearch={onSearch}
+          platform={platform}
+          setPlatform={setPlatform}
+          setTitleStartsWith={setTitleStartsWith}
         />
         <RomGrid roms={roms || initialRoms} />
         <RomGridPaginator
