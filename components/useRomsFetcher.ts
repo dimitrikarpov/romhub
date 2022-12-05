@@ -7,6 +7,10 @@ const createWhereContainseQueryString = (key: string, value: string) => {
   return JSON.stringify({ [key]: { contains: value } })
 }
 
+const createWhereStartsWithQueryString = (key: string, value: string) => {
+  return JSON.stringify({ [key]: { startsWith: value } })
+}
+
 const canFetchNext = (total: number, skip: number) => {
   return skip + pageSize <= total
 }
@@ -21,6 +25,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
   const [total, setTotal] = useState(initialTotal)
   const [skip, setSkip] = useState(0)
   const [platform, setPlatform] = useState<string>()
+  const [titleStartsWith, setTitleStartsWith] = useState<string>()
 
   const fetchRoms = async () => {
     const response = await fetch(
@@ -31,6 +36,9 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
           take: String(pageSize),
           ...(platform && {
             where: createWhereContainseQueryString("tags", platform),
+          }),
+          ...(titleStartsWith && {
+            where: createWhereStartsWithQueryString("title", titleStartsWith),
           }),
         }),
     )
@@ -67,6 +75,14 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
     }
   }, [platform])
 
+  useEffect(() => {
+    if (isFirstRender) return
+
+    setSkip(0)
+    setPlatform(undefined)
+    fetchRoms()
+  }, [titleStartsWith])
+
   const nextPage = async () => {
     if (!canFetchNext(total, skip)) return
 
@@ -96,5 +112,6 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
     currentPage,
     totalPages,
     setPlaformFilter,
+    setTitleStartsWith,
   }
 }
