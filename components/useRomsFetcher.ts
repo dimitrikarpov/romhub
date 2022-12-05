@@ -15,9 +15,10 @@ const canFetchPrev = (skip: number) => {
   return skip >= pageSize
 }
 
-export const useRomsFetcher = (initialRoms: Rom[], total: number) => {
+export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
   const [isFirstRender, setIsFirstRender] = useState(true)
   const [roms, setRoms] = useState<Rom[]>(initialRoms)
+  const [total, setTotal] = useState(initialTotal)
   const [skip, setSkip] = useState(0)
   const [platform, setPlatform] = useState<string>()
 
@@ -36,6 +37,7 @@ export const useRomsFetcher = (initialRoms: Rom[], total: number) => {
 
     const data = await response.json()
     setRoms(data.data)
+    setTotal(data.total)
   }
 
   useEffect(() => {

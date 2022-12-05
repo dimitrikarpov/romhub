@@ -1,3 +1,4 @@
+import React from "react"
 import Head from "next/head"
 import { Rom } from "../types"
 import { prisma } from "../prisma/db"
@@ -6,26 +7,25 @@ import { RomGrid } from "../components/rom-grid/RomGrid"
 import styles from "../styles/Home.module.css"
 import { useRomsFetcher } from "../components/useRomsFetcher"
 import { RomGridPaginator } from "../components/rom-grid/RomGridPaginator"
-import React from "react"
 
 export async function getServerSideProps() {
-  const total = await prisma.rom.count()
+  const initialTotal = await prisma.rom.count()
   const roms = await prisma.rom.findMany({ take: 15 })
 
   return {
     props: {
       initialRoms: roms.map(transformRom),
-      total,
+      initialTotal,
     },
   }
 }
 
 type Props = {
   initialRoms: Rom[]
-  total: number
+  initialTotal: number
 }
 
-export default function Home({ initialRoms, total }: Props) {
+export default function Home({ initialRoms, initialTotal }: Props) {
   const {
     roms,
     canFetchNext,
@@ -35,7 +35,7 @@ export default function Home({ initialRoms, total }: Props) {
     currentPage,
     totalPages,
     setPlaformFilter,
-  } = useRomsFetcher(initialRoms, total)
+  } = useRomsFetcher(initialRoms, initialTotal)
 
   const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
