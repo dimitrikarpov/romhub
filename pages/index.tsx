@@ -35,19 +35,17 @@ export default function Home({ initialRoms, initialTotal }: Props) {
     prevPage,
     currentPage,
     totalPages,
-    setPlaformFilter,
+    setPlatform,
     setTitleStartsWith,
   } = useRomsFetcher(initialRoms, initialTotal)
 
   const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    setPlaformFilter(value === "all" ? undefined : value)
+    setPlatform(value)
   }
 
-  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-
-    setTitleStartsWith(value === "" ? undefined : value)
+  const onSearch = (value: string | undefined) => {
+    setTitleStartsWith(value)
   }
 
   return (
@@ -65,10 +63,10 @@ export default function Home({ initialRoms, initialTotal }: Props) {
       </header>
 
       <main className={styles.main}>
-        <div>
-          <input type="text" placeholder="search...." onChange={onSearch} />
-        </div>
-        <RomGridControls onPlatformChange={onPlatformChange} />
+        <RomGridControls
+          onPlatformChange={onPlatformChange}
+          onSearch={onSearch}
+        />
         <RomGrid roms={roms || initialRoms} />
         <RomGridPaginator
           canFetchNext={canFetchNext}

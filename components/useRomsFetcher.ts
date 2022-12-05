@@ -24,7 +24,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
   const [roms, setRoms] = useState<Rom[]>(initialRoms)
   const [total, setTotal] = useState(initialTotal)
   const [skip, setSkip] = useState(0)
-  const [platform, setPlatform] = useState<string>()
+  const [platform, setPlatform] = useState<string>("all")
   const [titleStartsWith, setTitleStartsWith] = useState<string>()
 
   const fetchRoms = async () => {
@@ -34,7 +34,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
         new URLSearchParams({
           skip: String(skip),
           take: String(pageSize),
-          ...(platform && {
+          ...(platform !== "all" && {
             where: createWhereContainseQueryString("tags", platform),
           }),
           ...(titleStartsWith && {
@@ -79,7 +79,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
     if (isFirstRender) return
 
     setSkip(0)
-    setPlatform(undefined)
+    setPlatform("all")
     fetchRoms()
   }, [titleStartsWith])
 
@@ -98,10 +98,6 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
   const currentPage = skip / pageSize + 1
   const totalPages = Math.ceil(total / pageSize) + 1
 
-  const setPlaformFilter = (platform: string | undefined) => {
-    setPlatform(platform)
-  }
-
   return {
     roms,
     total,
@@ -111,7 +107,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
     prevPage,
     currentPage,
     totalPages,
-    setPlaformFilter,
+    setPlatform,
     setTitleStartsWith,
   }
 }
