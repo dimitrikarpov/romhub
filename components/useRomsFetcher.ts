@@ -96,7 +96,13 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
   }
 
   const currentPage = skip / pageSize + 1
-  const totalPages = Math.ceil(total / pageSize) + 1
+  const totalPages = Math.floor(total / pageSize) + 1
+
+  const setPage = (page: number) => {
+    if (page > totalPages || page <= 0) return
+
+    setSkip(page * pageSize)
+  }
 
   return {
     roms,
@@ -107,6 +113,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
     prevPage,
     currentPage,
     totalPages,
+    setPage,
     platform,
     setPlatform,
     setTitleStartsWith,

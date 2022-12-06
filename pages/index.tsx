@@ -35,6 +35,7 @@ export default function Home({ initialRoms, initialTotal }: Props) {
     prevPage,
     currentPage,
     totalPages,
+    setPage,
     platform,
     setPlatform,
     setTitleStartsWith,
@@ -68,6 +69,7 @@ export default function Home({ initialRoms, initialTotal }: Props) {
           totalPages={totalPages}
           nextPage={nextPage}
           prevPage={prevPage}
+          setPage={setPage}
         />
       </main>
     </div>

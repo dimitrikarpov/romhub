@@ -40,6 +40,10 @@
   justify-content: center;
 }
 
+.paginationContainer input {
+  width: 50px;
+}
+
 .paginationContainer > *:not(:last-child) {
   margin-right: 1rem;
 }
