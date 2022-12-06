@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { GetServerSideProps } from "next"
 import { EmulatorComponent } from "../components/emulator/EmulatorComponent"
 import { useRomDownloader } from "../components/emulator/useRomDownloader"
@@ -21,17 +22,31 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!rom) return emptyProps
 
-  return { props: { rom: transformRom(rom) } }
+  return {
+    props: {
+      rom: transformRom(rom),
+      url: `${process.env.NEXT_PUBLIC_DOMAIN}/emulator?id=${id}`,
+    },
+  }
 }
 
-type Props = { rom: Rom | undefined }
+type Props = { rom: Rom | undefined; url: string }
 
-export default function Emulator({ rom }: Props) {
+export default function Emulator({ rom, url }: Props) {
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
 
   return (
     <div className={styles.pageContainer}>
+      <Head>
+        <title>RomHub: {rom?.title}</title>
+        <meta name="description" content={`RomHub: ${rom?.title}`} />
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content={`RomHub: ${rom?.title}`} />
+        <meta property="og:image" content={rom?.images?.[0]} />
+        <meta property="og:url" content={url} />
+      </Head>
+
       <EmulatorPageTopBar rom={rom} />
 
       {buffer && coreUrl && rom && (
