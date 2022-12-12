@@ -9,27 +9,6 @@ import { prisma } from "../prisma/db"
 import styles from "../styles/Emulator.module.css"
 import { EmulatorPageTopBar } from "../components/emulator/EmulatorPageTopBar"
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.query.id
-
-  const emptyProps = { props: { rom: undefined } }
-
-  if (!id) return emptyProps
-
-  const rom = await prisma.rom.findUnique({
-    where: { id: String(context.query.id) },
-  })
-
-  if (!rom) return emptyProps
-
-  return {
-    props: {
-      rom: transformRom(rom),
-      url: `${process.env.NEXT_PUBLIC_DOMAIN}/emulator?id=${id}`,
-    },
-  }
-}
-
 type Props = { rom: Rom | undefined; url: string }
 
 export default function Emulator({ rom, url }: Props) {
@@ -74,7 +53,10 @@ export default function Emulator({ rom, url }: Props) {
         <div className={styles.controlsGrid}>
           {Object.entries(keyConfig).map(([gamepadKey, keyboardKey]) => (
             <>
-              <div className={styles.controlsGamepadKeyWrapper}>
+              <div
+                className={styles.controlsGamepadKeyWrapper}
+                key={gamepadKey}
+              >
                 {gamepadKey}
               </div>
               <div>{keyboardKey}</div>
@@ -84,6 +66,27 @@ export default function Emulator({ rom, url }: Props) {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.query.id
+
+  const emptyProps = { props: { rom: undefined } }
+
+  if (!id) return emptyProps
+
+  const rom = await prisma.rom.findUnique({
+    where: { id: String(context.query.id) },
+  })
+
+  if (!rom) return emptyProps
+
+  return {
+    props: {
+      rom: transformRom(rom),
+      url: `${process.env.NEXT_PUBLIC_DOMAIN}/emulator?id=${id}`,
+    },
+  }
 }
 
 const keyConfig = {
