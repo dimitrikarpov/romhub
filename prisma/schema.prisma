@@ -54,16 +54,11 @@ model VerificationToken {
 
 model Rom {
   id          String  @id @default(cuid())
-  title       String
+  name        String
+  platform    String
   file        String
-  description String?
-  crc32       String
-  sha1        String  @unique
-  tags        String
   images      String?
-}
-
-model Tag {
-  id   String @id @default(cuid())
-  name String @unique
+  description String?
+  sha1        String  @unique
+  crc32       String
 }
