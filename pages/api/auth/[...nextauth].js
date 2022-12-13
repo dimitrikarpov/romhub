@@ -11,14 +11,18 @@ export default nextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  events: {
+    createUser: async (message) => {
+      /* creates default playlist for new user */
+      await prisma.playlist.create({
+        data: {
+          name: "Watch Later",
+          description: "Default playlist",
+          isPublic: false,
+          userId: message.user.id,
+        },
+      })
+    },
+  },
+  secret: process.env.JWT_SECRET,
 })
-
-// export default nextAuth({
-//   providers: [
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     }),
-//   ],
-//   secret: process.env.JWT_SECRET,
-// })

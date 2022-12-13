@@ -92,7 +92,7 @@ const CrossIcon = () => (
       d="M20 20L4 4.00003M20 4L4.00002 20"
       stroke="black"
       strokeWidth="2"
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
   </svg>
 )

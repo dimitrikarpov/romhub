@@ -55,7 +55,7 @@ async function main() {
       },
     })
 
-    console.log(`${c} of ${files.length}: ${files[c]}`)
+    console.log(`${c} of ${files.length}: [${meta.platform}] ${meta.name}`)
   }
 }
 

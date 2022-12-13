@@ -70,6 +70,7 @@ model Playlist {
   name        String
   description String?
   roms        Rom[]
+  isPublic    Boolean  @default(true)
   userId      String
   updatedAt   DateTime @updatedAt
 
