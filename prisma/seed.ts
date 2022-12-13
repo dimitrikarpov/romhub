@@ -12,7 +12,7 @@ const findDescriptions = async (inDir: string) => {
 }
 
 async function main() {
-  const inDir = path.join(__dirname, "in")
+  const inDir = path.join(__dirname, "..", "storage", "import")
   const outDir = path.join(__dirname, "..", "storage", "roms")
 
   const files = await findDescriptions(inDir)
@@ -23,6 +23,11 @@ async function main() {
     })
     const meta: Rom = JSON.parse(infoData)
 
+    if (!meta.platform) {
+      console.log("--->", meta)
+      continue
+    }
+
     /* copying rom file */
     await copyFile(path.join(inDir, meta.file), path.join(outDir, meta.file))
 
@@ -30,6 +35,9 @@ async function main() {
     meta.images?.forEach(async (file) => {
       await copyFile(path.join(inDir, file), path.join(outDir, file))
     })
+
+    /* copying json meta file */
+    await copyFile(path.join(inDir, files[c]), path.join(outDir, files[c]))
 
     /* add rom meta to db */
     await prisma.rom.upsert({
@@ -47,7 +55,7 @@ async function main() {
       },
     })
 
-    console.log(`${c} of ${files.length}`)
+    console.log(`${c} of ${files.length}: ${files[c]}`)
   }
 }
 

@@ -35,13 +35,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  playlists     Playlist[]
 }
 
 model VerificationToken {
@@ -53,12 +54,24 @@ model VerificationToken {
 }
 
 model Rom {
-  id          String  @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   platform    String
   file        String
   images      String?
   description String?
-  sha1        String  @unique
+  sha1        String     @unique
   crc32       String
+  playlists   Playlist[]
+}
+
+model Playlist {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  roms        Rom[]
+  userId      String
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
