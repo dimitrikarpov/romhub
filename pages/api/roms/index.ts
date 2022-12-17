@@ -11,22 +11,15 @@ const transformRomImages = (
     : undefined
 }
 
-const transformRomTags = (
-  tags: string | null | undefined,
-): string[] | undefined => {
-  return tags ? JSON.parse(tags) : undefined
-}
-
 const transfromFile = (file: string): string => {
   return createUrl(file, "roms")
 }
 
 export const transformRom = (rom: Rom) => {
-  const images = transformRomImages(rom.images)
-  const tags = transformRomTags(rom.tags)
   const file = transfromFile(rom.file)
+  const images = transformRomImages(rom.images)
 
-  return { ...rom, file, ...(images && { images }), ...(tags && { tags }) }
+  return { ...rom, file, ...(images && { images }) }
 }
 
 const parseWheres = (

@@ -14,7 +14,7 @@ export const RomCard: React.FunctionComponent<Props> = ({ rom }) => {
           className={styles.image}
           alt="asd"
         />
-        <p className={styles.title}>{rom.title}</p>
+        <p className={styles.title}>{rom.name}</p>
       </article>
     </a>
   )
