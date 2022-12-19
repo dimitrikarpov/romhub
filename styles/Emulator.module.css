@@ -1,12 +1,13 @@
 .pageContainer {
   width: 800px;
   margin: 0 auto;
+  margin-top: 24px;
 
   display: flex;
   flex-direction: column;
 }
 
-.pageTopBar {
+/* .pageTopBar {
   padding: 1rem 0.1rem;
   display: flex;
   align-items: center;
@@ -23,7 +24,7 @@
 
 .pageTopBar svg path {
   fill: #ffc107;
-}
+} */
 
 .pageRomMeta {
   padding: 1rem;

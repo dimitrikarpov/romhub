@@ -7,66 +7,66 @@ import { transformRom } from "./api/roms"
 import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
 import { prisma } from "../prisma/db"
 import styles from "../styles/Emulator.module.css"
-import { EmulatorPageTopBar } from "../components/emulator/EmulatorPageTopBar"
+import { NextPageWithLayout } from "./_app"
+import { ReactElement } from "react"
+import { Layout } from "../components/layout/Layout"
 
 type Props = { rom: Rom | undefined; url: string }
 
-export default function Emulator({ rom, url }: Props) {
+const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
 
   return (
-    <div className={styles.pageContainer}>
+    <>
       <Head>
-        <title>RomHub: {rom?.title}</title>
-        <meta name="description" content={`RomHub: ${rom?.title}`} />
+        <title>RomHub: {rom?.name}</title>
+        <meta name="description" content={`RomHub: ${rom?.name}`} />
         <link rel="icon" href="/favicon.ico" />
-        <meta property="og:title" content={`RomHub: ${rom?.title}`} />
+        <meta property="og:title" content={`RomHub: ${rom?.name}`} />
         <meta property="og:image" content={rom?.images?.[0]} />
         <meta property="og:url" content={url} />
       </Head>
 
-      <EmulatorPageTopBar rom={rom} />
+      <div className={styles.pageContainer}>
+        {buffer && coreUrl && rom && (
+          <EmulatorComponent
+            coreUrl={String(coreUrl)}
+            romBuffer={buffer}
+            rom={rom}
+          />
+        )}
 
-      {buffer && coreUrl && rom && (
-        <EmulatorComponent
-          coreUrl={String(coreUrl)}
-          romBuffer={buffer}
-          rom={rom}
-        />
-      )}
+        <div className={styles.pageRomMeta}>
+          {rom?.description && <p>{rom.description}</p>}
+        </div>
 
-      <div className={styles.tagBox}>
-        {rom?.tags?.map((tag, index) => (
-          <span className={styles.tag} key={index}>
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <div className={styles.pageRomMeta}>
-        {rom?.description && <p>{rom.description}</p>}
-      </div>
-
-      <div>
-        <h4>controls</h4>
-        <div className={styles.controlsGrid}>
-          {Object.entries(keyConfig).map(([gamepadKey, keyboardKey]) => (
-            <>
-              <div
-                className={styles.controlsGamepadKeyWrapper}
-                key={gamepadKey}
-              >
-                {gamepadKey}
-              </div>
-              <div>{keyboardKey}</div>
-            </>
-          ))}
+        <div>
+          <h4>controls</h4>
+          <div className={styles.controlsGrid}>
+            {Object.entries(keyConfig).map(([gamepadKey, keyboardKey]) => (
+              <>
+                <div
+                  className={styles.controlsGamepadKeyWrapper}
+                  key={gamepadKey}
+                >
+                  {gamepadKey}
+                </div>
+                <div>{keyboardKey}</div>
+              </>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
+
+Emulator.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
+}
+
+export default Emulator
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id
