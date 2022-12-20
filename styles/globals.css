@@ -15,7 +15,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", "Arial", sans-serif;
 
   color: white;
   background-color: #191919;
@@ -28,4 +28,26 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+dialog::backdrop {
+  /* background-color: linear-gradient(45deg, red, blue); */
+  background: linear-gradient(#e66465, #9198e5);
+
+  opacity: 0.4;
+}
+
+dialog button[data-type="close"] {
+  display: inline-block;
+  background-color: rgb(50, 30, 88);
+  border: none;
+  cursor: pointer;
+  color: white;
+
+  padding: 0.5rem 1rem;
+  font-size: 1.6rem;
+}
+
+dialog button[data-type="close"]:hover {
+  background-color: rgba(50, 30, 88, 0.767);
 }
