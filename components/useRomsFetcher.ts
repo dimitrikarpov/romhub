@@ -35,7 +35,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
           skip: String(skip),
           take: String(pageSize),
           ...(platform !== "all" && {
-            where: createWhereContainseQueryString("tags", platform),
+            where: createWhereContainseQueryString("platform", platform),
           }),
           ...(titleStartsWith && {
             where: createWhereStartsWithQueryString("title", titleStartsWith),

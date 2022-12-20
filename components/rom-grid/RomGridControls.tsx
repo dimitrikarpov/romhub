@@ -8,17 +8,17 @@ type Props = {
 }
 
 export const RomGridControls: React.FunctionComponent<Props> = ({
-  platform,
-  setPlatform,
+  // platform,
+  // setPlatform,
   setTitleStartsWith,
 }) => {
-  const selectRef = useRef<HTMLSelectElement>(null)
+  // const selectRef = useRef<HTMLSelectElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value
-    setPlatform(value)
-  }
+  // const onPlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const value = e.target.value
+  //   setPlatform(value)
+  // }
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -32,7 +32,7 @@ export const RomGridControls: React.FunctionComponent<Props> = ({
 
   return (
     <div className={styles.controlsContainer}>
-      <label className={styles.controlsContainerPlatform}>
+      {/* <label className={styles.controlsContainerPlatform}>
         Platform
         <select ref={selectRef} value={platform} onChange={onPlatformChange}>
           <option value="all">----</option>
@@ -40,7 +40,7 @@ export const RomGridControls: React.FunctionComponent<Props> = ({
           <option value="md">Sega Genesis</option>
           <option value="sfc">SNES</option>
         </select>
-      </label>
+      </label> */}
 
       <div className={styles.constrolsContainerSearchBox}>
         <div className={styles.constrolsContainerSearchIconSearch}>

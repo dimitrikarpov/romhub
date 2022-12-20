@@ -5,12 +5,12 @@ import { prisma } from "../prisma/db"
 import { transformRom } from "./api/roms"
 import styles from "../styles/Home.module.css"
 import { useRomsFetcher } from "../components/useRomsFetcher"
-import { RomGridPaginator } from "../components/rom-grid/RomGridPaginator"
 import { RomGridControls } from "../components/rom-grid/RomGridControls"
 import { Gallery } from "../components/gallery/Gallery"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "../components/layout/Layout"
-import { PlatformSelector } from "../components/rom-grid/PlatformSelector"
+import { PlatformFilter } from "../components/gallery/PlatformFilter"
+import { Paginator } from "../components/gallery/Paginator"
 
 type Props = {
   initialRoms: Rom[]
@@ -41,7 +41,7 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
       </Head>
 
       <main className={styles.main}>
-        <PlatformSelector />
+        <PlatformFilter active={platform} setPlatform={setPlatform} />
 
         <Gallery roms={roms || initialRoms} />
 
@@ -51,7 +51,7 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
           setTitleStartsWith={setTitleStartsWith}
         />
 
-        <RomGridPaginator
+        <Paginator
           canFetchNext={canFetchNext}
           canFetchPrev={canFetchPrev}
           currentPage={currentPage}

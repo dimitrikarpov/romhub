@@ -11,7 +11,7 @@ type Props = {
   setPage: (page: number) => void
 }
 
-export const RomGridPaginator: React.FunctionComponent<Props> = ({
+export const Paginator: React.FunctionComponent<Props> = ({
   canFetchNext,
   canFetchPrev,
   prevPage,
