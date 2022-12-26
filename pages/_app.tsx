@@ -6,20 +6,28 @@ import "../styles/globals.css"
 import { LayoutProvider } from "../contexts/layout/LayoutProvider"
 import { SearchProvider } from "../contexts/search/SearchProvider"
 import { SearchRequestProvider } from "../contexts/search-request/SearchRequestProvider"
+import { QueryClient, QueryClientProvider } from "react-query"
+
+import { ReactQueryDevtools } from "react-query/devtools"
+
+const client = new QueryClient()
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
-    <SessionProvider session={pageProps.session}>
-      <SearchProvider>
-        <SearchRequestProvider>
-          <LayoutProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </LayoutProvider>
-        </SearchRequestProvider>
-      </SearchProvider>
-    </SessionProvider>
+    <QueryClientProvider client={client}>
+      <SessionProvider session={pageProps.session}>
+        <SearchProvider>
+          <SearchRequestProvider>
+            <LayoutProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </LayoutProvider>
+          </SearchRequestProvider>
+        </SearchProvider>
+      </SessionProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   )
 }
 

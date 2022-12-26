@@ -3,14 +3,6 @@ import { Rom } from "../types"
 
 const pageSize = 15
 
-const createWhereContainseQueryString = (key: string, value: string) => {
-  return JSON.stringify({ [key]: { contains: value } })
-}
-
-const createWhereStartsWithQueryString = (key: string, value: string) => {
-  return JSON.stringify({ [key]: { startsWith: value } })
-}
-
 const canFetchNext = (total: number, skip: number) => {
   return skip + pageSize <= total
 }
@@ -28,20 +20,7 @@ export const useRomsFetcher = (initialRoms: Rom[], initialTotal: number) => {
   const [titleStartsWith, setTitleStartsWith] = useState<string>()
 
   const fetchRoms = async () => {
-    const response = await fetch(
-      "/api/roms" +
-        "?" +
-        new URLSearchParams({
-          skip: String(skip),
-          take: String(pageSize),
-          ...(platform !== "all" && {
-            where: createWhereContainseQueryString("platform", platform),
-          }),
-          ...(titleStartsWith && {
-            where: createWhereStartsWithQueryString("title", titleStartsWith),
-          }),
-        }),
-    )
+    const response = await fetch("/api/roms")
 
     const data = await response.json()
     setRoms(data.data)

@@ -1,15 +1,11 @@
 import cn from "classnames"
+import { useContext } from "react"
+import { SearchContext } from "../../contexts/search/SearchContext"
 import styles from "./PlatformFilter.module.css"
 
-type Props = {
-  active: string
-  setPlatform: (value: string) => void
-}
+export const PlatformFilter: React.FunctionComponent = () => {
+  const { platform, setPlatform } = useContext(SearchContext)
 
-export const PlatformFilter: React.FunctionComponent<Props> = ({
-  active,
-  setPlatform,
-}) => {
   const items = { all: { name: "All" }, ...platforms }
 
   return (
@@ -17,7 +13,7 @@ export const PlatformFilter: React.FunctionComponent<Props> = ({
       {Object.entries(items).map(([slug, { name }]) => (
         <span
           className={cn(styles.platformSelectorItem, {
-            [styles.platformSelectorItemActive]: active === slug,
+            [styles.platformSelectorItemActive]: platform === slug,
           })}
           onClick={() => setPlatform(slug)}
           key={slug}

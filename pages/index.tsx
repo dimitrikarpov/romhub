@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useContext } from "react"
 import Head from "next/head"
 import { Rom } from "../types"
 import { prisma } from "../prisma/db"
@@ -11,6 +11,9 @@ import { NextPageWithLayout } from "./_app"
 import { Layout } from "../components/layout/Layout"
 import { PlatformFilter } from "../components/gallery/PlatformFilter"
 import { Paginator } from "../components/gallery/Paginator"
+import { useQuery } from "react-query"
+import { api } from "../lib/api"
+import { SearchContext } from "../contexts/search/SearchContext"
 
 type Props = {
   initialRoms: Rom[]
@@ -18,19 +21,27 @@ type Props = {
 }
 
 const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
-  const {
-    roms,
-    canFetchNext,
-    canFetchPrev,
-    nextPage,
-    prevPage,
-    currentPage,
-    totalPages,
-    setPage,
-    platform,
-    setPlatform,
-    setTitleStartsWith,
-  } = useRomsFetcher(initialRoms, initialTotal)
+  // const {
+  //   roms,
+  //   canFetchNext,
+  //   canFetchPrev,
+  //   nextPage,
+  //   prevPage,
+  //   currentPage,
+  //   totalPages,
+  //   setPage,
+  //   platform,
+  //   setPlatform,
+  //   setTitleStartsWith,
+  // } = useRomsFetcher(initialRoms, initialTotal)
+
+  const { platform, titleStartsWith } = useContext(SearchContext)
+
+  const romsQuery = useQuery(
+    ["roms", platform, titleStartsWith],
+    () => api.roms.findMany({ platform, titleStartsWith }),
+    { refetchOnWindowFocus: false, retry: false },
+  )
 
   return (
     <>
@@ -41,15 +52,15 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
       </Head>
 
       <main className={styles.main}>
-        <PlatformFilter active={platform} setPlatform={setPlatform} />
+        <PlatformFilter />
 
-        <RomGridControls
+        {/* <RomGridControls
           platform={platform}
           setPlatform={setPlatform}
           setTitleStartsWith={setTitleStartsWith}
-        />
+        /> */}
 
-        <Paginator
+        {/* <Paginator
           canFetchNext={canFetchNext}
           canFetchPrev={canFetchPrev}
           currentPage={currentPage}
@@ -57,9 +68,9 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
           nextPage={nextPage}
           prevPage={prevPage}
           setPage={setPage}
-        />
+        /> */}
 
-        <Gallery roms={roms || initialRoms} />
+        <Gallery roms={initialRoms} />
       </main>
     </>
   )
