@@ -43,8 +43,6 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
       <main className={styles.main}>
         <PlatformFilter active={platform} setPlatform={setPlatform} />
 
-        <Gallery roms={roms || initialRoms} />
-
         <RomGridControls
           platform={platform}
           setPlatform={setPlatform}
@@ -60,6 +58,8 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
           prevPage={prevPage}
           setPage={setPage}
         />
+
+        <Gallery roms={roms || initialRoms} />
       </main>
     </>
   )

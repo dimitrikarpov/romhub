@@ -20,6 +20,7 @@ export const PlatformFilter: React.FunctionComponent<Props> = ({
             [styles.platformSelectorItemActive]: active === slug,
           })}
           onClick={() => setPlatform(slug)}
+          key={slug}
         >
           {name}
         </span>

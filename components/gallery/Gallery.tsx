@@ -10,7 +10,7 @@ export const Gallery: React.FunctionComponent<Props> = ({ roms }) => {
   return (
     <div className={styles["gallery"]}>
       {roms.map((rom) => (
-        <GalleryItem rom={rom} />
+        <GalleryItem rom={rom} key={rom.id} />
       ))}
     </div>
   )
