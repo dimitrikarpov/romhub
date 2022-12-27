@@ -4,7 +4,7 @@ import { SearchContext } from "../../contexts/search/SearchContext"
 import styles from "./PlatformFilter.module.css"
 
 export const PlatformFilter: React.FunctionComponent = () => {
-  const { platform, setPlatform } = useContext(SearchContext)
+  const { platform, selectPlatform } = useContext(SearchContext)
 
   const items = { all: { name: "All" }, ...platforms }
 
@@ -15,7 +15,7 @@ export const PlatformFilter: React.FunctionComponent = () => {
           className={cn(styles.platformSelectorItem, {
             [styles.platformSelectorItemActive]: platform === slug,
           })}
-          onClick={() => setPlatform(slug)}
+          onClick={() => selectPlatform(slug)}
           key={slug}
         >
           {name}

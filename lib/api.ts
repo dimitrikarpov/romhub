@@ -1,3 +1,5 @@
+import { Rom } from "../types"
+
 type fetchRomsParams = {
   skip?: number
   take?: number
@@ -5,12 +7,19 @@ type fetchRomsParams = {
   titleStartsWith?: string
 }
 
+export type fetchRomsReturn = {
+  data: Rom[]
+  total: number
+  take: number
+  skip: number
+}
+
 const fetchRoms = ({
   skip = 0,
   take = pageSize,
   platform = "all",
   titleStartsWith,
-}: fetchRomsParams) =>
+}: fetchRomsParams): Promise<fetchRomsReturn> =>
   fetch(
     "/api/roms" +
       "?" +

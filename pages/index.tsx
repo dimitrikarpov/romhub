@@ -4,8 +4,6 @@ import { Rom } from "../types"
 import { prisma } from "../prisma/db"
 import { transformRom } from "./api/roms"
 import styles from "../styles/Home.module.css"
-import { useRomsFetcher } from "../components/useRomsFetcher"
-import { RomGridControls } from "../components/rom-grid/RomGridControls"
 import { Gallery } from "../components/gallery/Gallery"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "../components/layout/Layout"
@@ -21,27 +19,29 @@ type Props = {
 }
 
 const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
-  // const {
-  //   roms,
-  //   canFetchNext,
-  //   canFetchPrev,
-  //   nextPage,
-  //   prevPage,
-  //   currentPage,
-  //   totalPages,
-  //   setPage,
-  //   platform,
-  //   setPlatform,
-  //   setTitleStartsWith,
-  // } = useRomsFetcher(initialRoms, initialTotal)
+  const { skip, platform, titleStartsWith } = useContext(SearchContext)
 
-  const { platform, titleStartsWith } = useContext(SearchContext)
+  const romsQuery = useQuery({
+    queryKey: [
+      "roms",
+      {
+        skip,
+        platform,
+        search: titleStartsWith,
+      },
+    ],
+    queryFn: () => api.roms.findMany({ skip, platform, titleStartsWith }),
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+    retry: false,
+  })
 
-  const romsQuery = useQuery(
-    ["roms", platform, titleStartsWith],
-    () => api.roms.findMany({ platform, titleStartsWith }),
-    { refetchOnWindowFocus: false, retry: false },
-  )
+  console.log({ romsQuery })
+
+  const { data } = romsQuery
+
+  const roms = data?.data
+  const total = data?.total
 
   return (
     <>
@@ -54,23 +54,9 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
       <main className={styles.main}>
         <PlatformFilter />
 
-        {/* <RomGridControls
-          platform={platform}
-          setPlatform={setPlatform}
-          setTitleStartsWith={setTitleStartsWith}
-        /> */}
+        <Paginator skip={skip} total={total || initialTotal} />
 
-        {/* <Paginator
-          canFetchNext={canFetchNext}
-          canFetchPrev={canFetchPrev}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setPage={setPage}
-        /> */}
-
-        <Gallery roms={initialRoms} />
+        <Gallery roms={roms || initialRoms} />
       </main>
     </>
   )

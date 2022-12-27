@@ -1,32 +1,50 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { SearchContext } from "../../contexts/search/SearchContext"
 import styles from "../../styles/RomGrid.module.css"
 
 type Props = {
-  canFetchNext: boolean
-  canFetchPrev: boolean
-  currentPage: number
-  totalPages: number
-  nextPage: () => Promise<void>
-  prevPage: () => Promise<void>
-  setPage: (page: number) => void
+  skip: number
+  total: number
 }
 
+const pageSize = 15
+
 export const Paginator: React.FunctionComponent<Props> = ({
-  canFetchNext,
-  canFetchPrev,
-  prevPage,
-  nextPage,
-  setPage,
-  currentPage,
-  totalPages,
+  skip,
+  total = 0,
 }) => {
-  const [value, setValue] = useState<number>(currentPage)
+  console.log({ skip, total })
+
+  const [value, setValue] = useState<number>(1)
+  const { setSkip } = useContext(SearchContext)
+
+  const totalPages = Math.ceil(total / pageSize)
 
   useEffect(() => {
-    if (currentPage === value) return
+    if (skip === 0) {
+      setValue(1)
+    }
+  }, [skip])
 
-    setValue(currentPage)
-  }, [currentPage])
+  const setPage = (page: number) => {
+    if (page > totalPages || page <= 0) return
+
+    setSkip(page * pageSize)
+  }
+
+  const nextPage = async () => {
+    if (!canFetchNext(total, skip)) return
+
+    setSkip(skip + pageSize)
+    setValue(value + 1)
+  }
+
+  const prevPage = async () => {
+    if (!canFetchPrev(skip)) return
+
+    setSkip(skip - pageSize)
+    setValue(value - 1)
+  }
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
@@ -44,7 +62,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
 
   return (
     <div className={styles.paginationContainer}>
-      <button disabled={!canFetchPrev} onClick={prevPage}>
+      <button disabled={!canFetchPrev(skip)} onClick={prevPage}>
         prev
       </button>
 
@@ -58,9 +76,17 @@ export const Paginator: React.FunctionComponent<Props> = ({
         / {totalPages}
       </span>
 
-      <button disabled={!canFetchNext} onClick={nextPage}>
+      <button disabled={!canFetchNext(total, skip)} onClick={nextPage}>
         next
       </button>
     </div>
   )
+}
+
+const canFetchNext = (total: number, skip: number) => {
+  return skip + pageSize <= total
+}
+
+const canFetchPrev = (skip: number) => {
+  return skip >= pageSize
 }

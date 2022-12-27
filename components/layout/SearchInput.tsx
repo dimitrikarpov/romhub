@@ -5,7 +5,7 @@ import { ClearIcon, SearchIcon } from "../icons"
 import styles from "./SearchInput.module.css"
 
 export const SearchInput = () => {
-  const { titleStartsWith, setTitleStartsWith } = useContext(SearchContext)
+  const { titleStartsWith, search } = useContext(SearchContext)
 
   const [value, setValue] = useState<string>("")
 
@@ -18,11 +18,11 @@ export const SearchInput = () => {
   const onClear = () => {
     setValue("")
 
-    if (titleStartsWith !== "") setTitleStartsWith(undefined)
+    if (titleStartsWith !== "") search()
   }
 
   const onSubmit = () => {
-    setTitleStartsWith(value)
+    search(value)
   }
 
   return (

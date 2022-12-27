@@ -5,7 +5,6 @@ import { SessionProvider, SessionProviderProps } from "next-auth/react"
 import "../styles/globals.css"
 import { LayoutProvider } from "../contexts/layout/LayoutProvider"
 import { SearchProvider } from "../contexts/search/SearchProvider"
-import { SearchRequestProvider } from "../contexts/search-request/SearchRequestProvider"
 import { QueryClient, QueryClientProvider } from "react-query"
 
 import { ReactQueryDevtools } from "react-query/devtools"
@@ -19,11 +18,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <QueryClientProvider client={client}>
       <SessionProvider session={pageProps.session}>
         <SearchProvider>
-          <SearchRequestProvider>
-            <LayoutProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </LayoutProvider>
-          </SearchRequestProvider>
+          <LayoutProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </LayoutProvider>
         </SearchProvider>
       </SessionProvider>
       <ReactQueryDevtools initialIsOpen={false} />
