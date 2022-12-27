@@ -3,10 +3,10 @@ import styles from "../../styles/Gallery.module.css"
 import { GalleryItem } from "./GalleryItem"
 
 type Props = {
-  roms: Rom[]
+  roms: Rom[] | undefined
 }
 
-export const Gallery: React.FunctionComponent<Props> = ({ roms }) => {
+export const Gallery: React.FunctionComponent<Props> = ({ roms = [] }) => {
   return (
     <div className={styles["gallery"]}>
       {roms.map((rom) => (

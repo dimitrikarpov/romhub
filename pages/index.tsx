@@ -14,11 +14,13 @@ import { api } from "../lib/api"
 import { SearchContext } from "../contexts/search/SearchContext"
 
 type Props = {
-  initialRoms: Rom[]
-  initialTotal: number
+  initialData: {
+    data: Rom[]
+    total: number
+  }
 }
 
-const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
+const Home: NextPageWithLayout<Props> = ({ initialData }) => {
   const { skip, platform, titleStartsWith } = useContext(SearchContext)
 
   const romsQuery = useQuery({
@@ -31,12 +33,12 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
       },
     ],
     queryFn: () => api.roms.findMany({ skip, platform, titleStartsWith }),
+    initialData,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     retry: false,
+    refetchOnMount: false,
   })
-
-  console.log({ romsQuery })
 
   const { data } = romsQuery
 
@@ -54,9 +56,9 @@ const Home: NextPageWithLayout<Props> = ({ initialRoms, initialTotal }) => {
       <main className={styles.main}>
         <PlatformFilter />
 
-        <Paginator skip={skip} total={total || initialTotal} />
+        <Paginator skip={skip} total={total} />
 
-        <Gallery roms={roms || initialRoms} />
+        <Gallery roms={roms} />
       </main>
     </>
   )
@@ -74,8 +76,10 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      initialRoms: roms.map(transformRom),
-      initialTotal,
+      initialData: {
+        data: roms.map(transformRom),
+        total: initialTotal,
+      },
     },
   }
 }

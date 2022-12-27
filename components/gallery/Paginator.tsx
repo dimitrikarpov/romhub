@@ -4,7 +4,7 @@ import styles from "../../styles/RomGrid.module.css"
 
 type Props = {
   skip: number
-  total: number
+  total: number | undefined
 }
 
 const pageSize = 15
@@ -13,8 +13,6 @@ export const Paginator: React.FunctionComponent<Props> = ({
   skip,
   total = 0,
 }) => {
-  console.log({ skip, total })
-
   const [value, setValue] = useState<number>(1)
   const { setSkip } = useContext(SearchContext)
 
