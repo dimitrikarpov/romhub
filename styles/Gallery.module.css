@@ -1,32 +1,33 @@
 .gallery {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto;
   column-gap: 2rem;
+  grid-template-columns: repeat(3, 360px);
+  align-items: center;
+  justify-items: center;
 
   width: fit-content;
   margin: 0 auto;
 }
 
 .card-container {
-  position: relative;
-  width: 360px;
   color: white;
+  position: relative;
+
+  height: 320px;
+}
+
+.card {
+  width: 360px;
+  position: relative;
+  z-index: 0;
 }
 
 .card-container:hover .card {
-  width: 440px;
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  transform: translate(50%, -50%);
-
-  z-index: 2;
-
   background-color: #282828;
-
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  animation: card_hover_resize 350ms ease 500ms forwards;
 }
 
 .card img {
@@ -35,6 +36,9 @@
   object-fit: cover;
 
   border-radius: 10px;
+
+  transition: aspect-ratio 0.3s ease;
+  transition-delay: 500ms;
 }
 
 .card-container:hover .card img {
@@ -72,11 +76,21 @@
 }
 
 .card__controls {
+  opacity: 0;
+  height: 0;
+
   display: flex;
   gap: 1rem;
   justify-content: center;
 
   margin-top: 1rem;
+}
+
+.card-container:hover .card__controls {
+  animation-name: card_hover_show_controls;
+  animation-duration: 150ms;
+  animation-delay: 550ms;
+  animation-fill-mode: forwards;
 }
 
 .card__controls > * {
@@ -85,11 +99,31 @@
   font-size: 1.6rem;
   border-radius: 10px;
 
-  visibility: hidden;
-
   cursor: pointer;
 }
 
-.card-container:hover .card__controls > * {
-  visibility: visible;
+@keyframes card_hover_resize {
+  0% {
+    width: 360px;
+    transform: translate3d(0px);
+    z-index: 0;
+  }
+
+  100% {
+    width: 440px;
+    transform: translate3d(300px);
+    z-index: 5;
+  }
+}
+
+@keyframes card_hover_show_controls {
+  from {
+    opacity: 0;
+    height: 0;
+  }
+
+  to {
+    opacity: 1;
+    height: 24px;
+  }
 }
