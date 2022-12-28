@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 /storage/roms
+/storage/import
 /prisma/in
 /prisma/dev.db
 /prisma/dev.db-journal
