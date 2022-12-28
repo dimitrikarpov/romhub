@@ -1,14 +1,24 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+:root {
+  --gallery-image-default-width: 360px;
+  --gallery-image-default-height: 202px;
+  --gallery-image-hover-width: 440px;
+  --gallery-image-hover-height: 248px;
+}
+
+html {
+  font-size: 10px;
+}
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Roboto", "Arial", sans-serif;
 
-  background-color: #2b3a55;
   color: white;
+  background-color: #191919;
 }
 
 a {
@@ -18,4 +28,26 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+dialog::backdrop {
+  /* background-color: linear-gradient(45deg, red, blue); */
+  background: linear-gradient(#e66465, #9198e5);
+
+  opacity: 0.4;
+}
+
+dialog button[data-type="close"] {
+  display: inline-block;
+  background-color: rgb(50, 30, 88);
+  border: none;
+  cursor: pointer;
+  color: white;
+
+  padding: 0.5rem 1rem;
+  font-size: 1.6rem;
+}
+
+dialog button[data-type="close"]:hover {
+  background-color: rgba(50, 30, 88, 0.767);
 }

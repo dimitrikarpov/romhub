@@ -12,7 +12,7 @@ const findDescriptions = async (inDir: string) => {
 }
 
 async function main() {
-  const inDir = path.join(__dirname, "in")
+  const inDir = path.join(__dirname, "..", "storage", "import")
   const outDir = path.join(__dirname, "..", "storage", "roms")
 
   const files = await findDescriptions(inDir)
@@ -23,6 +23,11 @@ async function main() {
     })
     const meta: Rom = JSON.parse(infoData)
 
+    if (!meta.platform) {
+      console.log("--->", meta)
+      continue
+    }
+
     /* copying rom file */
     await copyFile(path.join(inDir, meta.file), path.join(outDir, meta.file))
 
@@ -31,6 +36,9 @@ async function main() {
       await copyFile(path.join(inDir, file), path.join(outDir, file))
     })
 
+    /* copying json meta file */
+    await copyFile(path.join(inDir, files[c]), path.join(outDir, files[c]))
+
     /* add rom meta to db */
     await prisma.rom.upsert({
       where: {
@@ -38,27 +46,16 @@ async function main() {
       },
       update: {},
       create: {
-        title: meta.title,
+        name: meta.name,
+        platform: meta.platform,
         file: meta.file,
         crc32: meta.crc32,
         sha1: meta.sha1,
-        tags: JSON.stringify(meta.tags),
         ...(meta.images && { images: JSON.stringify(meta.images) }),
       },
     })
 
-    /* add tags */
-    meta.tags?.forEach(async (name) => {
-      await prisma.tag.upsert({
-        where: { name },
-        update: {},
-        create: {
-          name,
-        },
-      })
-    })
-
-    console.log(`${c} of ${files.length}`)
+    console.log(`${c} of ${files.length}: [${meta.platform}] ${meta.name}`)
   }
 }
 
@@ -71,3 +68,14 @@ main()
     await prisma.$disconnect()
     process.exit(1)
   })
+
+/*
+  {
+    "name":"Casino Derby (Japan)",
+    "images":["0a4f206eef8f5e31508547af2ea349c952fb4a5f-snap.png","0a4f206eef8f5e31508547af2ea349c952fb4a5f-title.png"],
+    "file":"0a4f206eef8f5e31508547af2ea349c952fb4a5f.nes",
+    "crc32":"67f0c00f",
+    "sha1":"0a4f206eef8f5e31508547af2ea349c952fb4a5f",
+    "platform":"nes"
+  }
+  */

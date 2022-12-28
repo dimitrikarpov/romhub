@@ -1,7 +1,7 @@
 export type RomEntity = {
-  title: string
+  name: string
+  platform: string
   description?: string
-  tags?: string[]
   images?: string[]
   file: string
   crc32: string

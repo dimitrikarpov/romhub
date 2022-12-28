@@ -1,13 +1,74 @@
-import React from "react"
+import React, { ReactElement, useContext } from "react"
 import Head from "next/head"
 import { Rom } from "../types"
 import { prisma } from "../prisma/db"
 import { transformRom } from "./api/roms"
-import { RomGrid } from "../components/rom-grid/RomGrid"
 import styles from "../styles/Home.module.css"
-import { useRomsFetcher } from "../components/useRomsFetcher"
-import { RomGridPaginator } from "../components/rom-grid/RomGridPaginator"
-import { RomGridControls } from "../components/rom-grid/RomGridControls"
+import { Gallery } from "../components/gallery/Gallery"
+import { NextPageWithLayout } from "./_app"
+import { Layout } from "../components/layout/Layout"
+import { PlatformFilter } from "../components/gallery/PlatformFilter"
+import { Paginator } from "../components/gallery/Paginator"
+import { useQuery } from "react-query"
+import { api } from "../lib/api"
+import { SearchContext } from "../contexts/search/SearchContext"
+
+type Props = {
+  initialData: {
+    data: Rom[]
+    total: number
+  }
+}
+
+const Home: NextPageWithLayout<Props> = ({ initialData }) => {
+  const { skip, platform, titleStartsWith } = useContext(SearchContext)
+
+  const romsQuery = useQuery({
+    queryKey: [
+      "roms",
+      {
+        skip,
+        platform,
+        search: titleStartsWith,
+      },
+    ],
+    queryFn: () => api.roms.findMany({ skip, platform, titleStartsWith }),
+    initialData,
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+    retry: false,
+    refetchOnMount: false,
+  })
+
+  const { data } = romsQuery
+
+  const roms = data?.data
+  const total = data?.total
+
+  return (
+    <>
+      <Head>
+        <title>RomHub</title>
+        <meta name="description" content="Search and Play!" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <PlatformFilter />
+
+        <Paginator skip={skip} total={total} />
+
+        <Gallery roms={roms} />
+      </main>
+    </>
+  )
+}
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
+}
+
+export default Home
 
 export async function getServerSideProps() {
   const initialTotal = await prisma.rom.count()
@@ -15,63 +76,10 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      initialRoms: roms.map(transformRom),
-      initialTotal,
+      initialData: {
+        data: roms.map(transformRom),
+        total: initialTotal,
+      },
     },
   }
-}
-
-type Props = {
-  initialRoms: Rom[]
-  initialTotal: number
-}
-
-export default function Home({ initialRoms, initialTotal }: Props) {
-  const {
-    roms,
-    canFetchNext,
-    canFetchPrev,
-    nextPage,
-    prevPage,
-    currentPage,
-    totalPages,
-    setPage,
-    platform,
-    setPlatform,
-    setTitleStartsWith,
-  } = useRomsFetcher(initialRoms, initialTotal)
-
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>RomHub</title>
-        <meta name="description" content="Search and Play!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <header className={styles.header}>
-        <span>ROM</span>
-        <img src="/assets/child-game-svgrepo-com.svg" alt="logo" />
-        <span>HUB</span>
-      </header>
-
-      <main className={styles.main}>
-        <RomGridControls
-          platform={platform}
-          setPlatform={setPlatform}
-          setTitleStartsWith={setTitleStartsWith}
-        />
-        <RomGrid roms={roms || initialRoms} />
-        <RomGridPaginator
-          canFetchNext={canFetchNext}
-          canFetchPrev={canFetchPrev}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setPage={setPage}
-        />
-      </main>
-    </div>
-  )
 }

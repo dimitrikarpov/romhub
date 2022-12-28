@@ -7,7 +7,105 @@ import { transformRom } from "./api/roms"
 import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
 import { prisma } from "../prisma/db"
 import styles from "../styles/Emulator.module.css"
-import { EmulatorPageTopBar } from "../components/emulator/EmulatorPageTopBar"
+import { NextPageWithLayout } from "./_app"
+import { ReactElement, useRef } from "react"
+import { Layout } from "../components/layout/Layout"
+import cn from "classnames"
+import {
+  DownloadIcon,
+  GamepadIcon,
+  ShareIcon,
+  WatchLaterIcon,
+} from "../components/icons"
+import { InputMapping } from "../components/emulator/InputMapping"
+
+type Props = { rom: Rom | undefined; url: string }
+
+const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
+  const inputsDialogRef = useRef<HTMLDialogElement>(null)
+  const { rom: buffer } = useRomDownloader(rom?.file)
+  const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
+
+  const openInputsModal = () => {
+    inputsDialogRef.current?.showModal()
+  }
+
+  const closeInputsModal = () => {
+    inputsDialogRef.current?.close()
+  }
+
+  return (
+    <>
+      <Head>
+        <title>RomHub: {rom?.name}</title>
+        <meta name="description" content={`RomHub: ${rom?.name}`} />
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content={`RomHub: ${rom?.name}`} />
+        <meta property="og:image" content={rom?.images?.[0]} />
+        <meta property="og:url" content={url} />
+      </Head>
+
+      <div className={styles["page-container"]}>
+        {buffer && coreUrl && rom && (
+          <EmulatorComponent
+            coreUrl={String(coreUrl)}
+            romBuffer={buffer}
+            rom={rom}
+          />
+        )}
+
+        <div className={styles["name-box"]}>
+          <span className={styles["platform"]}>{rom?.platform}</span>
+          <span className={styles["name"]}>{rom?.name}</span>
+        </div>
+
+        <div className={styles["actions-box"]}>
+          <button className={cn(styles["button"], styles["button--icon"])}>
+            <ShareIcon />
+            <span>Share</span>
+          </button>
+
+          <button className={cn(styles["button"], styles["button--icon"])}>
+            <DownloadIcon />
+            <span>Download</span>
+          </button>
+
+          <button className={cn(styles["button"], styles["button--icon"])}>
+            <WatchLaterIcon />
+            <span>Save to Watch later</span>
+          </button>
+        </div>
+
+        <div className={styles["actions-box"]}>
+          <button
+            className={cn(styles["button"], styles["button--icon"])}
+            onClick={() => openInputsModal()}
+          >
+            <GamepadIcon />
+            <span>Controls</span>
+          </button>
+        </div>
+
+        <div className={styles.description}>
+          {rom?.description && <p>{rom.description}</p>}
+        </div>
+
+        <dialog ref={inputsDialogRef}>
+          <button data-type="close" onClick={() => closeInputsModal()}>
+            close
+          </button>
+          <InputMapping />
+        </dialog>
+      </div>
+    </>
+  )
+}
+
+Emulator.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
+}
+
+export default Emulator
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id
@@ -30,73 +128,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-type Props = { rom: Rom | undefined; url: string }
+/**
+  - download
+  - share
+  - watch later
+  - save to playlist
 
-export default function Emulator({ rom, url }: Props) {
-  const { rom: buffer } = useRomDownloader(rom?.file)
-  const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
-
-  return (
-    <div className={styles.pageContainer}>
-      <Head>
-        <title>RomHub: {rom?.title}</title>
-        <meta name="description" content={`RomHub: ${rom?.title}`} />
-        <link rel="icon" href="/favicon.ico" />
-        <meta property="og:title" content={`RomHub: ${rom?.title}`} />
-        <meta property="og:image" content={rom?.images?.[0]} />
-        <meta property="og:url" content={url} />
-      </Head>
-
-      <EmulatorPageTopBar rom={rom} />
-
-      {buffer && coreUrl && rom && (
-        <EmulatorComponent
-          coreUrl={String(coreUrl)}
-          romBuffer={buffer}
-          rom={rom}
-        />
-      )}
-
-      <div className={styles.tagBox}>
-        {rom?.tags?.map((tag, index) => (
-          <span className={styles.tag} key={index}>
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <div className={styles.pageRomMeta}>
-        {rom?.description && <p>{rom.description}</p>}
-      </div>
-
-      <div>
-        <h4>controls</h4>
-        <div className={styles.controlsGrid}>
-          {Object.entries(keyConfig).map(([gamepadKey, keyboardKey]) => (
-            <>
-              <div className={styles.controlsGamepadKeyWrapper}>
-                {gamepadKey}
-              </div>
-              <div>{keyboardKey}</div>
-            </>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const keyConfig = {
-  "⬆️": "up",
-  "⬇️": "down",
-  "⬅️": "left",
-  "➡️": "right",
-  start: "enter",
-  select: "space",
-  A: "x",
-  B: "z",
-  X: "s",
-  Y: "a",
-  L: "q",
-  R: "w",
-}
+  - show controls
+  - fullscreen
+  - make savestate/ load from savestate
+  - make screenshot
+ */

@@ -1,0 +1,32 @@
+.platformsSelectorContainer {
+  height: 56px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+
+  background-color: #0f0f0f;
+
+  gap: 12px;
+}
+
+.platformSelectorItem {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  /* max-width: 200px; */
+  min-width: 12px;
+
+  border-radius: 7px;
+  padding: 4px 12px;
+
+  font-size: 14px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+}
+
+.platformSelectorItemActive {
+  background-color: white;
+  color: black;
+}
