@@ -58,8 +58,9 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
 
         <Gallery roms={roms} />
 
-        <div className={styles.paginatorContainer}></div>
-        <Paginator skip={skip} total={total} />
+        <div className={styles.paginatorContainer}>
+          <Paginator skip={skip} total={total} />
+        </div>
       </main>
     </>
   )

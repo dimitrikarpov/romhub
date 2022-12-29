@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { SearchContext } from "../../contexts/search/SearchContext"
-import styles from "../../styles/RomGrid.module.css"
+import styles from "./Paginator.module.css"
 
 type Props = {
   skip: number
@@ -62,7 +62,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={styles.paginationContainer}>
+    <div className={styles.paginator}>
       <button disabled={!canFetchPrev(skip)} onClick={prevPage}>
         prev
       </button>
