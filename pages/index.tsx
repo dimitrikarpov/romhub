@@ -1,17 +1,17 @@
 import React, { ReactElement, useContext } from "react"
 import Head from "next/head"
-import { Rom } from "../types"
+import { useQuery } from "react-query"
 import { prisma } from "../prisma/db"
+import { Rom } from "../types"
+import { SearchContext } from "../contexts/search/SearchContext"
+import { api } from "../lib/api"
 import { transformRom } from "./api/roms"
-import styles from "../styles/Home.module.css"
-import { Gallery } from "../components/gallery/Gallery"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "../components/layout/Layout"
+import { Gallery } from "../components/gallery/Gallery"
 import { PlatformFilter } from "../components/gallery/PlatformFilter"
 import { Paginator } from "../components/gallery/Paginator"
-import { useQuery } from "react-query"
-import { api } from "../lib/api"
-import { SearchContext } from "../contexts/search/SearchContext"
+import styles from "../styles/Home.module.css"
 
 type Props = {
   initialData: {

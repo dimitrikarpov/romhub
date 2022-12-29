@@ -1,3 +1,4 @@
+import { useSession, signIn, signOut } from "next-auth/react"
 import { useContext } from "react"
 import { LayoutContext } from "../../contexts/layout/LayoutContext"
 import styles from "../../styles/Layout.module.css"
@@ -9,13 +10,15 @@ type Props = {
 }
 
 const TopBar: React.FunctionComponent<Props> = ({ children }) => {
+  const { data: session } = useSession()
+
   return (
     <div className={styles.topBar}>
       <TogglerAndLogo />
 
       <SearchInput />
 
-      <div>{true ? <AccountLoggedIn /> : <AccountAnon />}</div>
+      <div>{session ? <AccountLoggedIn /> : <AccountAnon />}</div>
     </div>
   )
 }
@@ -41,10 +44,10 @@ const AccountLoggedIn = () => {
           </div>
 
           <div className={styles.accountDropdownMenuSection}>
-            <a href="http://#">
+            <button onClick={() => signOut()}>
               <SignOutIcon />
               Logout
-            </a>
+            </button>
           </div>
         </div>
       )}
@@ -53,7 +56,7 @@ const AccountLoggedIn = () => {
 }
 
 const AccountAnon = () => (
-  <div className={styles.accountDropdownBoxAnonBox}>
+  <div className={styles.accountDropdownBoxAnonBox} onClick={() => signIn()}>
     <SignInIcon />
     <span>Sing in</span>
   </div>

@@ -114,7 +114,14 @@
   padding: 0.75rem 0;
 }
 
-.accountDropdownMenuSection a {
+.accountDropdownMenuSection button {
+  background: transparent;
+  display: block;
+  outline: none;
+  border: none;
+
+  color: white;
+
   display: flex;
   align-items: center;
   gap: 2rem;
