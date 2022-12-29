@@ -1,33 +1,8 @@
-.header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  padding-top: 1.5rem;
-
-  font-family: "Press Start 2P", cursive;
-  font-size: 50px;
-  font-weight: 500;
-}
-
-.header span:first-child {
-  color: #e9007f;
-  -webkit-text-stroke: 1px #fff024;
-}
-
-.header span:last-child {
-  color: #7cdfff;
-}
-
-.header img {
-  margin-top: -9px;
-  width: 50px;
-  filter: invert(48%) sepia(79%) saturate(2130%) hue-rotate(22deg)
-    brightness(118%) contrast(119%);
-}
-
 .main {
   padding-top: 2rem;
   background-color: #0f0f0f;
+}
+
+.paginatorContainer {
+  padding: 2rem 0;
 }

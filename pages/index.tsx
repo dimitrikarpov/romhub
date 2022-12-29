@@ -56,9 +56,10 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
       <main className={styles.main}>
         <PlatformFilter />
 
-        <Paginator skip={skip} total={total} />
-
         <Gallery roms={roms} />
+
+        <div className={styles.paginatorContainer}></div>
+        <Paginator skip={skip} total={total} />
       </main>
     </>
   )

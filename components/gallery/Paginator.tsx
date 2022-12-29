@@ -28,6 +28,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
     if (page > totalPages || page <= 0) return
 
     setSkip(page * pageSize)
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   const nextPage = async () => {
@@ -35,6 +36,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
 
     setSkip(skip + pageSize)
     setValue(value + 1)
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   const prevPage = async () => {
@@ -42,6 +44,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
 
     setSkip(skip - pageSize)
     setValue(value - 1)
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
