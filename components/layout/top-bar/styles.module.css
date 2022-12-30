@@ -1,0 +1,127 @@
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 56px;
+  background-color: #0f0f0f;
+
+  padding: 0 1rem;
+}
+
+.accountDropdownBoxRegistered {
+  margin: 0 15px;
+  position: relative;
+
+  cursor: pointer;
+}
+
+.accountDropdownBoxRegistered img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.accountDropdownMenu {
+  position: fixed;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  background-color: #282828;
+
+  top: 45px;
+  right: 16px;
+
+  max-width: 300px;
+  max-height: 749px;
+
+  padding: 1.6rem;
+  border-radius: 10px;
+
+  color: white;
+}
+
+.accountDropdownMenuHidden {
+  display: none;
+}
+
+.accountDropdownMenu > *:not(:last-child) {
+  border-bottom: 1px solid white;
+}
+
+.accountDropdownMenuUserBox {
+  display: flex;
+  gap: 1.6rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.accountDropdownMenuUserBox img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.accountDropdownMenuSection {
+  display: flex;
+  gap: 1.6rem;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.accountDropdownMenuSection button {
+  background: transparent;
+  display: block;
+  outline: none;
+  border: none;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  padding: 0.3rem 0.75rem;
+}
+
+.accountDropdownMenuSection:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.accountDropdownMenuSection svg {
+  height: 24px;
+  width: 24px;
+  fill: white;
+}
+
+.accountDropdownBoxAnonBox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid hsl(0deg 0% 53% / 75%);
+
+  padding: 0px 15px;
+  margin: 0 15px;
+  border-radius: 40px;
+  line-height: 36px;
+
+  cursor: pointer;
+}
+
+.accountDropdownBoxAnonBox:hover {
+  background-color: #3ea5ff7a;
+  border: 1px solid transparent;
+}
+
+.accountDropdownBoxAnonBox svg {
+  width: 24px;
+  height: 24px;
+  fill: #3ea6ff;
+}
+
+.accountDropdownBoxAnonBox span {
+  color: #3ea6ff;
+}
