@@ -76,3 +76,13 @@ model Playlist {
 
   user User @relation(fields: [userId], references: [id])
 }
+
+model History {
+  id          String   @id @default(cuid())
+  romId       String
+  romName     String
+  romPlatform String
+  image       String?
+  userId      String
+  playedAt    DateTime @default(now())
+}
