@@ -3,8 +3,6 @@ import formidable, { IncomingForm } from "formidable"
 import short from "short-uuid"
 import { calculateCRC32, calculateSHA1 } from "../../../lib/hashes"
 
-var mv = require("mv")
-
 type FormFields = formidable.Fields
 type FormFiles = Partial<{
   rom: formidable.File

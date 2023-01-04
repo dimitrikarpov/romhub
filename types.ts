@@ -1,3 +1,7 @@
+const playlistTypes = ["history", "watch_later", "custom"] as const
+
+export type TPlaylistType = typeof playlistTypes[number]
+
 export type RomEntity = {
   name: string
   platform: string

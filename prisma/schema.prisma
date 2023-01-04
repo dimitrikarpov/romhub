@@ -61,17 +61,18 @@ model Playlist {
   isPublic    Boolean         @default(false)
   updatedAt   DateTime        @default(now())
   userId      String
-  entries     PlaylistEntry[]
   User        User            @relation(fields: [userId], references: [id])
+  entries     PlaylistEntry[]
 }
 
 model PlaylistEntry {
-  id String @id @default(cuid())
-
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  foo        String?  @default("bar")
   romId      String
-  rom        Rom       @relation(fields: [romId], references: [id])
-  Playlist   Playlist? @relation(fields: [playlistId], references: [id])
-  playlistId String?
+  rom        Rom      @relation(fields: [romId], references: [id])
+  playlistId String
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
 }
 
 model Rom {

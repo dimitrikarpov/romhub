@@ -13,11 +13,20 @@ export default nextAuth({
   ],
   events: {
     createUser: async (message) => {
-      /* creates default playlist for new user */
+      /* creates default playlists for new user */
       await prisma.playlist.create({
         data: {
-          name: "Watch Later",
-          description: "Default playlist",
+          type: "history",
+          title: "History",
+          isPublic: false,
+          userId: message.user.id,
+        },
+      })
+
+      await prisma.playlist.create({
+        data: {
+          type: "watch_later",
+          title: "Watch Later",
           isPublic: false,
           userId: message.user.id,
         },

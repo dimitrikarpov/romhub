@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client"
-// import { createPrismaQueryEventHandler } from "prisma-query-log"
 
 declare global {
   // allow global `var` declarations
@@ -15,9 +14,5 @@ export const prisma = new PrismaClient({
     },
   ],
 })
-
-// const log = createPrismaQueryEventHandler()
-
-// prisma.$on("query", log)
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma
