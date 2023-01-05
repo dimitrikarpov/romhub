@@ -1,3 +1,4 @@
+import { Playlist } from "@prisma/client"
 import { Rom } from "../types"
 
 type fetchRomsParams = {
@@ -7,7 +8,7 @@ type fetchRomsParams = {
   titleStartsWith?: string
 }
 
-export type fetchRomsReturn = {
+type fetchRomsData = {
   data: Rom[]
   total: number
   take: number
@@ -19,7 +20,7 @@ const fetchRoms = ({
   take = pageSize,
   platform = "all",
   titleStartsWith,
-}: fetchRomsParams): Promise<fetchRomsReturn> =>
+}: fetchRomsParams): Promise<fetchRomsData> =>
   fetch(
     "/api/roms" +
       "?" +
@@ -45,6 +46,40 @@ const createWhereStartsWithQueryString = (key: string, value: string) => {
   return JSON.stringify({ [key]: { startsWith: value } })
 }
 
+type fetchPlaylistsParams = {
+  userId: string
+}
+
+type fetchPlaylistData = Playlist[]
+
+const fetchPlaylists = ({
+  userId,
+}: fetchPlaylistsParams): Promise<fetchPlaylistData> =>
+  fetch("/api/playlists" + "?" + new URLSearchParams({ userId })).then((res) =>
+    res.json(),
+  )
+
+const createPlaylistEntry = ({
+  playlistId,
+  romId,
+}: {
+  playlistId: string
+  romId: string
+}) =>
+  fetch(
+    ["/api/playlists/entries", new URLSearchParams({ playlistId, romId })].join(
+      "?",
+    ),
+    { method: "POST" },
+  )
+
 export const api = {
   roms: { findMany: fetchRoms, getById: null },
+  playlists: { findMany: fetchPlaylists, getById: null },
+  playlistEntries: {
+    findMany: null,
+    getById: null,
+    create: createPlaylistEntry,
+    delete: null,
+  },
 }

@@ -18,6 +18,7 @@ import {
   WatchLaterIcon,
 } from "../components/icons"
 import { InputMapping } from "../components/emulator/InputMapping"
+import { userRomHistorySaver } from "../components/emulator/useRomHistorySaver"
 
 type Props = { rom: Rom | undefined; url: string }
 
@@ -25,6 +26,8 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
   const inputsDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
+
+  userRomHistorySaver(rom!.id)
 
   const openInputsModal = () => {
     inputsDialogRef.current?.showModal()

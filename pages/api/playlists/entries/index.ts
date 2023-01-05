@@ -32,8 +32,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!playlistId || !romId) return res.status(404).send("Not found")
 
-    console.log({ playlistId, romId })
-
     const playlist = await prisma.playlist.findUnique({
       where: { id: String(playlistId) },
     })
@@ -54,18 +52,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         entries: {
           create: { romId: String(romId) },
-          //   create: [{ rom, romId: String(romId) }],
-
-          //   create: [{ playlistId: String(playlistId), romId: String(romId) }],
         },
       },
     })
-
-    // const result = await prisma.playlistEntry.create({
-    //   data: { romId: String(romId), playlistId: String(playlistId) },
-    // })
-
-    // console.log({ result })
 
     return res.status(200).send("Entry has been added")
   }

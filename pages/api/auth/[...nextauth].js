@@ -33,5 +33,12 @@ export default nextAuth({
       })
     },
   },
+  callbacks: {
+    async session({ session, token, user }) {
+      session.user.id = user.id
+
+      return session
+    },
+  },
   secret: process.env.JWT_SECRET,
 })

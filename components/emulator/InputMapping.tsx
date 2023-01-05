@@ -1,3 +1,4 @@
+import React from "react"
 import styles from "./InputMapping.module.css"
 
 export const InputMapping = () => {
@@ -6,12 +7,10 @@ export const InputMapping = () => {
       <h4>controls</h4>
       <div className={styles.controlsGrid}>
         {Object.entries(keyConfig).map(([gamepadKey, keyboardKey]) => (
-          <>
-            <div className={styles.controlsGamepadKeyWrapper} key={gamepadKey}>
-              {gamepadKey}
-            </div>
+          <React.Fragment key={gamepadKey}>
+            <div className={styles.controlsGamepadKeyWrapper}>{gamepadKey}</div>
             <div>{keyboardKey}</div>
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>
