@@ -46,17 +46,16 @@ const createWhereStartsWithQueryString = (key: string, value: string) => {
   return JSON.stringify({ [key]: { startsWith: value } })
 }
 
-type fetchPlaylistsParams = {
-  userId: string
-}
+const fetchPlaylists = (): Promise<Playlist[]> =>
+  fetch("/api/playlists").then((res) => res.json())
 
-type fetchPlaylistData = Playlist[]
-
-const fetchPlaylists = ({
+const fetchUserPlaylists = ({
   userId,
-}: fetchPlaylistsParams): Promise<fetchPlaylistData> =>
-  fetch("/api/playlists" + "?" + new URLSearchParams({ userId })).then((res) =>
-    res.json(),
+}: {
+  userId: string
+}): Promise<Playlist[]> =>
+  fetch("/api/user/playlists" + "?" + new URLSearchParams({ userId })).then(
+    (res) => res.json(),
   )
 
 const createPlaylistEntry = ({
@@ -81,5 +80,8 @@ export const api = {
     getById: null,
     create: createPlaylistEntry,
     delete: null,
+  },
+  user_playlists: {
+    findMany: fetchUserPlaylists,
   },
 }
