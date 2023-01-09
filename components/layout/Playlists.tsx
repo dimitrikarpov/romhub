@@ -15,6 +15,17 @@ const getIconByType = (type: TPlaylistType) => {
   }
 }
 
+const getUrl = (type: TPlaylistType, id: string) => {
+  switch (type) {
+    case "history":
+      return "/history"
+    case "watch_later":
+      return "watch_later"
+    default:
+      return `/playlist/${id}`
+  }
+}
+
 export const Playlists = () => {
   const { data: session } = useSession()
   const playlistQuery = usePlaylistsQuery(session?.user.id)
@@ -22,14 +33,16 @@ export const Playlists = () => {
   return (
     <>
       {session?.user.id &&
-        playlistQuery.data?.map(({ type, title }) => {
+        playlistQuery.data?.map(({ type, title, id }) => {
           const Icon = getIconByType(type as TPlaylistType)
           return (
-            <div className={styles.sideBarSection}>
-              <div className={styles.sideBarSectionItem}>
-                <Icon />
-                <p>{title}</p>
-              </div>
+            <div className={styles.sideBarSection} key={id}>
+              <a href={getUrl(type as TPlaylistType, id)}>
+                <div className={styles.sideBarSectionItem}>
+                  <Icon />
+                  <p>{title}</p>
+                </div>
+              </a>
             </div>
           )
         })}

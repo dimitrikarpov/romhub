@@ -1,0 +1,46 @@
+.list-conteiner {
+  padding-top: 3rem;
+  max-width: 628px;
+  margin: 0 auto;
+}
+
+.list-conteiner > *:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.title {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: #f1f1f1;
+  font-size: 1.6em;
+  line-height: 1.4em;
+  font-weight: 500;
+}
+
+.item {
+  display: flex;
+  gap: 2rem;
+}
+
+.item img {
+  width: 246px;
+  aspect-ratio: 1.78;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item__name {
+  color: #f1f1f1;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 1.8rem;
+  line-height: 2.6rem;
+  font-weight: 400;
+}
+
+.item__date {
+  color: #aaaaaa;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  font-weight: 400;
+}
