@@ -1,5 +1,5 @@
 import { Playlist } from "@prisma/client"
-import { Rom } from "../types"
+import { UiRom } from "../types"
 
 type fetchRomsParams = {
   skip?: number
@@ -9,7 +9,7 @@ type fetchRomsParams = {
 }
 
 type fetchRomsData = {
-  data: Rom[]
+  data: UiRom[]
   total: number
   take: number
   skip: number

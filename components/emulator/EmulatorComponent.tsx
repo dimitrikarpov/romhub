@@ -1,13 +1,13 @@
 import { memo, useEffect, useRef, useState } from "react"
 import { useRetroarch } from "./useRetroarch"
 import styles from "../../styles/Emulator.module.css"
-import { Rom } from "../../types"
+import { UiRom } from "../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 
 type Props = {
   coreUrl: string
   romBuffer: Uint8Array
-  rom: Rom
+  rom: UiRom
 }
 
 export const EmulatorComponent: React.FunctionComponent<Props> = memo(

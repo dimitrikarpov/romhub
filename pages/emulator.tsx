@@ -2,7 +2,7 @@ import Head from "next/head"
 import { GetServerSideProps } from "next"
 import { EmulatorComponent } from "../components/emulator/EmulatorComponent"
 import { useRomDownloader } from "../components/emulator/useRomDownloader"
-import { Rom } from "../types"
+import { UiRom } from "../types"
 import { transformRom } from "./api/roms"
 import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
 import { prisma } from "../prisma/db"
@@ -20,7 +20,7 @@ import {
 import { InputMapping } from "../components/emulator/InputMapping"
 import { userRomHistorySaver } from "../components/emulator/useRomHistorySaver"
 
-type Props = { rom: Rom | undefined; url: string }
+type Props = { rom: UiRom | undefined; url: string }
 
 const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
   const inputsDialogRef = useRef<HTMLDialogElement>(null)

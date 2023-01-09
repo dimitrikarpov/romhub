@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from "react"
 import Head from "next/head"
 import { useQuery } from "react-query"
 import { prisma } from "../prisma/db"
-import { Rom } from "../types"
+import { UiRom } from "../types"
 import { SearchContext } from "../contexts/search/SearchContext"
 import { api } from "../lib/api"
 import { transformRom } from "./api/roms"
@@ -15,7 +15,7 @@ import styles from "../styles/Home.module.css"
 
 type Props = {
   initialData: {
-    data: Rom[]
+    data: UiRom[]
     total: number
   }
 }

@@ -1,8 +1,8 @@
 import styles from "../../styles/Emulator.module.css"
-import { Rom } from "../../types"
+import { UiRom } from "../../types"
 
 type Props = {
-  rom: Rom | undefined
+  rom: UiRom | undefined
 }
 
 export const EmulatorPageTopBar: React.FunctionComponent<Props> = ({ rom }) => {
@@ -12,7 +12,7 @@ export const EmulatorPageTopBar: React.FunctionComponent<Props> = ({ rom }) => {
         <IconBackArrow />
       </a>
 
-      <p>{rom?.title}</p>
+      <p>{rom?.name}</p>
 
       <div>
         <a href={rom?.file}>

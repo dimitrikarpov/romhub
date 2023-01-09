@@ -1,8 +1,8 @@
-import { Rom } from "../../types"
+import { UiRom } from "../../types"
 import styles from "../../styles/Gallery.module.css"
 
 type Props = {
-  rom: Rom
+  rom: UiRom
 }
 
 export const GalleryItem: React.FunctionComponent<Props> = ({ rom }) => {

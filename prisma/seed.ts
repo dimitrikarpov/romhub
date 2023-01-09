@@ -1,6 +1,6 @@
 import path from "path"
 import { copyFile, readdir, readFile } from "node:fs/promises"
-import { Rom } from "../types"
+import { UiRom } from "../types"
 import { prisma } from "./db"
 
 const findDescriptions = async (inDir: string) => {
@@ -21,7 +21,7 @@ async function main() {
     let infoData = await readFile(path.join(inDir, files[c]), {
       encoding: "utf8",
     })
-    const meta: Rom = JSON.parse(infoData)
+    const meta: UiRom = JSON.parse(infoData)
 
     if (!meta.platform) {
       console.log("--->", meta)
