@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { transformRom } from "."
-import { prisma } from "../../../prisma/db"
+import prisma from "@/lib/prismadb"
 
 export default async function handler(
   req: NextApiRequest,

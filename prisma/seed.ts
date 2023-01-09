@@ -1,7 +1,7 @@
 import path from "path"
 import { copyFile, readdir, readFile } from "node:fs/promises"
 import { UiRom } from "../types"
-import { prisma } from "./db"
+import prisma from "@/lib/prismadb"
 
 const findDescriptions = async (inDir: string) => {
   const files = await readdir(inDir)

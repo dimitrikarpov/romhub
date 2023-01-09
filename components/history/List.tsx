@@ -12,7 +12,7 @@ export const List: React.FunctionComponent<Props> = ({ entries }) => {
       <h2 className={styles["title"]}>Watch history</h2>
 
       {entries.map((entry) => (
-        <Item entry={entry} />
+        <Item entry={entry} key={entry.id} />
       ))}
     </div>
   )

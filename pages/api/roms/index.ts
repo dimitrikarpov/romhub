@@ -1,7 +1,7 @@
 import { Prisma, Rom } from "@prisma/client"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { createUrl } from "../../../lib/storage"
-import { prisma } from "../../../prisma/db"
+import prisma from "@/lib/prismadb"
 
 const transformRomImages = (
   images: string | null | undefined,

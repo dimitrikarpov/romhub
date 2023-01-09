@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { prisma } from "../../../../prisma/db"
+import prisma from "@/lib/prismadb"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

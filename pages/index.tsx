@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext } from "react"
 import Head from "next/head"
 import { useQuery } from "react-query"
-import { prisma } from "../prisma/db"
+import prisma from "@/lib/prismadb"
 import { UiRom } from "../types"
 import { SearchContext } from "../contexts/search/SearchContext"
 import { api } from "../lib/api"
