@@ -21,10 +21,12 @@ const SideBar = () => {
         </div>
 
         <div className={styles.sideBarSection}>
-          <div className={styles.sideBarSectionItem}>
-            <HomeIcon />
-            <p>Home</p>
-          </div>
+          <a href="/">
+            <div className={styles.sideBarSectionItem}>
+              <HomeIcon />
+              <p>Home</p>
+            </div>
+          </a>
         </div>
 
         <Playlists />

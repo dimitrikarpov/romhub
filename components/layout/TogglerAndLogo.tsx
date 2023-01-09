@@ -11,10 +11,12 @@ const TogglerAndLogo = () => {
       <div className={styles.menuBox} onClick={toggleSidebar}>
         <MenuIcon />
       </div>
-      <div className={styles.logoBox}>
-        <img src="/assets/mushroom.png" />
-        <span>RomHub</span>
-      </div>
+      <a href="/">
+        <div className={styles.logoBox}>
+          <img src="/assets/mushroom.png" />
+          <span>RomHub</span>
+        </div>
+      </a>
     </div>
   )
 }
