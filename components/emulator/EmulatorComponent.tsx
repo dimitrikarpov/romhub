@@ -3,6 +3,8 @@ import { useRetroarch } from "./useRetroarch"
 import styles from "../../styles/Emulator.module.css"
 import { UiRom } from "../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
+import { useSession } from "next-auth/react"
+import { api } from "@/lib/api"
 
 type Props = {
   coreUrl: string
@@ -15,6 +17,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [showBackdrop, setShowBackdrop] = useState(true)
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
+    const { data: session } = useSession()
 
     useEffect(() => {
       if (status === "inited") {
@@ -23,9 +26,26 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       }
     }, [status])
 
+    const saveRomToHistory = async () => {
+      if (!session?.user?.id) return
+
+      // TODO: replace with react-query
+      const playlists = await api.user_playlists.findMany({
+        userId: String(session.user.id),
+      })
+
+      const historyPlaylist = playlists.find(({ type }) => type === "history")
+
+      await api.playlistEntries.create({
+        playlistId: historyPlaylist!.id,
+        romId: rom.id,
+      })
+    }
+
     const onStartClick = () => {
       retroarch?.start()
       setShowBackdrop(false)
+      saveRomToHistory()
     }
 
     return (
@@ -43,5 +63,3 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     )
   },
 )
-
-// style={{backgroundImage: `url(${rom.images[0]})`}}
