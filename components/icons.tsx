@@ -158,3 +158,69 @@ export const MenuIcon = () => (
     </g>
   </svg>
 )
+
+export const CrossIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    preserveAspectRatio="xMidYMid meet"
+    focusable="false"
+  >
+    <g>
+      <path d="M12.7,12l6.6,6.6l-0.7,0.7L12,12.7l-6.6,6.6l-0.7-0.7l6.6-6.6L4.6,5.4l0.7-0.7l6.6,6.6l6.6-6.6l0.7,0.7L12.7,12z"></path>
+    </g>
+  </svg>
+)
+
+export const PlusIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    preserveAspectRatio="xMidYMid meet"
+    focusable="false"
+  >
+    <g>
+      <path d="M20,12h-8v8h-1v-8H3v-1h8V3h1v8h8V12z"></path>
+    </g>
+  </svg>
+)
+
+export const CheckboxBlankIcon = () => (
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path fill="none" d="M0 0h24v24H0z" />
+      <path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z" />
+    </g>
+  </svg>
+)
+
+export const CheckboxCheckedIcon = () => (
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path fill="none" d="M0 0h24v24H0z" />
+      <path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7.003 13l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" />
+    </g>
+  </svg>
+)
+
+export const LockIcon = () => (
+  <svg
+    viewBox="0 0 18 18"
+    preserveAspectRatio="xMidYMid meet"
+    focusable="false"
+  >
+    <g>
+      <path d="M13,5c0-2.21-1.79-4-4-4C6.79,1,5,2.79,5,5v1H3v11h12V6h-2V5z M6,5c0-1.65,1.35-3,3-3c1.65,0,3,1.35,3,3v1H6V5z M14,7v9H4 V7H14z M7,11c0-1.1,0.9-2,2-2s2,0.9,2,2c0,1.1-0.9,2-2,2S7,12.1,7,11z"></path>
+    </g>
+  </svg>
+)
+
+export const GlobeIcon = () => (
+  <svg
+    viewBox="0 0 18 18"
+    preserveAspectRatio="xMidYMid meet"
+    focusable="false"
+  >
+    <g>
+      <path d="M9,1C4.58,1,1,4.58,1,9s3.58,8,8,8s8-3.58,8-8S13.42,1,9,1z M16,9c0,1.31-0.37,2.54-1,3.59V11h-2c-0.55,0-1-0.45-1-1   c0-1.1-0.9-2-2-2H8.73C8.9,7.71,9,7.36,9,7V5h1c1.1,0,2-0.9,2-2V2.69C14.36,3.81,16,6.21,16,9z M2.02,9.45L7,12.77V13   c0,1.1,0.9,2,2,2v1C5.29,16,2.26,13.1,2.02,9.45z M10,15.92V14H9c-0.55,0-1-0.45-1-1v-0.77L2.04,8.26C2.41,4.75,5.39,2,9,2   c0.7,0,1.37,0.11,2,0.29V3c0,0.55-0.45,1-1,1H8v3c0,0.55-0.45,1-1,1H5.5v1H10c0.55,0,1,0.45,1,1c0,1.1,0.9,2,2,2h1v1.89   C12.95,14.96,11.56,15.7,10,15.92z"></path>
+    </g>
+  </svg>
+)

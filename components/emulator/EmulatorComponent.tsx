@@ -5,6 +5,7 @@ import { UiRom } from "../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
 import { api } from "@/lib/api"
+import { usePlaylistsQuery } from "../layout/usePlaylistsQuery"
 
 type Props = {
   coreUrl: string
@@ -19,6 +20,8 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
+    const playlistQuery = usePlaylistsQuery(session?.user.id)
+
     useEffect(() => {
       if (status === "inited") {
         retroarch?.copyConfig()
@@ -27,15 +30,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     }, [status])
 
     const saveRomToHistory = async () => {
-      if (!session?.user?.id) return
+      if (!session?.user?.id || !playlistQuery.data) return
 
-      // TODO: replace with react-query
-      const playlists = await api.user_playlists.findMany({
-        userId: String(session.user.id),
-      })
+      const historyPlaylist = playlistQuery.data.find(
+        ({ type }) => type === "history",
+      )
 
-      const historyPlaylist = playlists.find(({ type }) => type === "history")
-
+      // TODO: replace with mutation
       await api.playlistEntries.create({
         playlistId: historyPlaylist!.id,
         romId: rom.id,

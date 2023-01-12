@@ -72,6 +72,19 @@ const createPlaylistEntry = ({
     { method: "POST" },
   )
 
+const fetchUserPlaylistsWithRom = ({
+  userId,
+  romId,
+}: {
+  userId: string
+  romId: string
+}): Promise<Playlist[]> =>
+  fetch(
+    "/api/user/playlists/with-rom" +
+      "?" +
+      new URLSearchParams({ userId, romId }),
+  ).then((res) => res.json())
+
 export const api = {
   roms: { findMany: fetchRoms, getById: null },
   playlists: { findMany: fetchPlaylists, getById: null },
@@ -83,5 +96,6 @@ export const api = {
   },
   user_playlists: {
     findMany: fetchUserPlaylists,
+    withRom: fetchUserPlaylistsWithRom,
   },
 }

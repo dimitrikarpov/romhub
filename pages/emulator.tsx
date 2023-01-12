@@ -12,17 +12,20 @@ import { ReactElement, useRef } from "react"
 import { Layout } from "../components/layout/Layout"
 import cn from "classnames"
 import {
+  AddToPlaylistIcon,
   DownloadIcon,
   GamepadIcon,
   ShareIcon,
   WatchLaterIcon,
 } from "../components/icons"
 import { InputMapping } from "../components/emulator/InputMapping"
+import { SaveToPlaylist } from "@/components/save-to-playlist/SaveToPlaylist"
 
 type Props = { rom: UiRom | undefined; url: string }
 
 const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
   const inputsDialogRef = useRef<HTMLDialogElement>(null)
+  const saveToDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
 
@@ -32,6 +35,14 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
 
   const closeInputsModal = () => {
     inputsDialogRef.current?.close()
+  }
+
+  const openSaveModal = () => {
+    saveToDialogRef.current?.showModal()
+  }
+
+  const closeSaveModal = () => {
+    saveToDialogRef.current?.close()
   }
 
   return (
@@ -70,10 +81,18 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
             <span>Download</span>
           </button>
 
-          <button className={cn(styles["button"], styles["button--icon"])}>
+          <button
+            className={cn(styles["button"], styles["button--icon"])}
+            onClick={() => openSaveModal()}
+          >
+            <AddToPlaylistIcon />
+            <span>Save</span>
+          </button>
+
+          {/* <button className={cn(styles["button"], styles["button--icon"])}>
             <WatchLaterIcon />
             <span>Save to Watch later</span>
-          </button>
+          </button> */}
         </div>
 
         <div className={styles["actions-box"]}>
@@ -89,6 +108,10 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
         <div className={styles.description}>
           {rom?.description && <p>{rom.description}</p>}
         </div>
+
+        <dialog ref={saveToDialogRef} className={styles["dialog--black"]}>
+          <SaveToPlaylist romId={rom!.id} onClose={closeSaveModal} />
+        </dialog>
 
         <dialog ref={inputsDialogRef}>
           <button data-type="close" onClick={() => closeInputsModal()}>

@@ -1,0 +1,83 @@
+.save-dialog {
+  display: flex;
+  flex-direction: column;
+
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+
+.save-dialog header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+
+  padding: 8px 10px;
+}
+
+.save-dialog footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+
+  padding: 8px 10px;
+}
+
+.save-dialog footer > div {
+  cursor: pointer;
+}
+
+.save-dialog main {
+  max-height: 300px;
+  max-width: 600px;
+
+  padding: 8px 10px;
+}
+
+.save-dialog main > :not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.item svg {
+  fill: white;
+  display: block;
+}
+
+.item-checkbox svg {
+  width: 24px;
+  height: 24px;
+}
+
+.item-checkbox.item-checkbox--checked svg {
+  fill: #3ea6ff;
+}
+
+.item-visibility svg {
+  width: 18px;
+  height: 18px;
+}
+
+.close-btn,
+.add-btn {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.close-btn,
+.add-btn svg {
+  fill: white;
+}
