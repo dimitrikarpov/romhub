@@ -8,6 +8,10 @@
   font-weight: 400;
 }
 
+.save-dialog > * {
+  padding: 8px 10px;
+}
+
 .save-dialog header {
   display: flex;
   justify-content: space-between;
@@ -15,32 +19,29 @@
 
   font-size: 1.6rem;
   line-height: 2.2rem;
-
-  padding: 8px 10px;
-}
-
-.save-dialog footer {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-
-  padding: 8px 10px;
-}
-
-.save-dialog footer > div {
-  cursor: pointer;
 }
 
 .save-dialog main {
   max-height: 300px;
   max-width: 600px;
-
-  padding: 8px 10px;
 }
 
 .save-dialog main > :not(:last-child) {
   margin-bottom: 16px;
+}
+
+.create-btn {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.create-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
 }
 
 .item {
@@ -70,14 +71,66 @@
   height: 18px;
 }
 
-.close-btn,
-.add-btn {
+.close-btn {
   width: 24px;
   height: 24px;
   cursor: pointer;
 }
 
-.close-btn,
-.add-btn svg {
+.close-btn {
   fill: white;
+}
+
+.form > :not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-wrapper input,
+.input-wrapper select,
+.input-wrapper label {
+  display: block;
+  width: 100%;
+
+  background-color: transparent;
+  color: white;
+}
+
+.input-wrapper input {
+  border: none;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.input-wrapper select option {
+  background-color: rgb(33, 33, 33);
+  color: #f1f1f1;
+}
+
+.submit-wrapper {
+  width: 100%;
+  text-align: right;
+}
+
+.submit-btn {
+  padding: 0px 15px;
+  border-radius: 40px;
+  line-height: 36px;
+
+  border: none;
+  background-color: transparent;
+  color: #3ea6ff;
+
+  font-family: "Roboto", "Arial", sans-serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #263850;
 }
