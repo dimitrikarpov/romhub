@@ -72,6 +72,21 @@ const createPlaylistEntry = ({
     { method: "POST" },
   )
 
+const deletePlaylistEntryByRomId = ({
+  playlistId,
+  romId,
+}: {
+  playlistId: string
+  romId: string
+}) =>
+  fetch(
+    [
+      "/api/playlists/entries/delete-by-rom-id",
+      new URLSearchParams({ playlistId, romId }),
+    ].join("?"),
+    { method: "DELETE" },
+  )
+
 const fetchUserPlaylistsWithRom = ({
   userId,
   romId,
@@ -93,6 +108,7 @@ export const api = {
     getById: null,
     create: createPlaylistEntry,
     delete: null,
+    deleteByRomId: deletePlaylistEntryByRomId,
   },
   user_playlists: {
     findMany: fetchUserPlaylists,

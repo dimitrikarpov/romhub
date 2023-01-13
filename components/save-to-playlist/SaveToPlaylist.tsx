@@ -59,6 +59,8 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
               isChecked={Boolean(
                 playlistsWithRomQuery.data?.some((pl) => pl.id === id),
               )}
+              playlistId={id}
+              romId={romId}
               key={id}
             />
           ))}
