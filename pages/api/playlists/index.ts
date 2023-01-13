@@ -5,7 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const playlists = await prisma.playlist.findMany()
+  if (req.method === "GET") {
+    const playlists = await prisma.playlist.findMany()
 
-  res.status(200).json(playlists)
+    res.status(200).json(playlists)
+  }
+
+  if (req.method === "POST") {
+    //
+  }
 }

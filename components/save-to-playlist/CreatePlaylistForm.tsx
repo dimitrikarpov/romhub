@@ -1,18 +1,36 @@
+import { useForm, SubmitHandler } from "react-hook-form"
 import styles from "./save-to-playlist.module.css"
 
+enum PrivacyEnum {
+  public = "public",
+  private = "private",
+}
+
+interface IFormInput {
+  title: String
+  privacy: PrivacyEnum
+}
+
 export const CreatePlaylistForm = () => {
+  const { register, handleSubmit } = useForm<IFormInput>()
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
+
   return (
-    <form className={styles["form"]}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles["form"]}>
       <div className={styles["input-wrapper"]}>
-        <label htmlFor="title">Name</label>
-        <input id="title" required placeholder="Enter playlist name..." />
+        <label>Name</label>
+        <input
+          {...register("title", { required: true, maxLength: 150 })}
+          placeholder="Enter playlist name..."
+        />
       </div>
 
       <div className={styles["input-wrapper"]}>
-        <label htmlFor="privacy">Privacy</label>
-        <select id="privacy">
-          <option value="">Public</option>
-          <option value="">Private</option>
+        <label>Privacy</label>
+        <select {...register("privacy")}>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
         </select>
       </div>
 
