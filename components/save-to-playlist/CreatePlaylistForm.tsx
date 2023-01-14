@@ -6,18 +6,26 @@ enum PrivacyEnum {
   private = "private",
 }
 
-interface IFormInput {
-  title: String
+export interface IFormInput {
+  title: string
   privacy: PrivacyEnum
 }
 
-export const CreatePlaylistForm = () => {
+type Props = {
+  onSubmit: (data: IFormInput) => void
+}
+
+export const CreatePlaylistForm: React.FunctionComponent<Props> = ({
+  onSubmit,
+}) => {
   const { register, handleSubmit } = useForm<IFormInput>()
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
+  const onFormSubmit: SubmitHandler<IFormInput> = (data) => {
+    onSubmit(data)
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles["form"]}>
+    <form onSubmit={handleSubmit(onFormSubmit)} className={styles["form"]}>
       <div className={styles["input-wrapper"]}>
         <label>Name</label>
         <input

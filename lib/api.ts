@@ -1,5 +1,5 @@
 import { Playlist } from "@prisma/client"
-import { UiRom } from "../types"
+import { UiRom, TPlaylistType } from "@/types/index"
 
 type fetchRomsParams = {
   skip?: number
@@ -48,6 +48,25 @@ const createWhereStartsWithQueryString = (key: string, value: string) => {
 
 const fetchPlaylists = (): Promise<Playlist[]> =>
   fetch("/api/playlists").then((res) => res.json())
+
+const createPlaylist = ({
+  userId,
+  title,
+  type = "custom",
+  isPublic = false,
+}: {
+  type: TPlaylistType
+  title: string
+  isPublic: boolean
+  userId: string
+}) =>
+  fetch("/api/playlists", {
+    method: "POST",
+    body: JSON.stringify({ type, title, isPublic, userId }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
 
 const fetchUserPlaylists = ({
   userId,
@@ -102,7 +121,11 @@ const fetchUserPlaylistsWithRom = ({
 
 export const api = {
   roms: { findMany: fetchRoms, getById: null },
-  playlists: { findMany: fetchPlaylists, getById: null },
+  playlists: {
+    findMany: fetchPlaylists,
+    getById: null,
+    create: createPlaylist,
+  },
   playlistEntries: {
     findMany: null,
     getById: null,

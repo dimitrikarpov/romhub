@@ -8,3 +8,10 @@ export type UiPlaylistEntry = PlaylistEntry & { rom: UiRom }
 const playlistTypes = ["history", "watch_later", "custom"] as const
 
 export type TPlaylistType = typeof playlistTypes[number]
+
+export type TCreatePlaylistFormData = {
+  type: TPlaylistType
+  title: string
+  isPublic: boolean
+  userId: string
+}

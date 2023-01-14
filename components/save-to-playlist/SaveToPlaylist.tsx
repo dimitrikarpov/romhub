@@ -5,7 +5,9 @@ import { PlaylistEntry } from "./PlaylistEntry"
 import styles from "./save-to-playlist.module.css"
 import { usePlaylistWithRomQuery } from "./usePlaylistsWithRomQuery"
 import { useState } from "react"
-import { CreatePlaylistForm } from "./CreatePlaylistForm"
+import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
+import { useMutation, useQueryClient } from "react-query"
+import { api } from "@/lib/api"
 
 type Props = {
   romId: string
@@ -18,13 +20,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
 }) => {
   const { data: session } = useSession()
   const [isFormOpened, setIsFormOpened] = useState(false)
-
-  const playlistsQuery = usePlaylistsQuery(session?.user.id, true)
-  const playlistsWithRomQuery = usePlaylistWithRomQuery(
-    session?.user.id,
-    romId,
-    true,
-  )
+  const queryClient = useQueryClient()
 
   const onDialogClose = () => {
     setIsFormOpened(false)
@@ -35,10 +31,36 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     setIsFormOpened(true)
   }
 
-  console.log({
-    playlistsQuery: playlistsQuery.data,
-    playlistsWithRomQuery: playlistsWithRomQuery.data,
+  const playlistsQuery = usePlaylistsQuery(session?.user.id, true)
+  const playlistsWithRomQuery = usePlaylistWithRomQuery(
+    session?.user.id,
+    romId,
+    true,
+  )
+  const createPlaylistEntryMutation = useMutation({
+    mutationFn: api.playlistEntries.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries("playlists-with-rom")
+      onDialogClose()
+    },
   })
+  const createPlaylistMutation = useMutation({
+    mutationFn: api.playlists.create,
+    onSuccess: async (response) => {
+      queryClient.invalidateQueries(["playlists"])
+      const playlist = await response.json()
+      createPlaylistEntryMutation.mutate({ playlistId: playlist.id, romId })
+    },
+  })
+
+  const onFormSubmit = async (data: IFormInput) => {
+    createPlaylistMutation.mutate({
+      type: "custom",
+      isPublic: data.privacy === "public",
+      title: data.title,
+      userId: String(session?.user.id),
+    })
+  }
 
   return (
     <div className={styles["save-dialog"]}>
@@ -68,7 +90,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
 
       <footer>
         {isFormOpened ? (
-          <CreatePlaylistForm />
+          <CreatePlaylistForm onSubmit={onFormSubmit} />
         ) : (
           <div className={styles["create-btn"]} onClick={onFormOpen}>
             <PlusIcon />

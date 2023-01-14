@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import prisma from "@/lib/prismadb"
+import { TCreatePlaylistFormData } from "@/types/index"
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +13,12 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
-    //
+    const body = req.body as TCreatePlaylistFormData
+
+    const playlist = await prisma.playlist.create({
+      data: body,
+    })
+
+    res.status(200).json(playlist)
   }
 }
