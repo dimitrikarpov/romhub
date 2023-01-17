@@ -1,4 +1,9 @@
-import { PencilIcon, ShevronDownIcon } from "@/components/icons"
+import {
+  PencilIcon,
+  ShareIcon,
+  ShevronDownIcon,
+  ThreeDotsMenu,
+} from "@/components/icons"
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
 import styles from "./PlaylistSidebar.module.css"
@@ -58,6 +63,11 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
             ? `${timeAgo.format(lastUpdated, "twitter")} ago`
             : "never"}
         </div>
+      </div>
+
+      <div className={styles["controls-container"]}>
+        <IconButton icon={ShareIcon} />
+        <IconButton icon={ThreeDotsMenu} />
       </div>
 
       <div className={styles["description-container"]}>
