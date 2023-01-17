@@ -10,6 +10,7 @@ import styles from "./PlaylistSidebar.module.css"
 
 import en from "javascript-time-ago/locale/en"
 import { IconButton } from "@/components/icon-button/IconButton"
+import { Menu } from "@/components/menu/Menu"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -68,6 +69,8 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
       <div className={styles["controls-container"]}>
         <IconButton icon={ShareIcon} />
         <IconButton icon={ThreeDotsMenu} />
+
+        <Menu />
       </div>
 
       <div className={styles["description-container"]}>
