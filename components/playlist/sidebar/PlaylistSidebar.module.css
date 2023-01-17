@@ -19,15 +19,12 @@
   border-radius: 12px;
 }
 
-.title-container {
+.title-container,
+.description-container {
 }
 
-.title {
-  font-family: "Roboto", sans-serif;
-  font-size: 2.8rem;
-  line-height: 3.8rem;
-  font-weight: 700;
-
+.title,
+.description {
   display: flex;
   height: 40px;
 
@@ -35,8 +32,19 @@
   align-items: center;
 }
 
+.title-text {
+  font-size: 2.8rem;
+  line-height: 3.8rem;
+  font-weight: 700;
+}
+
+.description-text {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+
 .author {
-  font-family: "Roboto", "Arial", sans-serif;
   font-size: 1.4rem;
   line-height: 2rem;
   font-weight: 500;
@@ -71,7 +79,6 @@
   display: flex;
   gap: 1rem;
 
-  font-family: "Roboto", "Arial", sans-serif;
   font-size: 1.2rem;
   line-height: 1.8rem;
   font-weight: 400;

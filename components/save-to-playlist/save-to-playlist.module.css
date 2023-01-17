@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
 
-  font-family: "Roboto", "Arial", sans-serif;
   font-size: 1.4rem;
   line-height: 2rem;
   font-weight: 400;
@@ -124,7 +123,6 @@
   background-color: transparent;
   color: #3ea6ff;
 
-  font-family: "Roboto", "Arial", sans-serif;
   font-weight: 500;
   font-size: 1.4rem;
 

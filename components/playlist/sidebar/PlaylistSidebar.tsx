@@ -60,7 +60,14 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         </div>
       </div>
 
-      <IconButton icon={PencilIcon} />
+      <div className={styles["description-container"]}>
+        <div className={styles["description"]}>
+          <div className={styles["description-text"]}>
+            {playlist.description || "No description"}
+          </div>
+          <IconButton icon={PencilIcon} />
+        </div>
+      </div>
     </div>
   )
 }

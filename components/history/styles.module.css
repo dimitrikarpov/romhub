@@ -31,7 +31,6 @@
 
 .item__name {
   color: #f1f1f1;
-  font-family: "Roboto", "Arial", sans-serif;
   font-size: 1.8rem;
   line-height: 2.6rem;
   font-weight: 400;
@@ -39,7 +38,6 @@
 
 .item__date {
   color: #aaaaaa;
-  font-family: "Roboto", "Arial", sans-serif;
   font-size: 1.2rem;
   line-height: 1.8rem;
   font-weight: 400;
