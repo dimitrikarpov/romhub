@@ -9,7 +9,7 @@ export const GalleryItem: React.FunctionComponent<Props> = ({ rom }) => {
   return (
     <div className={styles["card-container"]}>
       <div className={styles["card"]}>
-        <a href={`/emulator?id=${rom.id}`} target="_blank">
+        <a href={`/rom?id=${rom.id}`} target="_blank">
           <img src={rom.images?.[0] || "/assets/placeholder.png"} alt="img" />
         </a>
 
@@ -18,7 +18,7 @@ export const GalleryItem: React.FunctionComponent<Props> = ({ rom }) => {
             Nintendo Entertainment System
           </p>
 
-          <a href={`/emulator?id=${rom.id}`} target="_blank">
+          <a href={`/rom?id=${rom.id}`} target="_blank">
             <p className={styles["card__name"]}>{rom.name}</p>
           </a>
 

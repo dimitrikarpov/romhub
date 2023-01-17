@@ -3,7 +3,6 @@ import { GetServerSideProps } from "next"
 import { EmulatorComponent } from "../components/emulator/EmulatorComponent"
 import { useRomDownloader } from "../components/emulator/useRomDownloader"
 import { UiRom } from "../types"
-import { transformRom } from "./api/roms"
 import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
 import prisma from "@/lib/prismadb"
 import styles from "../styles/Emulator.module.css"
@@ -20,6 +19,7 @@ import {
 } from "../components/icons"
 import { InputMapping } from "../components/emulator/InputMapping"
 import { SaveToPlaylist } from "@/components/save-to-playlist/SaveToPlaylist"
+import { convertEntity } from "@/lib/convertEntity"
 
 type Props = { rom: UiRom | undefined; url: string }
 
@@ -145,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      rom: transformRom(rom),
+      rom: convertEntity.rom.toUiRom(rom),
       url: `${process.env.NEXT_PUBLIC_DOMAIN}/emulator?id=${id}`,
     },
   }

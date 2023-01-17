@@ -5,9 +5,9 @@ import { NextPageWithLayout } from "./_app"
 import { getSession } from "next-auth/react"
 import prisma from "@/lib/prismadb"
 import styles from "../styles/History.module.css"
-import { transformRom } from "./api/roms"
 import { UiPlaylistEntry } from "../types/index"
 import { List } from "../components/history/List"
+import { convertEntity } from "@/lib/convertEntity"
 
 type Props = {
   entries: UiPlaylistEntry[]
@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const entriesWithUpdatedRoms = entries.map((entry) => ({
     ...entry,
-    rom: transformRom(entry.rom),
+    rom: convertEntity.rom.toUiRom(entry.rom),
   }))
 
   return {

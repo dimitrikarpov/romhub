@@ -10,11 +10,11 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
 
   return (
     <div className={styles["item"]}>
-      <a href={`/emulator?id=${entry.rom.id}`} target="_blank">
+      <a href={`/rom?id=${entry.rom.id}`} target="_blank">
         <img src={image} alt={entry.rom.name} />
       </a>
       <div>
-        <a href={`/emulator?id=${entry.rom.id}`} target="_blank">
+        <a href={`/rom?id=${entry.rom.id}`} target="_blank">
           <p className={styles["item__name"]}>{entry.rom.name}</p>
         </a>
         <p className={styles["item__date"]}>

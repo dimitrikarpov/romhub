@@ -1,26 +1,7 @@
-import { Prisma, Rom } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import type { NextApiRequest, NextApiResponse } from "next"
-import { createUrl } from "../../../lib/storage"
 import prisma from "@/lib/prismadb"
-
-const transformRomImages = (
-  images: string | null | undefined,
-): string[] | undefined => {
-  return images
-    ? JSON.parse(images).map((image: string) => createUrl(image, "roms"))
-    : undefined
-}
-
-const transfromFile = (file: string): string => {
-  return createUrl(file, "roms")
-}
-
-export const transformRom = (rom: Rom) => {
-  const file = transfromFile(rom.file)
-  const images = transformRomImages(rom.images)
-
-  return { ...rom, file, ...(images && { images }) }
-}
+import { convertEntity } from "@/lib/convertEntity"
 
 const parseWheres = (
   whereString: string | string[] | undefined,
@@ -61,7 +42,9 @@ export default async function handler(
       take: Number(take),
     })
 
-    res.status(200).json({ total, take, skip, data: roms.map(transformRom) })
+    res
+      .status(200)
+      .json({ total, take, skip, data: roms.map(convertEntity.rom.toUiRom) })
   } catch (e) {
     res.status(404).send("Not found!")
   }

@@ -122,15 +122,11 @@ const fetchUserPlaylistsWithRom = ({
 export const api = {
   roms: { findMany: fetchRoms, getById: null },
   playlists: {
-    findMany: fetchPlaylists,
-    getById: null,
+    findMany: fetchPlaylists, // TODO: looks like not used
     create: createPlaylist,
   },
   playlistEntries: {
-    findMany: null,
-    getById: null,
     create: createPlaylistEntry,
-    delete: null,
     deleteByRomId: deletePlaylistEntryByRomId,
   },
   user_playlists: {

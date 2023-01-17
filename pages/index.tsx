@@ -5,13 +5,13 @@ import prisma from "@/lib/prismadb"
 import { UiRom } from "../types"
 import { SearchContext } from "../contexts/search/SearchContext"
 import { api } from "../lib/api"
-import { transformRom } from "./api/roms"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "../components/layout/Layout"
 import { Gallery } from "../components/gallery/Gallery"
 import { PlatformFilter } from "../components/gallery/PlatformFilter"
 import { Paginator } from "../components/gallery/Paginator"
 import styles from "../styles/Home.module.css"
+import { convertEntity } from "@/lib/convertEntity"
 
 type Props = {
   initialData: {
@@ -79,7 +79,7 @@ export async function getServerSideProps() {
   return {
     props: {
       initialData: {
-        data: roms.map(transformRom),
+        data: roms.map(convertEntity.rom.toUiRom),
         total: initialTotal,
       },
     },
