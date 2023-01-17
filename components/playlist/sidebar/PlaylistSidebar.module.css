@@ -32,27 +32,7 @@
   height: 40px;
 
   justify-content: space-between;
-}
-
-.title-icon {
-  height: 40px;
-  width: 40px;
-  cursor: pointer;
-
-  padding: 4px;
-  border-radius: 50%;
-  background-color: transparent;
-  transition: background-color 250ms ease;
-}
-
-.title-icon svg {
-  width: 24px;
-  height: 24px;
-  fill: white;
-}
-
-.title-icon:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  align-items: center;
 }
 
 .author {

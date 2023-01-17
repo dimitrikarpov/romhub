@@ -33,12 +33,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
       <div className={styles["title-container"]}>
         <div className={styles["title"]}>
           <div className={styles["title-text"]}>{playlist.title}</div>
-          <IconButton>
-            <PencilIcon />
-          </IconButton>
-          {/* <div className={styles["title-icon"]}>
-            <PencilIcon />
-          </div> */}
+          <IconButton icon={PencilIcon} />
         </div>
       </div>
 
@@ -65,9 +60,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         </div>
       </div>
 
-      <IconButton>
-        <PencilIcon />
-      </IconButton>
+      <IconButton icon={PencilIcon} />
     </div>
   )
 }

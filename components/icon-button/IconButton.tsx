@@ -1,17 +1,21 @@
 import styles from "./IconButton.module.css"
 
 type Props = {
-  children: React.ReactNode
+  icon: React.ElementType
   onClick?: () => void
 }
 
 export const IconButton: React.FunctionComponent<Props> = ({
-  children,
+  icon: Icon,
   onClick,
 }) => {
   return (
     <div className={styles["button"]} onClick={onClick}>
-      <div className={styles["icon-box"]}>{children}</div>
+      <div className={styles["icon-circle"]}>
+        <div className={styles["icon-box"]}>
+          <Icon />
+        </div>
+      </div>
     </div>
   )
 }
