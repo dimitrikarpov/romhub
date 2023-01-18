@@ -2,7 +2,8 @@ import React from "react"
 
 export type MenuContextType = {
   isOpen: boolean
-  setIsBoolean: () => void
+  setIsOpen: (isOpen: boolean) => void
+  toggle: () => void
 }
 
 export const MenuContext = React.createContext<MenuContextType | null>(null)
@@ -11,9 +12,7 @@ export function useMenuContext() {
   const context = React.useContext(MenuContext)
 
   if (!context) {
-    throw new Error(
-      `Menu components cannot be rendered outside the TabsProvider`,
-    )
+    throw new Error(`'This component must be used within a <Menu> component.'`)
   }
 
   return context

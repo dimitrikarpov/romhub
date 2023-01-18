@@ -1,5 +1,7 @@
 import {
+  CollaborateIcon,
   PencilIcon,
+  RubbishBinIcon,
   ShareIcon,
   ShevronDownIcon,
   ThreeDotsMenu,
@@ -70,7 +72,38 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         <IconButton icon={ShareIcon} />
         <IconButton icon={ThreeDotsMenu} />
 
-        <Menu />
+        <Menu>
+          <Menu.Handler>
+            <IconButton icon={ThreeDotsMenu} />
+          </Menu.Handler>
+          <Menu.List>
+            <Menu.Item icon={CollaborateIcon} text="Collaborate" />
+            <Menu.Item icon={RubbishBinIcon} text="Delete Playlist" />
+            <Menu.Item icon={CollaborateIcon} text="Add all to..." />
+          </Menu.List>
+        </Menu>
+
+        <Menu>
+          <Menu.Handler>
+            <IconButton icon={ThreeDotsMenu} />
+          </Menu.Handler>
+          <Menu.List>
+            <Menu.Item icon={CollaborateIcon} text="Collaborate" />
+            <Menu.Item icon={RubbishBinIcon} text="Delete Playlist" />
+            <Menu.Item icon={CollaborateIcon} text="Add all to..." />
+          </Menu.List>
+        </Menu>
+
+        <Menu>
+          <Menu.Handler>
+            <IconButton icon={ThreeDotsMenu} />
+          </Menu.Handler>
+          <Menu.List>
+            <Menu.Item icon={CollaborateIcon} text="Collaborate" />
+            <Menu.Item icon={RubbishBinIcon} text="Delete Playlist" />
+            <Menu.Item icon={CollaborateIcon} text="Add all to..." />
+          </Menu.List>
+        </Menu>
       </div>
 
       <div className={styles["description-container"]}>
