@@ -71,6 +71,7 @@ export const List: React.FunctionComponent<ListProps> = ({ children }) => {
 
 type TItemComposition = {
   IconAndText: React.FunctionComponent<IconAndTextProps>
+  Divider: React.FunctionComponent
 }
 
 type ItemProps = {
@@ -106,7 +107,12 @@ export const IconAndText: React.FunctionComponent<IconAndTextProps> = ({
   )
 }
 
+export const Divider: React.FunctionComponent = () => {
+  return <div className={styles["item--with-divider"]}></div>
+}
+
 Item.IconAndText = IconAndText
+Item.Divider = Divider
 
 Menu.Handler = Handler
 Menu.List = List

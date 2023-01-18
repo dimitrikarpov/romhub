@@ -88,6 +88,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
                   text="Collaborate"
                 />
               </div>
+              <Menu.Item.Divider />
               <Menu.Item.IconAndText
                 icon={RubbishBinIcon}
                 text="Delete Playlist"
