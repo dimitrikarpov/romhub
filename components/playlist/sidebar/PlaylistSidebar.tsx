@@ -77,31 +77,26 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
             <IconButton icon={ThreeDotsMenu} />
           </Menu.Handler>
           <Menu.List>
-            <Menu.Item icon={CollaborateIcon} text="Collaborate" />
-            <Menu.Item icon={RubbishBinIcon} text="Delete Playlist" />
-            <Menu.Item icon={CollaborateIcon} text="Add all to..." />
-          </Menu.List>
-        </Menu>
-
-        <Menu>
-          <Menu.Handler>
-            <IconButton icon={ThreeDotsMenu} />
-          </Menu.Handler>
-          <Menu.List>
-            <Menu.Item icon={CollaborateIcon} text="Collaborate" />
-            <Menu.Item icon={RubbishBinIcon} text="Delete Playlist" />
-            <Menu.Item icon={CollaborateIcon} text="Add all to..." />
-          </Menu.List>
-        </Menu>
-
-        <Menu>
-          <Menu.Handler>
-            <IconButton icon={ThreeDotsMenu} />
-          </Menu.Handler>
-          <Menu.List>
-            <Menu.Item icon={CollaborateIcon} text="Collaborate" />
-            <Menu.Item icon={RubbishBinIcon} text="Delete Playlist" />
-            <Menu.Item icon={CollaborateIcon} text="Add all to..." />
+            <Menu.Item>
+              <div
+                onClick={() => {
+                  console.log("clicked")
+                }}
+              >
+                <Menu.Item.IconAndText
+                  icon={CollaborateIcon}
+                  text="Collaborate"
+                />
+              </div>
+              <Menu.Item.IconAndText
+                icon={RubbishBinIcon}
+                text="Delete Playlist"
+              />
+              <Menu.Item.IconAndText
+                icon={CollaborateIcon}
+                text="Add all to..."
+              />
+            </Menu.Item>
           </Menu.List>
         </Menu>
       </div>
