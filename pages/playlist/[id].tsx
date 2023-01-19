@@ -35,7 +35,7 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ playlist, entries }) => {
       />
       <div className={styles["items-container"]}>
         {entries.map((entry) => (
-          <Item entry={entry} />
+          <Item entry={entry} key={entry.id} />
         ))}
       </div>
     </div>

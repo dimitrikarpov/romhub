@@ -109,11 +109,3 @@
   text-transform: lowercase;
   margin-right: 0.5rem;
 }
-
-.dialog--black {
-  border: none;
-  background-color: rgb(33, 33, 33);
-  color: #f1f1f1;
-  border-radius: 14px;
-  min-width: 210px;
-}

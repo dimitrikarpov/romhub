@@ -7,28 +7,53 @@ import {
   ShareIcon,
 } from "@/components/icons"
 import { Menu } from "@/components/menu/Menu"
+import { useAddToWatchLaterMutation } from "@/lib/queries/useAddToWatchLaterMutation"
 import { UiPlaylistEntry } from "@/types/index"
+import { useSession } from "next-auth/react"
 
 type Props = {
   entry: UiPlaylistEntry
+  onSaveToPlaylistClick: () => void
 }
 
-export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
+export const ItemMenu: React.FunctionComponent<Props> = ({
+  entry,
+  onSaveToPlaylistClick,
+}) => {
+  const { data: session } = useSession()
+
+  const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
+
+  const onSaveToWatchLaterClick = () => {
+    addToWatchLaterMutation.mutate()
+  }
+
   return (
     <Menu>
       <Menu.Handler>
         <IconButton icon={ThreeDotsMenu} />
       </Menu.Handler>
       <Menu.List position="left">
-        <Menu.Item.IconAndText
-          icon={WatchLaterIcon}
-          text="Save to Watch Later"
-        />
-        <Menu.Item.IconAndText
-          icon={AddToPlaylistIcon}
-          text="Save to playlist"
-        />
-        <Menu.Item.IconAndText icon={DownloadIcon} text="Download" />
+        {session && (
+          <div onClick={onSaveToWatchLaterClick}>
+            <Menu.Item.IconAndText
+              icon={WatchLaterIcon}
+              text="Save to Watch Later"
+            />
+          </div>
+        )}
+
+        <div onClick={onSaveToPlaylistClick}>
+          <Menu.Item.IconAndText
+            icon={AddToPlaylistIcon}
+            text="Save to playlist"
+          />
+        </div>
+
+        <a href={entry.rom.file}>
+          <Menu.Item.IconAndText icon={DownloadIcon} text="Download" />
+        </a>
+
         <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
       </Menu.List>
     </Menu>

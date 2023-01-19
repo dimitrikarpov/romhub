@@ -30,6 +30,14 @@ a {
   box-sizing: border-box;
 }
 
+dialog {
+  border: none;
+  background-color: rgb(33, 33, 33);
+  color: #f1f1f1;
+  border-radius: 14px;
+  min-width: 210px;
+}
+
 dialog::backdrop {
   /* background-color: linear-gradient(45deg, red, blue); */
   background: linear-gradient(#e66465, #9198e5);

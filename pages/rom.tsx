@@ -109,7 +109,7 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
           {rom?.description && <p>{rom.description}</p>}
         </div>
 
-        <dialog ref={saveToDialogRef} className={styles["dialog--black"]}>
+        <dialog ref={saveToDialogRef}>
           <SaveToPlaylist romId={rom!.id} onClose={closeSaveModal} />
         </dialog>
 
