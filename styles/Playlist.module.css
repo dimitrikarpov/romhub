@@ -1,6 +1,11 @@
 .container {
   display: flex;
-  width: 800px;
+  gap: 1rem;
+  width: 1200px;
   margin: 0 auto;
   padding-top: 3rem;
+}
+
+.items-container {
+  flex-basis: 100%;
 }

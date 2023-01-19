@@ -1,11 +1,12 @@
+import classNames from "classnames"
 import React, { useEffect, useRef, useState } from "react"
 import styles from "./Menu.module.css"
 import { MenuContext, useMenuContext } from "./MenuContext"
 
 type TMenuComposition = {
-  Handler: React.FunctionComponent<HandlerProps>
-  List: React.FunctionComponent<ListProps>
-  Item: React.FunctionComponent<ItemProps> & TItemComposition
+  Handler: typeof Handler
+  List: typeof List
+  Item: typeof Item
 }
 
 type MenuProps = {
@@ -58,20 +59,32 @@ export const Handler: React.FunctionComponent<HandlerProps> = ({
 }
 
 type ListProps = {
+  position?: "left" | "right"
   children: React.ReactNode
 }
 
-export const List: React.FunctionComponent<ListProps> = ({ children }) => {
+export const List: React.FunctionComponent<ListProps> = ({
+  position = "right",
+  children,
+}) => {
   const { isOpen } = useMenuContext()
 
   if (!isOpen) return null
 
-  return <div className={styles["list"]}>{children}</div>
+  return (
+    <div
+      className={classNames(styles["list"], {
+        [styles["list--open-to-left"]]: position === "left",
+      })}
+    >
+      {children}
+    </div>
+  )
 }
 
 type TItemComposition = {
-  IconAndText: React.FunctionComponent<IconAndTextProps>
-  Divider: React.FunctionComponent
+  IconAndText: typeof IconAndText
+  Divider: typeof Divider
 }
 
 type ItemProps = {
@@ -99,8 +112,14 @@ export const IconAndText: React.FunctionComponent<IconAndTextProps> = ({
   icon: Icon,
   text,
 }) => {
+  const { setIsOpen } = useMenuContext()
+
+  const handleClick = (e: React.MouseEvent) => {
+    setIsOpen(false)
+  }
+
   return (
-    <div className={styles["item--with-icon-and-text"]}>
+    <div onClick={handleClick} className={styles["item--with-icon-and-text"]}>
       <Icon />
       <div>{text}</div>
     </div>

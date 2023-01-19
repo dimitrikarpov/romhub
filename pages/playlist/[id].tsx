@@ -9,6 +9,7 @@ import styles from "../../styles/Playlist.module.css"
 import { PlaylistSidebar } from "@/components/playlist/sidebar/PlaylistSidebar"
 import { UiPlaylistEntry } from "@/types/index"
 import { convertEntity } from "@/lib/convertEntity"
+import { Item } from "@/components/playlist/playlist/Item"
 
 type Props = {
   playlist: Playlist & { User: User }
@@ -32,7 +33,11 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ playlist, entries }) => {
         total={entries.length}
         lastUpdated={lastUpdated}
       />
-      <div className={styles["items-container"]}>items</div>
+      <div className={styles["items-container"]}>
+        {entries.map((entry) => (
+          <Item entry={entry} />
+        ))}
+      </div>
     </div>
   )
 }
