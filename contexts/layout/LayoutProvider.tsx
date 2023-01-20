@@ -9,14 +9,9 @@ export const LayoutProvider: React.FunctionComponent<Props> = ({
   children,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false)
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
-  }
-
-  const toggleAccountMenu = () => {
-    setIsAccountMenuOpen(!isAccountMenuOpen)
   }
 
   useEffect(() => {
@@ -33,9 +28,7 @@ export const LayoutProvider: React.FunctionComponent<Props> = ({
     <LayoutContext.Provider
       value={{
         isSidebarOpen,
-        isAccountMenuOpen,
         toggleSidebar,
-        toggleAccountMenu,
       }}
     >
       {children}

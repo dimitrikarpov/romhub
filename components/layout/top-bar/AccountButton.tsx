@@ -1,24 +1,30 @@
-import { useSession } from "next-auth/react"
-import { useContext, useRef } from "react"
-import { LayoutContext } from "../../../contexts/layout/LayoutContext"
-import { AccountMenu } from "./AccountMenu"
+import { useSession, signOut } from "next-auth/react"
+import { SignOutIcon } from "@/components/icons"
+import { Menu } from "@/components/menu/Menu"
 import styles from "./styles.module.css"
 
 export const AccountButton = () => {
-  const { isAccountMenuOpen, toggleAccountMenu } = useContext(LayoutContext)
   const { data: session } = useSession()
-  const buttonRef = useRef<HTMLImageElement>(null)
 
   return (
-    <div className={styles.accountDropdownBoxRegistered}>
-      <img
-        ref={buttonRef}
-        src={session?.user?.image || ""}
-        alt="avatar"
-        onClick={toggleAccountMenu}
-      />
-
-      {isAccountMenuOpen && <AccountMenu buttonRef={buttonRef} />}
-    </div>
+    <Menu>
+      <Menu.Handler>
+        <div className={styles.accountDropdownBoxRegistered}>
+          <img src={session?.user?.image || ""} alt="avatar" />
+        </div>
+      </Menu.Handler>
+      <Menu.List position="left">
+        <Menu.Item>
+          <div className={styles.accountDropdownMenuUserBox}>
+            <img src={session?.user?.image || ""} alt="avatar" />
+            <p>{session?.user?.name}</p>
+          </div>
+        </Menu.Item>
+        <Menu.Item.Divider />
+        <div onClick={() => signOut()}>
+          <Menu.Item.IconAndText icon={SignOutIcon} text="Sign out" />
+        </div>
+      </Menu.List>
+    </Menu>
   )
 }
