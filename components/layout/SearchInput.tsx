@@ -1,11 +1,13 @@
 import classNames from "classnames"
-import React, { useContext, useRef, useState } from "react"
+import { useRouter } from "next/router"
+import React, { useContext, useState } from "react"
 import { SearchContext } from "../../contexts/search/SearchContext"
 import { ClearIcon, SearchIcon } from "../icons"
 import styles from "./SearchInput.module.css"
 
 export const SearchInput = () => {
   const { titleStartsWith, search } = useContext(SearchContext)
+  const router = useRouter()
 
   const [value, setValue] = useState<string>("")
 
@@ -18,11 +20,15 @@ export const SearchInput = () => {
   const onClear = () => {
     setValue("")
 
-    if (titleStartsWith !== "") search()
+    if (titleStartsWith !== "") {
+      router.route !== "/" ? router.push("/").then(() => search()) : search()
+    }
   }
 
   const onSubmit = () => {
-    search(value)
+    router.route !== "/"
+      ? router.push("/").then(() => search(value))
+      : search(value)
   }
 
   return (
