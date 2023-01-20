@@ -1,29 +1,28 @@
 import Head from "next/head"
 import { GetServerSideProps } from "next"
-import { EmulatorComponent } from "../components/emulator/EmulatorComponent"
-import { useRomDownloader } from "../components/emulator/useRomDownloader"
-import { UiRom } from "../types"
-import { getCoreUrlByRomName } from "../lib/getCoreUrlByFilename"
+import { EmulatorComponent } from "@/components/emulator/EmulatorComponent"
+import { useRomDownloader } from "@/components/emulator/useRomDownloader"
+import { UiRom } from "@/types/index"
+import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
 import prisma from "@/lib/prismadb"
-import styles from "../styles/Emulator.module.css"
-import { NextPageWithLayout } from "./_app"
+import styles from "../../styles/Emulator.module.css"
+import { NextPageWithLayout } from "../_app"
 import { ReactElement, useRef } from "react"
-import { Layout } from "../components/layout/Layout"
+import { Layout } from "@/components/layout/Layout"
 import cn from "classnames"
 import {
   AddToPlaylistIcon,
   DownloadIcon,
   GamepadIcon,
   ShareIcon,
-  WatchLaterIcon,
-} from "../components/icons"
-import { InputMapping } from "../components/emulator/InputMapping"
+} from "@/components/icons"
+import { InputMapping } from "@/components/emulator/InputMapping"
 import { SaveToPlaylist } from "@/components/save-to-playlist/SaveToPlaylist"
 import { convertEntity } from "@/lib/convertEntity"
 
 type Props = { rom: UiRom | undefined; url: string }
 
-const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
+const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
   const inputsDialogRef = useRef<HTMLDialogElement>(null)
   const saveToDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
@@ -88,11 +87,6 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
             <AddToPlaylistIcon />
             <span>Save</span>
           </button>
-
-          {/* <button className={cn(styles["button"], styles["button--icon"])}>
-            <WatchLaterIcon />
-            <span>Save to Watch later</span>
-          </button> */}
         </div>
 
         <div className={styles["actions-box"]}>
@@ -124,21 +118,21 @@ const Emulator: NextPageWithLayout<Props> = ({ rom, url }) => {
   )
 }
 
-Emulator.getLayout = function getLayout(page: ReactElement) {
+RomPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>
 }
 
-export default Emulator
+export default RomPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.query.id
+  const id = context.query.id as string
 
   const emptyProps = { props: { rom: undefined } }
 
   if (!id) return emptyProps
 
   const rom = await prisma.rom.findUnique({
-    where: { id: String(context.query.id) },
+    where: { id },
   })
 
   if (!rom) return emptyProps
@@ -146,7 +140,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       rom: convertEntity.rom.toUiRom(rom),
-      url: `${process.env.NEXT_PUBLIC_DOMAIN}/emulator?id=${id}`,
+      url: `${process.env.NEXT_PUBLIC_DOMAIN}/rom/${id}`,
     },
   }
 }

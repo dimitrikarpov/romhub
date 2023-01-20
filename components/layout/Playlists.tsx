@@ -19,8 +19,6 @@ const getUrl = (type: TPlaylistType, id: string) => {
   switch (type) {
     case "history":
       return "/history"
-    case "watch_later":
-      return "watch_later"
     default:
       return `/playlist/${id}`
   }

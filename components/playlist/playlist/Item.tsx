@@ -23,14 +23,14 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
     <>
       <div className={styles["item"]}>
         <div className={styles["image-box"]}>
-          <a href={`/rom?id=${entry.rom.id}`} target="_blank">
+          <a href={`/rom/${entry.rom.id}`} target="_blank">
             <img src={entry.rom.images?.[0] || "/assets/placeholder.png"} />
           </a>
         </div>
 
         <div className={styles["item-text"]}>
           <div className={styles["item-text__name"]}>
-            <a href={`/rom?id=${entry.rom.id}`} target="_blank">
+            <a href={`/rom/${entry.rom.id}`} target="_blank">
               {entry.rom.name}
             </a>
           </div>

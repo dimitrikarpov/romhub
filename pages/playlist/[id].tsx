@@ -10,6 +10,7 @@ import { PlaylistSidebar } from "@/components/playlist/sidebar/PlaylistSidebar"
 import { UiPlaylistEntry } from "@/types/index"
 import { convertEntity } from "@/lib/convertEntity"
 import { Item } from "@/components/playlist/playlist/Item"
+import { pl } from "date-fns/locale"
 
 type Props = {
   playlist: Playlist & { User: User }
@@ -17,7 +18,7 @@ type Props = {
 }
 
 const PlaylistPage: NextPageWithLayout<Props> = ({ playlist, entries }) => {
-  const thumbnail = entries?.[0].rom.images?.[0] || "/assets/placeholder.png"
+  const thumbnail = entries?.[0]?.rom?.images?.[0] || "/assets/placeholder.png"
 
   const lastEntryTimestamp = getLatestEntryTimestamp(entries)
 
@@ -51,23 +52,17 @@ export default PlaylistPage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req })
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    }
-  }
-
   const id = context.query.id as string
 
   const playlist = await prisma.playlist.findFirst({
-    where: { id, userId: session.user.id },
+    where: { id, userId: session?.user?.id },
     include: { User: true },
   })
 
-  if (!playlist)
+  if (
+    !playlist ||
+    (!playlist.isPublic && playlist.userId !== session?.user?.id)
+  )
     return {
       redirect: {
         destination: "/",
