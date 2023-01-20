@@ -1,5 +1,5 @@
 import styles from "../../styles/Layout.module.css"
-import SideBar from "./SideBar"
+import SideBar from "./sidebar/SideBar"
 import TopBar from "./top-bar/TopBar"
 
 type Props = {

@@ -1,10 +1,10 @@
 import { useContext } from "react"
-import { LayoutContext } from "../../contexts/layout/LayoutContext"
 import { MenuIcon } from "../icons"
+import { SidebarContext } from "./sidebar/SidebarContext"
 import styles from "./TogglerAndLogo.module.css"
 
 const TogglerAndLogo = () => {
-  const { toggleSidebar } = useContext(LayoutContext)
+  const { toggleSidebar } = useContext(SidebarContext)
 
   return (
     <div className={styles.menuAndLogoBox}>

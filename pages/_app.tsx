@@ -1,13 +1,12 @@
 import type { ReactElement, ReactNode } from "react"
 import type { NextPage } from "next"
 import type { AppProps } from "next/app"
-import { SessionProvider, SessionProviderProps } from "next-auth/react"
-import "../styles/globals.css"
-import { LayoutProvider } from "../contexts/layout/LayoutProvider"
+import { SessionProvider } from "next-auth/react"
 import { SearchProvider } from "../contexts/search/SearchProvider"
 import { QueryClient, QueryClientProvider } from "react-query"
-
 import { ReactQueryDevtools } from "react-query/devtools"
+import { SidebarProvider } from "@/components/layout/sidebar/SidebarProvider"
+import "../styles/globals.css"
 
 const client = new QueryClient()
 
@@ -18,9 +17,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <QueryClientProvider client={client}>
       <SessionProvider session={pageProps.session}>
         <SearchProvider>
-          <LayoutProvider>
+          <SidebarProvider>
             {getLayout(<Component {...pageProps} />)}
-          </LayoutProvider>
+          </SidebarProvider>
         </SearchProvider>
       </SessionProvider>
       <ReactQueryDevtools initialIsOpen={false} />

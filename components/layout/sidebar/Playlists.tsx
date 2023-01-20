@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react"
-import { usePlaylistsQuery } from "./usePlaylistsQuery"
-import styles from "../../styles/Layout.module.css"
-import { HistoryIcon, PlaylistIcon, WatchLaterIcon } from "../icons"
-import { TPlaylistType } from "../../types/index"
+import { usePlaylistsQuery } from "../usePlaylistsQuery"
+import styles from "../../../styles/Layout.module.css"
+import { HistoryIcon, PlaylistIcon, WatchLaterIcon } from "../../icons"
+import { TPlaylistType } from "../../../types/index"
 
 const getIconByType = (type: TPlaylistType) => {
   switch (type) {

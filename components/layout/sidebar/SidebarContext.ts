@@ -1,11 +1,11 @@
 import { createContext } from "react"
 
-type TLayoutContext = {
+type TSidebarContext = {
   isSidebarOpen: boolean
   toggleSidebar: () => void
 }
 
-export const LayoutContext = createContext<TLayoutContext>({
+export const SidebarContext = createContext<TSidebarContext>({
   isSidebarOpen: false,
   toggleSidebar: () => {},
 })

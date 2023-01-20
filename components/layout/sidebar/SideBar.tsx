@@ -1,13 +1,13 @@
 import { useContext } from "react"
 import cn from "classnames"
-import { LayoutContext } from "../../contexts/layout/LayoutContext"
-import TogglerAndLogo from "./TogglerAndLogo"
-import styles from "../../styles/Layout.module.css"
-import { HomeIcon } from "../icons"
+import TogglerAndLogo from "../TogglerAndLogo"
+import { HomeIcon } from "../../icons"
 import { Playlists } from "./Playlists"
+import { SidebarContext } from "./SidebarContext"
+import styles from "../../../styles/Layout.module.css"
 
 const SideBar = () => {
-  const { isSidebarOpen } = useContext(LayoutContext)
+  const { isSidebarOpen } = useContext(SidebarContext)
 
   return (
     <>

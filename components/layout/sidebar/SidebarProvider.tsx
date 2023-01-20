@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { LayoutContext } from "./LayoutContext"
+import { SidebarContext } from "./SidebarContext"
 
 type Props = {
   children?: React.ReactNode
 }
 
-export const LayoutProvider: React.FunctionComponent<Props> = ({
+export const SidebarProvider: React.FunctionComponent<Props> = ({
   children,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -25,13 +25,13 @@ export const LayoutProvider: React.FunctionComponent<Props> = ({
   }, [isSidebarOpen])
 
   return (
-    <LayoutContext.Provider
+    <SidebarContext.Provider
       value={{
         isSidebarOpen,
         toggleSidebar,
       }}
     >
       {children}
-    </LayoutContext.Provider>
+    </SidebarContext.Provider>
   )
 }
