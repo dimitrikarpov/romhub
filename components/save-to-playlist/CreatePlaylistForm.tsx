@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form"
+import { Button } from "../button/Button"
 import styles from "./save-to-playlist.module.css"
 
 enum PrivacyEnum {
@@ -43,9 +44,9 @@ export const CreatePlaylistForm: React.FunctionComponent<Props> = ({
       </div>
 
       <div className={styles["submit-wrapper"]}>
-        <button className={styles["submit-btn"]} type="submit">
+        <Button variant="transparent-blue" type="submit">
           Create
-        </button>
+        </Button>
       </div>
     </form>
   )

@@ -1,0 +1,54 @@
+.button {
+  padding: 0 1.3rem;
+  border-radius: 24px;
+  border: none;
+  width: fit-content;
+
+  font-size: 14px;
+  line-height: 36px;
+  font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  transition: background-color 250ms ease;
+  cursor: pointer;
+}
+
+.button svg {
+  height: 24px;
+  width: 24px;
+  fill: white;
+}
+
+.button--max-width {
+  width: initial;
+}
+
+.button--default {
+  background-color: hsla(0, 0%, 100%, 0.08);
+  color: white;
+}
+
+.button--default:hover {
+  background-color: #717171;
+}
+
+.button--transparent-blue {
+  background-color: transparent;
+  color: #3ea6ff;
+}
+
+.button--transparent-blue:hover {
+  background-color: #263850;
+}
+
+.button--blue-blue {
+  color: #0f0f0f;
+  background-color: #3ea6ff;
+}
+
+.button--blue-blue:hover {
+  background-color: #65b8ff;
+}

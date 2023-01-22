@@ -9,7 +9,6 @@ import styles from "../../styles/Emulator.module.css"
 import { NextPageWithLayout } from "../_app"
 import { ReactElement, useRef } from "react"
 import { Layout } from "@/components/layout/Layout"
-import cn from "classnames"
 import {
   AddToPlaylistIcon,
   DownloadIcon,
@@ -19,12 +18,15 @@ import {
 import { InputMapping } from "@/components/emulator/InputMapping"
 import { SaveToPlaylist } from "@/components/save-to-playlist/SaveToPlaylist"
 import { convertEntity } from "@/lib/convertEntity"
+import { Share } from "@/components/share/Share"
+import { Button } from "@/components/button/Button"
 
 type Props = { rom: UiRom | undefined; url: string }
 
 const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
   const inputsDialogRef = useRef<HTMLDialogElement>(null)
   const saveToDialogRef = useRef<HTMLDialogElement>(null)
+  const shareDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
 
@@ -42,6 +44,14 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
 
   const closeSaveModal = () => {
     saveToDialogRef.current?.close()
+  }
+
+  const openShareModal = () => {
+    shareDialogRef.current?.showModal()
+  }
+
+  const closeShareModal = () => {
+    shareDialogRef.current?.close()
   }
 
   return (
@@ -70,33 +80,27 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         </div>
 
         <div className={styles["actions-box"]}>
-          <button className={cn(styles["button"], styles["button--icon"])}>
+          <Button onClick={openShareModal}>
             <ShareIcon />
-            <span>Share</span>
-          </button>
+            Share
+          </Button>
 
-          <button className={cn(styles["button"], styles["button--icon"])}>
+          <Button>
             <DownloadIcon />
             <span>Download</span>
-          </button>
+          </Button>
 
-          <button
-            className={cn(styles["button"], styles["button--icon"])}
-            onClick={() => openSaveModal()}
-          >
+          <Button onClick={openSaveModal}>
             <AddToPlaylistIcon />
-            <span>Save</span>
-          </button>
+            Save
+          </Button>
         </div>
 
         <div className={styles["actions-box"]}>
-          <button
-            className={cn(styles["button"], styles["button--icon"])}
-            onClick={() => openInputsModal()}
-          >
+          <Button onClick={openInputsModal}>
             <GamepadIcon />
-            <span>Controls</span>
-          </button>
+            Controls
+          </Button>
         </div>
 
         <div className={styles.description}>
@@ -112,6 +116,10 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
             close
           </button>
           <InputMapping />
+        </dialog>
+
+        <dialog ref={shareDialogRef}>
+          <Share onClose={closeShareModal} />
         </dialog>
       </div>
     </>

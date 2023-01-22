@@ -1,0 +1,22 @@
+.share-input-box {
+  background-color: #181818;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.share-input-box input {
+  width: 380px;
+  border: none;
+  overflow: hidden;
+  white-space: nowrap;
+
+  background-color: rgba(0, 0, 0, 0);
+  color: #f1f1f1;
+  font-size: 14px;
+}

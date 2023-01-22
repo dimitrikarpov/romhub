@@ -110,25 +110,6 @@
 }
 
 .submit-wrapper {
-  width: 100%;
-  text-align: right;
-}
-
-.submit-btn {
-  padding: 0px 15px;
-  border-radius: 40px;
-  line-height: 36px;
-
-  border: none;
-  background-color: transparent;
-  color: #3ea6ff;
-
-  font-weight: 500;
-  font-size: 1.4rem;
-
-  cursor: pointer;
-}
-
-.submit-btn:hover {
-  background-color: #263850;
+  display: flex;
+  justify-content: flex-end;
 }
