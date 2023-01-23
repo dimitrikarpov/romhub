@@ -3,7 +3,11 @@ import styles from "./Button.module.css"
 
 type Props = {
   type?: "button" | "submit"
-  variant?: "default" | "transparent-blue" | "blue-blue"
+  variant?:
+    | "default"
+    | "transparent-blue"
+    | "blue-blue"
+    | "transparent-transpared"
   maxWidth?: boolean
   startIcon?: React.ReactNode
   children: React.ReactNode
@@ -26,6 +30,8 @@ export const Button: React.FunctionComponent<Props> = ({
         [styles["button--default"]]: variant === "default",
         [styles["button--transparent-blue"]]: variant === "transparent-blue",
         [styles["button--blue-blue"]]: variant === "blue-blue",
+        [styles["button--transparent-transpared"]]:
+          variant === "transparent-transpared",
       })}
     >
       {children}

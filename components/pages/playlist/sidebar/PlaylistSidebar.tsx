@@ -13,6 +13,7 @@ import styles from "./PlaylistSidebar.module.css"
 import en from "javascript-time-ago/locale/en"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
 import { Menu } from "@/components/ui/menu/Menu"
+import { Title } from "./Title"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -38,12 +39,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         alt="playlist thumbnail"
       />
 
-      <div className={styles["title-container"]}>
-        <div className={styles["title"]}>
-          <div className={styles["title-text"]}>{playlist.title}</div>
-          <IconButton icon={PencilIcon} />
-        </div>
-      </div>
+      <Title text={playlist.title} />
 
       <div className={styles["author"]}>{playlist.User.name}</div>
 
