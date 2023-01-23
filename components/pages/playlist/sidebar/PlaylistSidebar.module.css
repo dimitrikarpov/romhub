@@ -105,6 +105,23 @@
 /* Privacy section */
 
 .privacy {
+  margin-left: -4px;
+}
+
+.privacy select {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: white;
+  line-height: 20px;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  font-family: Roboto;
+}
+
+.privacy option {
+  background-color: black;
+  color: white;
 }
 
 .privacy-input {

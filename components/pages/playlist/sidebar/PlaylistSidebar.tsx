@@ -44,14 +44,10 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
       <div className={styles["author"]}>by {playlist.User.name}</div>
 
       <div className={styles["privacy"]}>
-        <div className={styles["privacy-input"]}>
-          <div className={styles["privacy-input-value"]}>
-            {playlist.isPublic ? "public" : "private"}
-          </div>
-          <div className={styles["privacy-input-icon"]}>
-            <ShevronDownIcon />
-          </div>
-        </div>
+        <select>
+          <option>Private</option>
+          <option>Public</option>
+        </select>
       </div>
 
       <div className={styles["meta-container"]}>
