@@ -1,13 +1,13 @@
+import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { CrossIcon, PlusIcon } from "@/components/ui/icons"
 import { usePlaylistsQuery } from "@/components/pages/layout/usePlaylistsQuery"
 import { PlaylistEntry } from "./PlaylistEntry"
 import styles from "./save-to-playlist.module.css"
 import { usePlaylistWithRomQuery } from "./usePlaylistsWithRomQuery"
-import { useState } from "react"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
-import { useMutation, useQueryClient } from "react-query"
-import { api } from "@/lib/api"
+import { useCreatePlaylistEntryMutation } from "@/lib/queries/useCreatePlaylistEntryMutation"
+import { useCreatePlaylistMutation } from "@/lib/queries/useCreatePlaylistMutation"
 
 type Props = {
   romId: string
@@ -20,7 +20,6 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
 }) => {
   const { data: session } = useSession()
   const [isFormOpened, setIsFormOpened] = useState(false)
-  const queryClient = useQueryClient()
 
   const onDialogClose = () => {
     setIsFormOpened(false)
@@ -37,19 +36,12 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     romId,
     true,
   )
-  const createPlaylistEntryMutation = useMutation({
-    mutationFn: api.playlistEntries.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries("playlists-with-rom")
-      onDialogClose()
-    },
+  const createPlaylistEntryMutation = useCreatePlaylistEntryMutation({
+    onSuccess: onDialogClose,
   })
-  const createPlaylistMutation = useMutation({
-    mutationFn: api.playlists.create,
-    onSuccess: async (response) => {
-      queryClient.invalidateQueries(["playlists"])
-      const playlist = await response.json()
-      createPlaylistEntryMutation.mutate({ playlistId: playlist.id, romId })
+  const createPlaylistMutation = useCreatePlaylistMutation({
+    onSuccess: (data) => {
+      createPlaylistEntryMutation.mutate({ playlistId: data.id, romId })
     },
   })
 

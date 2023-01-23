@@ -4,9 +4,9 @@ import {
   GlobeIcon,
   LockIcon,
 } from "@/components/ui/icons"
-import { api } from "@/lib/api"
+import { useCreatePlaylistEntryMutation } from "@/lib/queries/useCreatePlaylistEntryMutation"
+import { useDeletePlaylistEntryMutation } from "@/lib/queries/useDeletePlaylistEntryMutation"
 import classNames from "classnames"
-import { useMutation, useQueryClient } from "react-query"
 import styles from "./save-to-playlist.module.css"
 
 type Props = {
@@ -24,25 +24,8 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   playlistId,
   romId,
 }) => {
-  const queryClient = useQueryClient()
-
-  const addMutation = useMutation({
-    mutationFn: api.playlistEntries.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["playlists-with-rom"],
-      })
-    },
-  })
-
-  const deleteMutation = useMutation({
-    mutationFn: api.playlistEntries.deleteByRomId,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["playlists-with-rom"],
-      })
-    },
-  })
+  const addMutation = useCreatePlaylistEntryMutation({})
+  const deleteMutation = useDeletePlaylistEntryMutation()
 
   const onClick = () => {
     if (isChecked) {
