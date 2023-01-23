@@ -1,6 +1,5 @@
 import {
   CollaborateIcon,
-  PencilIcon,
   RubbishBinIcon,
   ShareIcon,
   ShevronDownIcon,
@@ -14,6 +13,7 @@ import en from "javascript-time-ago/locale/en"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
 import { Menu } from "@/components/ui/menu/Menu"
 import { Title } from "./Title"
+import { Description } from "./Description"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -41,7 +41,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
 
       <Title text={playlist.title} />
 
-      <div className={styles["author"]}>{playlist.User.name}</div>
+      <div className={styles["author"]}>by {playlist.User.name}</div>
 
       <div className={styles["privacy"]}>
         <div className={styles["privacy-input"]}>
@@ -66,7 +66,6 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
 
       <div className={styles["controls-container"]}>
         <IconButton icon={ShareIcon} />
-        <IconButton icon={ThreeDotsMenu} />
 
         <Menu>
           <Menu.Handler>
@@ -98,14 +97,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         </Menu>
       </div>
 
-      <div className={styles["description-container"]}>
-        <div className={styles["description"]}>
-          <div className={styles["description-text"]}>
-            {playlist.description || "No description"}
-          </div>
-          <IconButton icon={PencilIcon} />
-        </div>
-      </div>
+      <Description text={playlist.description || "No description"} />
     </div>
   )
 }

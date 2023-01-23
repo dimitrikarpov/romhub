@@ -8,51 +8,54 @@ type Props = {
   text: string
 }
 
-export const Title: React.FunctionComponent<Props> = ({ text }) => {
+export const Description: React.FunctionComponent<Props> = ({ text }) => {
   const [inEditMode, setInEditMode] = useState(true)
 
   return (
-    <div className={styles["title-container"]}>
+    <div className={styles["description-container"]}>
       {!inEditMode && (
-        <TitleView text={text} toggleToEdit={() => setInEditMode(true)} />
+        <DescriptionView text={text} toggleToEdit={() => setInEditMode(true)} />
       )}
       {inEditMode && (
-        <TitleForm value={text} toggleToView={() => setInEditMode(false)} />
+        <DescriptionForm
+          value={text}
+          toggleToView={() => setInEditMode(false)}
+        />
       )}
     </div>
   )
 }
 
-type TitleViewProps = {
+type DescriptionViewProps = {
   toggleToEdit: () => void
   text: string
 }
 
-const TitleView: React.FunctionComponent<TitleViewProps> = ({
+const DescriptionView: React.FunctionComponent<DescriptionViewProps> = ({
   text,
   toggleToEdit,
 }) => {
   return (
     <div className={styles["view"]}>
-      <div className={styles["view-text--title"]}>{text}</div>
+      <div className={styles["view-text--description"]}>{text}</div>
       <IconButton icon={PencilIcon} onClick={toggleToEdit} />
     </div>
   )
 }
 
-type TitleFormProps = {
+type DescriptionFormProps = {
   toggleToView: () => void
   value: string
 }
 
-const TitleForm: React.FunctionComponent<TitleFormProps> = ({
+const DescriptionForm: React.FunctionComponent<DescriptionFormProps> = ({
   value,
   toggleToView,
 }) => {
   return (
     <div className={styles["form"]}>
       <div className={styles["input-underline"]}>
-        <input type="text" className={styles["input"]} value={value} />
+        <textarea className={styles["textarea"]} value={value} />
       </div>
 
       <div className={styles["form-controls"]}>
