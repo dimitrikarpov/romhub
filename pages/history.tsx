@@ -1,12 +1,12 @@
 import { GetServerSideProps } from "next"
 import { ReactElement } from "react"
-import { Layout } from "../components/layout/Layout"
+import { Layout } from "../components/pages/layout/Layout"
 import { NextPageWithLayout } from "./_app"
 import { getSession } from "next-auth/react"
 import prisma from "@/lib/prismadb"
 import styles from "../styles/History.module.css"
 import { UiPlaylistEntry } from "../types/index"
-import { List } from "../components/history/List"
+import { List } from "../components/pages/history/List"
 import { convertEntity } from "@/lib/convertEntity"
 
 type Props = {

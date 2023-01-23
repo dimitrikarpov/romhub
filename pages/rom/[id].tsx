@@ -1,25 +1,25 @@
 import Head from "next/head"
 import { GetServerSideProps } from "next"
-import { EmulatorComponent } from "@/components/emulator/EmulatorComponent"
-import { useRomDownloader } from "@/components/emulator/useRomDownloader"
+import { EmulatorComponent } from "@/components/pages/emulator/EmulatorComponent"
+import { useRomDownloader } from "@/components/pages/emulator/useRomDownloader"
 import { UiRom } from "@/types/index"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
 import prisma from "@/lib/prismadb"
 import styles from "../../styles/Emulator.module.css"
 import { NextPageWithLayout } from "../_app"
 import { ReactElement, useRef } from "react"
-import { Layout } from "@/components/layout/Layout"
+import { Layout } from "@/components/pages/layout/Layout"
 import {
   AddToPlaylistIcon,
   DownloadIcon,
   GamepadIcon,
   ShareIcon,
-} from "@/components/icons"
-import { InputMapping } from "@/components/emulator/InputMapping"
-import { SaveToPlaylist } from "@/components/save-to-playlist/SaveToPlaylist"
+} from "@/components/ui/icons"
+import { InputMapping } from "@/components/pages/emulator/InputMapping"
+import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPlaylist"
 import { convertEntity } from "@/lib/convertEntity"
-import { Share } from "@/components/share/Share"
-import { Button } from "@/components/button/Button"
+import { Share } from "@/components/features/share/Share"
+import { Button } from "@/components/ui/button/Button"
 
 type Props = { rom: UiRom | undefined; url: string }
 

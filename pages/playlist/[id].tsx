@@ -1,16 +1,15 @@
 import Head from "next/head"
 import { GetServerSideProps } from "next"
 import { NextPageWithLayout } from "../_app"
-import { Layout } from "@/components/layout/Layout"
 import { getSession } from "next-auth/react"
 import { Playlist, User } from "@prisma/client"
 import prisma from "@/lib/prismadb"
 import styles from "../../styles/Playlist.module.css"
-import { PlaylistSidebar } from "@/components/playlist/sidebar/PlaylistSidebar"
+import { PlaylistSidebar } from "@/components/pages/playlist/sidebar/PlaylistSidebar"
 import { UiPlaylistEntry } from "@/types/index"
 import { convertEntity } from "@/lib/convertEntity"
-import { Item } from "@/components/playlist/playlist/Item"
-import { pl } from "date-fns/locale"
+import { Item } from "@/components/pages/playlist/playlist/Item"
+import { Layout } from "@/components/pages/layout/Layout"
 
 type Props = {
   playlist: Playlist & { User: User }

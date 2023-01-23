@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react"
 import { SearchProvider } from "../contexts/search/SearchProvider"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
-import { SidebarProvider } from "@/components/layout/sidebar/SidebarProvider"
+import { SidebarProvider } from "@/components/pages/layout/sidebar/SidebarProvider"
 import "../styles/globals.css"
 
 const client = new QueryClient()
