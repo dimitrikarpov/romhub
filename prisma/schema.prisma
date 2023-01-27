@@ -43,36 +43,48 @@ model VerificationToken {
 }
 
 model User {
-  id            String     @id @default(cuid())
-  name          String?
-  email         String?    @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  playlists     Playlist[]
+  id               String             @id @default(cuid())
+  name             String?
+  email            String?            @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  playlists        PlaylistsOnUsers[]
+  authoredPlaylist Playlist[]         @relation("author")
 }
 
 model Playlist {
-  id          String          @id @default(cuid())
+  id          String             @id @default(cuid())
   type        String?
-  title       String          @default("New Playlist")
+  title       String             @default("New Playlist")
   description String?
-  isPublic    Boolean         @default(false)
-  updatedAt   DateTime        @default(now())
-  userId      String
-  User        User            @relation(fields: [userId], references: [id])
+  isPublic    Boolean            @default(false)
+  updatedAt   DateTime           @default(now())
   entries     PlaylistEntry[]
+  users       PlaylistsOnUsers[]
+  author      User               @relation(name: "author", fields: [authorId], references: [id])
+  authorId    String
+}
+
+model PlaylistsOnUsers {
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  playlistId String
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([userId, playlistId])
 }
 
 model PlaylistEntry {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  foo        String?  @default("bar")
   romId      String
   rom        Rom      @relation(fields: [romId], references: [id])
   playlistId String
   playlist   Playlist @relation(fields: [playlistId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([romId, playlistId])
 }
 
 model Rom {
