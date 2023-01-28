@@ -2,7 +2,7 @@ import { Playlist } from "@prisma/client"
 import { UiRom, TPlaylistType } from "@/types/index"
 
 // TODO: rename to findUserPlaylists
-const findPlaylistByUser = ({
+const findUserPlaylists = ({
   userId,
 }: {
   userId: string
@@ -59,7 +59,7 @@ const deletePlaylistEntryByRom = ({
     { method: "DELETE" },
   )
 
-const findPlaylistByUserAndRom = ({
+const findUserPlaylistsContainsRom = ({
   userId,
   romId,
 }: {
@@ -73,9 +73,9 @@ const findPlaylistByUserAndRom = ({
   ).then((res) => res.json())
 
 export const apiQueries = {
-  findPlaylistByUser,
+  findUserPlaylists,
   createPlaylist,
   createPlaylistEntry,
   deletePlaylistEntryByRom,
-  findPlaylistByUserAndRom,
+  findUserPlaylistsContainsRom,
 }

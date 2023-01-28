@@ -9,7 +9,7 @@ export const usePlaylistWithRomQuery = (
   const query = useQuery({
     queryKey: ["playlists-with-rom", { userId, romId }],
     queryFn: () =>
-      apiQueries.findPlaylistByUserAndRom({
+      apiQueries.findUserPlaylistsContainsRom({
         userId: userId as string,
         romId: romId as string,
       }),

@@ -9,28 +9,15 @@ const fetchPlaylistById = async (id: string) => {
   return playlist
 }
 
-const findPlaylistByUser = async (userId: string) => {
+const findUserPlaylists = async (userId: string) => {
   const found = await prisma.playlist.findMany({
     where: { users: { every: { userId } } },
   })
 
   return found
-
-  // const found = await prisma.playlistsOnUsers.findMany({
-  //   where: { userId },
-  //   include: { playlist: true },
-  // })
-
-  // return found?.map(({ playlist }) => playlist)
-
-  // const playlists = await prisma.playlist.findMany({
-  //   where: { userId },
-  // })
-
-  // return playlists
 }
 
-const findPlaylistByUserAndRom = async (userId: string, romId: string) => {
+const findUserPlaylistsContainsRom = async (userId: string, romId: string) => {
   const found = await prisma.playlist.findMany({
     where: {
       AND: [{ entries: { some: { romId } } }, { users: { some: { userId } } }],
@@ -39,15 +26,6 @@ const findPlaylistByUserAndRom = async (userId: string, romId: string) => {
   })
 
   return found
-
-  // const playlists = await prisma.playlist.findMany({
-  //   where: {
-  //     AND: [{ entries: { some: { romId: String(romId) } } }, { userId }],
-  //     NOT: [{ type: "history" }],
-  //   },
-  // })
-
-  // return playlists
 }
 
 const createPlaylist = async (data: TCreatePlaylistFormData) => {
@@ -60,7 +38,7 @@ const createPlaylist = async (data: TCreatePlaylistFormData) => {
     },
   })
 
-  const playlistOnUsers = await prisma.playlistsOnUsers.create({
+  await prisma.playlistsOnUsers.create({
     data: { userId: data.userId, playlistId: playlist.id },
   })
 
@@ -135,8 +113,8 @@ const deletePlaylistEntryByRom = async (playlistId: string, romId: string) => {
 export const dbQueries = {
   fetchPlaylistById,
   createPlaylist,
-  findPlaylistByUser,
-  findPlaylistByUserAndRom,
+  findUserPlaylists,
+  findUserPlaylistsContainsRom,
   fetchPlaylistsEntries,
   createPlaylistEntry,
   deletePlaylistEntryByRom,

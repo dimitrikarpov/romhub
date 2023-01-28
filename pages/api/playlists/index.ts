@@ -9,7 +9,7 @@ export default async function handler(
   if (req.method === "GET") {
     const { userId } = req.query
 
-    const playlists = await dbQueries.findPlaylistByUser(userId as string)
+    const playlists = await dbQueries.findUserPlaylists(userId as string)
 
     res.status(200).json(playlists)
   }
