@@ -18,7 +18,7 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
           <p className={styles["item__name"]}>{entry.rom.name}</p>
         </a>
         <p className={styles["item__date"]}>
-          {entry.createdAt.toLocaleDateString()}
+          {entry.assignedAt.toLocaleDateString()}
         </p>
       </div>
     </div>

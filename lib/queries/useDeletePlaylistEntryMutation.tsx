@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "react-query"
-import { api } from "../api"
+import { apiQueries } from "../data-queries/api-queries"
 
 export const useDeletePlaylistEntryMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: api.playlistEntries.deleteByRomId,
+    mutationFn: apiQueries.deletePlaylistEntryByRom,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["playlists-with-rom"],

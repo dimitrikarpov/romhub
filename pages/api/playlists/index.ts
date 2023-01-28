@@ -1,13 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import prisma from "@/lib/prismadb"
 import { TCreatePlaylistFormData } from "@/types/index"
+import { dbQueries } from "@/lib/data-queries/db-queries"
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
-    const playlists = await prisma.playlist.findMany()
+    const { userId } = req.query
+
+    const playlists = await dbQueries.findPlaylistByUser(userId as string)
 
     res.status(200).json(playlists)
   }
@@ -15,9 +17,7 @@ export default async function handler(
   if (req.method === "POST") {
     const body = req.body as TCreatePlaylistFormData
 
-    const playlist = await prisma.playlist.create({
-      data: body,
-    })
+    const playlist = await dbQueries.createPlaylist(body)
 
     res.status(200).json(playlist)
   }

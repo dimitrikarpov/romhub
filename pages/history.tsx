@@ -39,14 +39,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
+  // TODO: refactor with dbQueries + orderBy
   const historyPlaylist = await prisma.playlist.findFirst({
-    where: { AND: [{ userId: String(session.user.id) }, { type: "history" }] },
+    where: {
+      AND: [
+        { users: { every: { userId: session.user.id } } },
+        { type: "history" },
+      ],
+    },
     select: { id: true },
   })
 
   const entries = await prisma.playlistEntry.findMany({
     where: { playlistId: String(historyPlaylist?.id) },
-    orderBy: { createdAt: "desc" },
+    orderBy: { assignedAt: "desc" },
     include: { rom: true },
   })
 

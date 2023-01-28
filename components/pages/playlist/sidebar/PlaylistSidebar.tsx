@@ -19,7 +19,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
 
 type Props = {
-  playlist: Playlist & { User: User }
+  playlist: Playlist & { author: User }
   thumbnail?: string
   total: number
   lastUpdated?: Date
@@ -41,7 +41,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
 
       <Title text={playlist.title} />
 
-      <div className={styles["author"]}>by {playlist.User.name}</div>
+      <div className={styles["author"]}>by {playlist.author.name}</div>
 
       <div className={styles["privacy"]}>
         <select>

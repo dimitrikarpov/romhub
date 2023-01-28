@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query"
-import { api } from "../api"
+import { apiQueries } from "../data-queries/api-queries"
 
 export const useCreatePlaylistMutation = ({
   onSuccess,
@@ -9,7 +9,7 @@ export const useCreatePlaylistMutation = ({
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: api.playlists.create,
+    mutationFn: apiQueries.createPlaylist,
     onSuccess: async (response) => {
       queryClient.invalidateQueries(["playlists"])
       const playlist = await response.json()

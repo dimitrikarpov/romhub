@@ -1,5 +1,5 @@
-import { api } from "@/lib/api"
 import { useQuery } from "react-query"
+import { apiQueries } from "@/lib/data-queries/api-queries"
 
 export const usePlaylistWithRomQuery = (
   userId?: string,
@@ -9,9 +9,9 @@ export const usePlaylistWithRomQuery = (
   const query = useQuery({
     queryKey: ["playlists-with-rom", { userId, romId }],
     queryFn: () =>
-      api.user_playlists.withRom({
-        userId: String(userId),
-        romId: String(romId),
+      apiQueries.findPlaylistByUserAndRom({
+        userId: userId as string,
+        romId: romId as string,
       }),
     enabled: Boolean(userId) && Boolean(romId) && enabled,
   })

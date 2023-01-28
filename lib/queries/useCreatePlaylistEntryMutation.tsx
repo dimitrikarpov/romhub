@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query"
-import { api } from "../api"
+import { apiQueries } from "../data-queries/api-queries"
 
 export const useCreatePlaylistEntryMutation = ({
   onSuccess,
@@ -9,7 +9,7 @@ export const useCreatePlaylistEntryMutation = ({
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: api.playlistEntries.create,
+    mutationFn: apiQueries.createPlaylistEntry,
     onSuccess: () => {
       queryClient.invalidateQueries("playlists-with-rom")
       onSuccess?.()

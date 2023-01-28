@@ -30,7 +30,7 @@ const getUrl = (type: TPlaylistType, id: string) => {
 
 export const Playlists = () => {
   const { data: session } = useSession()
-  const playlistQuery = usePlaylistsQuery(session?.user.id)
+  const playlistQuery = usePlaylistsQuery(session?.user.id as string)
 
   return (
     <>

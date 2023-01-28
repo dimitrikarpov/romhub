@@ -9,7 +9,7 @@ type Props = {
 }
 
 export const Description: React.FunctionComponent<Props> = ({ text }) => {
-  const [inEditMode, setInEditMode] = useState(true)
+  const [inEditMode, setInEditMode] = useState(false)
 
   return (
     <div className={styles["description-container"]}>

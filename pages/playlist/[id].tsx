@@ -12,7 +12,7 @@ import { Item } from "@/components/pages/playlist/playlist/Item"
 import { Layout } from "@/components/pages/layout/Layout"
 
 type Props = {
-  playlist: Playlist & { User: User }
+  playlist: Playlist & { author: User }
   entries: UiPlaylistEntry[]
 }
 
@@ -35,7 +35,7 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ playlist, entries }) => {
       />
       <div className={styles["items-container"]}>
         {entries.map((entry) => (
-          <Item entry={entry} key={entry.id} />
+          <Item entry={entry} key={entry.romId} />
         ))}
       </div>
     </div>
@@ -53,14 +53,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const id = context.query.id as string
 
+  // TODO: refactor to use dbQuery
   const playlist = await prisma.playlist.findFirst({
-    where: { id, userId: session?.user?.id },
-    include: { User: true },
+    where: {
+      AND: [{ id }, { users: { every: { userId: session?.user?.id } } }],
+    },
+    include: { author: true },
   })
 
   if (
     !playlist ||
-    (!playlist.isPublic && playlist.userId !== session?.user?.id)
+    (!playlist.isPublic && playlist.authorId !== session?.user?.id)
   )
     return {
       redirect: {
@@ -87,6 +90,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const getLatestEntryTimestamp = (entries: UiPlaylistEntry[]): number =>
   entries.reduce((acc, entry) => {
-    const entryTime = entry.createdAt.getTime()
+    const entryTime = entry.assignedAt.getTime()
     return entryTime > acc ? entryTime : acc
   }, 0)

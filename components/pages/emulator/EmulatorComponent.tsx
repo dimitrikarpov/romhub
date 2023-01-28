@@ -4,8 +4,8 @@ import styles from "../../../styles/Emulator.module.css"
 import { UiRom } from "../../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
-import { api } from "@/lib/api"
 import { usePlaylistsQuery } from "../layout/usePlaylistsQuery"
+import { apiQueries } from "@/lib/data-queries/api-queries"
 
 type Props = {
   coreUrl: string
@@ -20,7 +20,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
-    const playlistQuery = usePlaylistsQuery(session?.user.id)
+    const playlistQuery = usePlaylistsQuery(session?.user.id as string)
 
     useEffect(() => {
       if (status === "inited") {
@@ -37,7 +37,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       )
 
       // TODO: replace with mutation
-      await api.playlistEntries.create({
+      await apiQueries.createPlaylistEntry({
         playlistId: historyPlaylist!.id,
         romId: rom.id,
       })

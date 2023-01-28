@@ -1,17 +1,19 @@
+import { dbQueries } from "@/lib/data-queries/db-queries"
 import type { NextApiRequest, NextApiResponse } from "next"
-import prisma from "@/lib/prismadb"
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { id } = req.query
+  if (req.method === "GET") {
+    const { id } = req.query
 
-  const playlist = await prisma.playlist.findFirst({
-    where: { id: String(id) },
-  })
+    if (!id) return res.status(404).send("Not found")
 
-  if (!playlist) return res.status(404)
+    const playlist = await dbQueries.fetchPlaylistById(id as string)
 
-  res.status(200).json(playlist)
+    if (!playlist) return res.status(404).send("Not found")
+
+    res.status(200).json(playlist)
+  }
 }
