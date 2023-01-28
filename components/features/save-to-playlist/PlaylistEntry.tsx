@@ -4,8 +4,8 @@ import {
   GlobeIcon,
   LockIcon,
 } from "@/components/ui/icons"
-import { useCreatePlaylistEntryMutation } from "@/lib/queries/useCreatePlaylistEntryMutation"
-import { useDeletePlaylistEntryMutation } from "@/lib/queries/useDeletePlaylistEntryMutation"
+import { useCreatePlaylistEntryMutation } from "@/lib/data-queries/react-queries/useCreatePlaylistEntryMutation"
+import { useDeletePlaylistEntryMutation } from "@/lib/data-queries/react-queries/useDeletePlaylistEntryMutation"
 import classNames from "classnames"
 import styles from "./save-to-playlist.module.css"
 

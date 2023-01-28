@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query"
-import { apiQueries } from "../data-queries/api-queries"
+import { apiQueries } from "../api-queries"
 
 export const useCreatePlaylistEntryMutation = ({
   onSuccess,

@@ -1,7 +1,6 @@
 import { Playlist } from "@prisma/client"
-import { UiRom, TPlaylistType } from "@/types/index"
+import { TPlaylistType } from "@/types/index"
 
-// TODO: rename to findUserPlaylists
 const findUserPlaylists = ({
   userId,
 }: {
@@ -67,9 +66,10 @@ const findUserPlaylistsContainsRom = ({
   romId: string
 }): Promise<Playlist[]> =>
   fetch(
-    "/api/playlists/find-by-user-and-rom" +
-      "?" +
+    [
+      "/api/playlists/find-by-user-and-rom",
       new URLSearchParams({ userId, romId }),
+    ].join("?"),
   ).then((res) => res.json())
 
 export const apiQueries = {

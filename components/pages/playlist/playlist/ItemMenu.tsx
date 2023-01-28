@@ -7,7 +7,7 @@ import {
   ShareIcon,
 } from "@/components/ui/icons"
 import { Menu } from "@/components/ui/menu/Menu"
-import { useAddToWatchLaterMutation } from "@/lib/queries/useAddToWatchLaterMutation"
+import { useAddToWatchLaterMutation } from "@/lib/data-queries/react-queries/useAddToWatchLaterMutation"
 import { UiPlaylistEntry } from "@/types/index"
 import { useSession } from "next-auth/react"
 
