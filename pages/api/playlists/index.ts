@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { TCreatePlaylistFormData } from "@/types/index"
-import { dbQueries } from "@/lib/data-queries/db-queries"
+import { dbQueries } from "@/lib/queries/db-queries"
 
 export default async function handler(
   req: NextApiRequest,

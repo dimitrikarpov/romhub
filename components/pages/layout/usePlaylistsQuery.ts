@@ -1,5 +1,5 @@
 import { useQuery } from "react-query"
-import { apiQueries } from "@/lib/data-queries/api-queries"
+import { apiQueries } from "@/lib/queries/api-queries"
 
 export const usePlaylistsQuery = (userId?: string, enabled: boolean = true) => {
   const playlistsQuery = useQuery({

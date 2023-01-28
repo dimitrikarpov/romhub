@@ -5,7 +5,7 @@ import { UiRom } from "../../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
 import { usePlaylistsQuery } from "../layout/usePlaylistsQuery"
-import { apiQueries } from "@/lib/data-queries/api-queries"
+import { apiQueries } from "@/lib/queries/api-queries"
 
 type Props = {
   coreUrl: string

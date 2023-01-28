@@ -1,5 +1,5 @@
-import { apiQueries } from "@/lib/data-queries/api-queries"
-import { dbQueries } from "@/lib/data-queries/db-queries"
+import { apiQueries } from "@/lib/queries/api-queries"
+import { dbQueries } from "@/lib/queries/db-queries"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 /**

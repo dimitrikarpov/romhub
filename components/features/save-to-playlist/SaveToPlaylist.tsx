@@ -6,8 +6,8 @@ import { PlaylistEntry } from "./PlaylistEntry"
 import styles from "./save-to-playlist.module.css"
 import { usePlaylistWithRomQuery } from "./usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
-import { useCreatePlaylistEntryMutation } from "@/lib/data-queries/react-queries/useCreatePlaylistEntryMutation"
-import { useCreatePlaylistMutation } from "@/lib/data-queries/react-queries/useCreatePlaylistMutation"
+import { useCreatePlaylistEntryMutation } from "@/lib/queries/react-queries/useCreatePlaylistEntryMutation"
+import { useCreatePlaylistMutation } from "@/lib/queries/react-queries/useCreatePlaylistMutation"
 
 type Props = {
   romId: string
