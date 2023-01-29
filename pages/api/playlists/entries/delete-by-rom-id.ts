@@ -1,4 +1,4 @@
-import { dbQueries } from "@/lib/queries/db-queries"
+import { dbQueries } from "@/lib/queries/dbQueries"
 import { NextApiRequest, NextApiResponse } from "next"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

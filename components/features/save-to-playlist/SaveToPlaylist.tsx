@@ -3,11 +3,11 @@ import { useSession } from "next-auth/react"
 import { CrossIcon, PlusIcon } from "@/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
 import styles from "./save-to-playlist.module.css"
-import { usePlaylistWithRomQuery } from "@/lib/queries/react-queries/usePlaylistsWithRomQuery"
+import { usePlaylistWithRomQuery } from "@/lib/queries/react/usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
-import { useCreatePlaylistEntryMutation } from "@/lib/queries/react-queries/useCreatePlaylistEntryMutation"
-import { useCreatePlaylistMutation } from "@/lib/queries/react-queries/useCreatePlaylistMutation"
-import { usePlaylistsQuery } from "@/lib/queries/react-queries/usePlaylistsQuery"
+import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
+import { useCreatePlaylistMutation } from "@/lib/queries/react/useCreatePlaylistMutation"
+import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
 
 type Props = {
   romId: string
@@ -30,7 +30,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     setIsFormOpened(true)
   }
 
-  const playlistsQuery = usePlaylistsQuery(session?.user.id, true)
+  const playlistsQuery = useUserPlaylistsQuery(session?.user.id, true)
   const playlistsWithRomQuery = usePlaylistWithRomQuery(
     session?.user.id,
     romId,

@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react"
-import { usePlaylistsQuery } from "../../../../lib/queries/react-queries/usePlaylistsQuery"
+import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
 import styles from "../../../../styles/Layout.module.css"
 import {
   HistoryIcon,
@@ -30,7 +30,7 @@ const getUrl = (type: TPlaylistType, id: string) => {
 
 export const Playlists = () => {
   const { data: session } = useSession()
-  const playlistQuery = usePlaylistsQuery(session?.user.id as string)
+  const playlistQuery = useUserPlaylistsQuery(session?.user.id as string)
 
   return (
     <>

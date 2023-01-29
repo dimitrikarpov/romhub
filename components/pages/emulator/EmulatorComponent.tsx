@@ -4,8 +4,8 @@ import styles from "../../../styles/Emulator.module.css"
 import { UiRom } from "../../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
-import { usePlaylistsQuery } from "../../../lib/queries/react-queries/usePlaylistsQuery"
-import { apiQueries } from "@/lib/queries/api-queries"
+import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+import { apiQueries } from "@/lib/queries/apiQueries"
 
 type Props = {
   coreUrl: string
@@ -20,7 +20,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
-    const playlistQuery = usePlaylistsQuery(session?.user.id as string)
+    const playlistQuery = useUserPlaylistsQuery(session?.user.id as string)
 
     useEffect(() => {
       if (status === "inited") {

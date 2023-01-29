@@ -1,13 +1,16 @@
 import { useQuery } from "react-query"
-import { apiQueries } from "@/lib/queries/api-queries"
+import { apiQueries } from "@/lib/queries/apiQueries"
 
-export const usePlaylistsQuery = (userId?: string, enabled: boolean = true) => {
-  const playlistsQuery = useQuery({
+export const useUserPlaylistsQuery = (
+  userId?: string,
+  enabled: boolean = true,
+) => {
+  const query = useQuery({
     queryKey: ["playlists"],
     queryFn: () => apiQueries.findUserPlaylists({ userId: userId as string }),
     enabled: Boolean(userId) && enabled,
     staleTime: 5 * 60 * 1000,
   })
 
-  return playlistsQuery
+  return query
 }
