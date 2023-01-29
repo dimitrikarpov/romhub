@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { CrossIcon, PlusIcon } from "@/components/ui/icons"
-import { usePlaylistsQuery } from "@/components/pages/layout/usePlaylistsQuery"
 import { PlaylistEntry } from "./PlaylistEntry"
 import styles from "./save-to-playlist.module.css"
-import { usePlaylistWithRomQuery } from "./usePlaylistsWithRomQuery"
+import { usePlaylistWithRomQuery } from "@/lib/queries/react-queries/usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
 import { useCreatePlaylistEntryMutation } from "@/lib/queries/react-queries/useCreatePlaylistEntryMutation"
 import { useCreatePlaylistMutation } from "@/lib/queries/react-queries/useCreatePlaylistMutation"
+import { usePlaylistsQuery } from "@/lib/queries/react-queries/usePlaylistsQuery"
 
 type Props = {
   romId: string

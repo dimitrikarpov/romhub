@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react"
-import { usePlaylistsQuery } from "../usePlaylistsQuery"
+import { usePlaylistsQuery } from "../../../../lib/queries/react-queries/usePlaylistsQuery"
 import styles from "../../../../styles/Layout.module.css"
 import {
   HistoryIcon,

@@ -4,7 +4,7 @@ import styles from "../../../styles/Emulator.module.css"
 import { UiRom } from "../../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
-import { usePlaylistsQuery } from "../layout/usePlaylistsQuery"
+import { usePlaylistsQuery } from "../../../lib/queries/react-queries/usePlaylistsQuery"
 import { apiQueries } from "@/lib/queries/api-queries"
 
 type Props = {

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query"
 import { useSession } from "next-auth/react"
-import { usePlaylistsQuery } from "@/components/pages/layout/usePlaylistsQuery"
 import { apiQueries } from "../api-queries"
+import { usePlaylistsQuery } from "./usePlaylistsQuery"
 
 export const useAddToWatchLaterMutation = (romId: string) => {
   const { data: session } = useSession()
