@@ -4,7 +4,6 @@ import { useQuery } from "react-query"
 import prisma from "@/lib/prismadb"
 import { UiRom } from "../types"
 import { SearchContext } from "../contexts/search/SearchContext"
-import { api } from "../lib/api"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "@/components/pages/layout/Layout"
 import { Gallery } from "@/components/pages/gallery/Gallery"
@@ -12,6 +11,7 @@ import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
 import { Paginator } from "@/components/pages/gallery/Paginator"
 import styles from "../styles/Home.module.css"
 import { convertEntity } from "@/lib/convertEntity"
+import { getRoms } from "@/lib/queries/api/getRoms"
 
 type Props = {
   initialData: {
@@ -32,7 +32,21 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
         search: titleStartsWith,
       },
     ],
-    queryFn: () => api.roms.findMany({ skip, platform, titleStartsWith }),
+    queryFn: () =>
+      getRoms({
+        skip,
+        take: 15,
+        where: {
+          AND: [
+            {
+              platform: {
+                in: platform !== "all" ? [platform] : undefined,
+              },
+            },
+            { name: { startsWith: titleStartsWith } },
+          ],
+        },
+      }),
     initialData,
     keepPreviousData: true,
     refetchOnWindowFocus: false,

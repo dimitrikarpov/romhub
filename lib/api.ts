@@ -48,3 +48,32 @@ const createWhereStartsWithQueryString = (key: string, value: string) => {
 export const api = {
   roms: { findMany: fetchRoms },
 }
+
+/*
+
+queryFn({
+  skip, 
+  take, 
+  platform: where('platform', 'equals', platform), 
+  name: where('name', 'startsWith', name)
+}),
+*/
+
+/*
+
+where: whereAND([
+   ['platform', 'equals' platform],
+   ['name', startsWith, name] 
+])
+
+
+
+-= findManyQueryHelpers =-
+
+stringifyFindManyApiParams
+
+parseFindManyApiParams
+
+
+
+*/
