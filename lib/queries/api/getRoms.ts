@@ -9,13 +9,13 @@ type fetchRomsData = {
 }
 
 export const getRoms = async ({
-  skip = 0,
-  take = 15,
+  skip,
+  take,
   where,
 }: {
-  skip: number
-  take: number
-  where: Prisma.RomWhereInput | undefined
+  skip?: number
+  take?: number
+  where?: Prisma.RomWhereInput
 }): Promise<fetchRomsData> => {
   return fetch(
     [

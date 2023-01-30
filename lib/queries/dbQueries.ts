@@ -5,8 +5,10 @@ import { fetchPlaylistById } from "./db/fetchPlaylistById"
 import { fetchPlaylistsEntries } from "./db/fetchPlaylistsEntries"
 import { findUserPlaylists } from "./db/findUserPlaylists"
 import { findUserPlaylistsContainsRom } from "./db/findUserPlaylistsContainsRom"
+import { getRoms } from "./db/getRoms"
 
 export const dbQueries = {
+  getRoms,
   fetchPlaylistById,
   createPlaylist,
   findUserPlaylists,

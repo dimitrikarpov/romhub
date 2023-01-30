@@ -7,8 +7,8 @@ export const getRoms = async ({
   take = 15,
   where,
 }: {
-  skip: number
-  take: number
+  skip?: number
+  take?: number
   where?: Prisma.RomWhereInput | undefined
 }) => {
   let total = 0
@@ -24,8 +24,6 @@ export const getRoms = async ({
   } catch (e) {
     throw new Error("Bad request")
   }
-
-  // TODO: convert to UiRom here
 
   return { total, data: data.map(convertEntity.rom.toUiRom) }
 }

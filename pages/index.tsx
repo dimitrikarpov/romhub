@@ -1,7 +1,5 @@
 import React, { ReactElement, useContext } from "react"
 import Head from "next/head"
-import { useQuery } from "react-query"
-import prisma from "@/lib/prismadb"
 import { UiRom } from "../types"
 import { SearchContext } from "../contexts/search/SearchContext"
 import { NextPageWithLayout } from "./_app"
@@ -10,8 +8,8 @@ import { Gallery } from "@/components/pages/gallery/Gallery"
 import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
 import { Paginator } from "@/components/pages/gallery/Paginator"
 import styles from "../styles/Home.module.css"
-import { convertEntity } from "@/lib/convertEntity"
-import { getRoms } from "@/lib/queries/api/getRoms"
+import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
+import { dbQueries } from "@/lib/queries/dbQueries"
 
 type Props = {
   initialData: {
@@ -23,39 +21,14 @@ type Props = {
 const Home: NextPageWithLayout<Props> = ({ initialData }) => {
   const { skip, platform, titleStartsWith } = useContext(SearchContext)
 
-  const romsQuery = useQuery({
-    queryKey: [
-      "roms",
-      {
-        skip,
-        platform,
-        search: titleStartsWith,
-      },
-    ],
-    queryFn: () =>
-      getRoms({
-        skip,
-        take: 15,
-        where: {
-          AND: [
-            {
-              platform: {
-                in: platform !== "all" ? [platform] : undefined,
-              },
-            },
-            { name: { startsWith: titleStartsWith } },
-          ],
-        },
-      }),
+  const romsQuery = useRomsQuery({
+    skip,
+    platform,
+    titleStartsWith,
     initialData,
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-    retry: false,
-    refetchOnMount: false,
   })
 
   const { data } = romsQuery
-
   const roms = data?.data
   const total = data?.total
 
@@ -87,15 +60,11 @@ Home.getLayout = function getLayout(page: ReactElement) {
 export default Home
 
 export async function getServerSideProps() {
-  const initialTotal = await prisma.rom.count()
-  const roms = await prisma.rom.findMany({ take: 15 })
+  const initialData = await dbQueries.getRoms({})
 
   return {
     props: {
-      initialData: {
-        data: roms.map(convertEntity.rom.toUiRom),
-        total: initialTotal,
-      },
+      initialData,
     },
   }
 }
