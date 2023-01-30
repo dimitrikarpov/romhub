@@ -18,7 +18,7 @@ export default async function handler(
 
     if (!userId || !romId) return res.status(404).send("Not found")
 
-    const playlists = await dbQueries.findUserPlaylistsContainsRom(
+    const playlists = await dbQueries.getUserPlaylistsContainsRom(
       userId as string,
       romId as string,
     )

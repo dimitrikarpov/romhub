@@ -1,6 +1,6 @@
 import prisma from "@/lib/prismadb"
 
-export const fetchPlaylistsEntries = async (playlistId: string) => {
+export const getPlaylistsEntries = async (playlistId: string) => {
   const found = await prisma.playlist.findFirst({
     where: { id: playlistId },
     include: {

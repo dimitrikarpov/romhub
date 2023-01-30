@@ -7,7 +7,7 @@ export const useUserPlaylistsQuery = (
 ) => {
   const query = useQuery({
     queryKey: ["playlists"],
-    queryFn: () => apiQueries.findUserPlaylists({ userId: userId as string }),
+    queryFn: () => apiQueries.getUserPlaylists({ userId: userId as string }),
     enabled: Boolean(userId) && enabled,
     staleTime: 5 * 60 * 1000,
   })

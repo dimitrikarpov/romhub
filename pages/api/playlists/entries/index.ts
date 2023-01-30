@@ -7,7 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!playlistId) return res.status(404).send("Not found")
 
-    const found = await dbQueries.fetchPlaylistsEntries(playlistId as string)
+    const found = await dbQueries.getPlaylistsEntries(playlistId as string)
 
     if (!found) return res.status(404).send("Not found")
 

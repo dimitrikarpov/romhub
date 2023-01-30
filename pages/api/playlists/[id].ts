@@ -10,7 +10,7 @@ export default async function handler(
 
     if (!id) return res.status(404).send("Not found")
 
-    const playlist = await dbQueries.fetchPlaylistById(id as string)
+    const playlist = await dbQueries.getPlaylistById(id as string)
 
     if (!playlist) return res.status(404).send("Not found")
 

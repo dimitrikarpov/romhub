@@ -1,6 +1,6 @@
 import prisma from "@/lib/prismadb"
 
-export const findUserPlaylistsContainsRom = async (
+export const getUserPlaylistsContainsRom = async (
   userId: string,
   romId: string,
 ) => {

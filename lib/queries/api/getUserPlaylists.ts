@@ -1,6 +1,6 @@
 import { Playlist } from "@prisma/client"
 
-export const findUserPlaylists = ({
+export const getUserPlaylists = ({
   userId,
 }: {
   userId: string

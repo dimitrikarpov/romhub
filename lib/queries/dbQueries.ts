@@ -1,19 +1,19 @@
 import { createPlaylist } from "./db/createPlaylist"
 import { createPlaylistEntry } from "./db/createPlaylistEntry"
 import { deletePlaylistEntryByRom } from "./db/deletePlaylistEntryByRom"
-import { fetchPlaylistById } from "./db/fetchPlaylistById"
-import { fetchPlaylistsEntries } from "./db/fetchPlaylistsEntries"
-import { findUserPlaylists } from "./db/findUserPlaylists"
-import { findUserPlaylistsContainsRom } from "./db/findUserPlaylistsContainsRom"
+import { getPlaylistById } from "./db/getPlaylistById"
+import { getPlaylistsEntries } from "./db/getPlaylistsEntries"
+import { getUserPlaylists } from "./db/getUserPlaylists"
+import { getUserPlaylistsContainsRom } from "./db/getUserPlaylistsContainsRom"
 import { getRoms } from "./db/getRoms"
 
 export const dbQueries = {
   getRoms,
-  fetchPlaylistById,
+  getUserPlaylists,
+  getUserPlaylistsContainsRom,
+  getPlaylistsEntries,
+  getPlaylistById,
   createPlaylist,
-  findUserPlaylists,
-  findUserPlaylistsContainsRom,
-  fetchPlaylistsEntries,
   createPlaylistEntry,
   deletePlaylistEntryByRom,
 }
