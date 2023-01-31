@@ -1,4 +1,3 @@
-import Head from "next/head"
 import { GetServerSideProps } from "next"
 import { NextPageWithLayout } from "../_app"
 import { getSession } from "next-auth/react"
@@ -10,6 +9,7 @@ import { UiPlaylistEntry } from "@/types/index"
 import { convertEntity } from "@/lib/convertEntity"
 import { Item } from "@/components/pages/playlist/playlist/Item"
 import { Layout } from "@/components/pages/layout/Layout"
+import { dbQueries } from "@/lib/queries/dbQueries"
 
 type Props = {
   playlist: Playlist & { author: User }
@@ -53,13 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const id = context.query.id as string
 
-  // TODO: refactor to use dbQuery
-  const playlist = await prisma.playlist.findFirst({
-    where: {
-      AND: [{ id }, { users: { every: { userId: session?.user?.id } } }],
-    },
-    include: { author: true },
-  })
+  const playlist = await dbQueries.getPlaylistById(id)
 
   if (
     !playlist ||
@@ -72,6 +66,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
 
+  // TODO: looks like it better approach than in dbQuery.getPlaylistsEntries
   const entries = await prisma.playlistEntry.findMany({
     where: { playlistId: playlist.id },
     include: { rom: true },

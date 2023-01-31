@@ -1,5 +1,7 @@
 import { dbQueries } from "@/lib/queries/dbQueries"
 import type { NextApiRequest, NextApiResponse } from "next"
+import prisma from "@/lib/prismadb"
+import { z } from "zod"
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,5 +17,32 @@ export default async function handler(
     if (!playlist) return res.status(404).send("Not found")
 
     res.status(200).json(playlist)
+  }
+
+  if (req.method === "PATCH") {
+    const id = req.query.id as string
+
+    const schema = z.object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      isPublic: z.boolean().optional(),
+    })
+
+    try {
+      const { title, description, isPublic } = schema.parse(req.body)
+
+      const playlist = await prisma.playlist.update({
+        where: { id },
+        data: {
+          ...(title && { title }),
+          ...(description && { description }),
+          ...(isPublic && { isPublic }),
+        },
+      })
+
+      res.status(200).json(playlist)
+    } catch (e) {
+      res.status(404).send("Not found!")
+    }
   }
 }

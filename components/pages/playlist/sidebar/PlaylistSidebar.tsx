@@ -2,7 +2,6 @@ import {
   CollaborateIcon,
   RubbishBinIcon,
   ShareIcon,
-  ShevronDownIcon,
   ThreeDotsMenu,
 } from "@/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
