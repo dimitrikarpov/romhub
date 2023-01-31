@@ -18,7 +18,7 @@ export const patchPlaylist = async ({
     data: {
       ...(title && { title }),
       ...(description && { description }),
-      ...(isPublic && { isPublic }),
+      ...(isPublic !== undefined && { isPublic }),
     },
     include: { author: true },
   })

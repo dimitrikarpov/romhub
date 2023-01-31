@@ -7,11 +7,12 @@ import {
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en"
-import styles from "./PlaylistSidebar.module.css"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
 import { Menu } from "@/components/ui/menu/Menu"
 import { Title } from "./title/Title"
 import { Description } from "./description/Description"
+import styles from "./PlaylistSidebar.module.css"
+import { PrivacySelect } from "./PrivacySelect"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -41,12 +42,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
 
       <div className={styles["author"]}>by {playlist.author.name}</div>
 
-      <div className={styles["privacy"]}>
-        <select>
-          <option>Private</option>
-          <option>Public</option>
-        </select>
-      </div>
+      <PrivacySelect isPublic={playlist.isPublic} />
 
       <div className={styles["meta-container"]}>
         <div>{total} games</div>
