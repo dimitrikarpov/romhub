@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button/Button"
 import styles from "../PlaylistSidebar.module.css"
 
 export interface IFormInput {
-  title: string
+  description: string
 }
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   onSubmit: (data: IFormInput) => void
 }
 
-export const TitleForm: React.FunctionComponent<Props> = ({
+export const DescriptionForm: React.FunctionComponent<Props> = ({
   value,
   toggleToView,
   onSubmit,
@@ -22,11 +22,10 @@ export const TitleForm: React.FunctionComponent<Props> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["form"]}>
       <div className={styles["input-underline"]}>
-        <input
-          type="text"
-          className={styles["input"]}
+        <textarea
+          className={styles["textarea"]}
           defaultValue={value}
-          {...register("title")}
+          {...register("description")}
         />
       </div>
 

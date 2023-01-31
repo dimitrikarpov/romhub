@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { SubmitHandler } from "react-hook-form"
-import { TitleView } from "./TitleView"
-import { IFormInput, TitleForm } from "./TitleForm"
+import { DescriptionForm, IFormInput } from "./DescriptionForm"
+import { DescriptionView } from "./DescriptionView"
 import styles from "../PlaylistSidebar.module.css"
 import { usePlaylistMutation } from "@/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
@@ -10,7 +10,7 @@ type Props = {
   text: string
 }
 
-export const Title: React.FunctionComponent<Props> = ({ text }) => {
+export const Description: React.FunctionComponent<Props> = ({ text }) => {
   const [inEditMode, setInEditMode] = useState(false)
   const playlistMutation = usePlaylistMutation({
     onSuccess: () => {
@@ -26,12 +26,12 @@ export const Title: React.FunctionComponent<Props> = ({ text }) => {
   }
 
   return (
-    <div className={styles["title-container"]}>
+    <div className={styles["description-container"]}>
       {!inEditMode && (
-        <TitleView text={text} toggleToEdit={() => setInEditMode(true)} />
+        <DescriptionView text={text} toggleToEdit={() => setInEditMode(true)} />
       )}
       {inEditMode && (
-        <TitleForm
+        <DescriptionForm
           value={text}
           toggleToView={() => setInEditMode(false)}
           onSubmit={onSubmit}
