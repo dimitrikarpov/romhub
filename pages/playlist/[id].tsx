@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next"
+import { useRouter } from "next/router"
 import { NextPageWithLayout } from "../_app"
 import { getSession } from "next-auth/react"
 import { Playlist, User } from "@prisma/client"
@@ -10,13 +11,25 @@ import { convertEntity } from "@/lib/convertEntity"
 import { Item } from "@/components/pages/playlist/playlist/Item"
 import { Layout } from "@/components/pages/layout/Layout"
 import { dbQueries } from "@/lib/queries/dbQueries"
+import { usePlaylistByIdQuery } from "@/lib/queries/react/usePlaylistByIdQuery"
 
 type Props = {
-  playlist: Playlist & { author: User }
   entries: UiPlaylistEntry[]
+  initialData: {
+    playlist: Playlist & { author: User }
+  }
 }
 
-const PlaylistPage: NextPageWithLayout<Props> = ({ playlist, entries }) => {
+const PlaylistPage: NextPageWithLayout<Props> = ({ initialData, entries }) => {
+  const router = useRouter()
+  const { id } = router.query
+
+  const playlistQuery = usePlaylistByIdQuery({
+    id: id as string,
+    initialData: initialData.playlist,
+  })
+  const { data: playlist } = playlistQuery
+
   const thumbnail = entries?.[0]?.rom?.images?.[0] || "/assets/placeholder.png"
 
   const lastEntryTimestamp = getLatestEntryTimestamp(entries)
@@ -28,7 +41,7 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ playlist, entries }) => {
   return (
     <div className={styles["container"]}>
       <PlaylistSidebar
-        playlist={playlist}
+        playlist={playlist!}
         thumbnail={thumbnail}
         total={entries.length}
         lastUpdated={lastUpdated}
@@ -74,7 +87,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      playlist,
+      initialData: {
+        playlist,
+      },
       entries: entries.map((entry) => ({
         ...entry,
         rom: convertEntity.rom.toUiRom(entry.rom),
