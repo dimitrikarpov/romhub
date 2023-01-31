@@ -1,7 +1,6 @@
+import { z } from "zod"
 import { dbQueries } from "@/lib/queries/dbQueries"
 import type { NextApiRequest, NextApiResponse } from "next"
-import prisma from "@/lib/prismadb"
-import { z } from "zod"
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,13 +30,11 @@ export default async function handler(
     try {
       const { title, description, isPublic } = schema.parse(req.body)
 
-      const playlist = await prisma.playlist.update({
-        where: { id },
-        data: {
-          ...(title && { title }),
-          ...(description && { description }),
-          ...(isPublic && { isPublic }),
-        },
+      const playlist = await dbQueries.patchPlaylist({
+        id,
+        title,
+        description,
+        isPublic,
       })
 
       res.status(200).json(playlist)

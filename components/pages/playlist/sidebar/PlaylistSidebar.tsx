@@ -6,12 +6,11 @@ import {
 } from "@/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
-import styles from "./PlaylistSidebar.module.css"
-
 import en from "javascript-time-ago/locale/en"
+import styles from "./PlaylistSidebar.module.css"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
 import { Menu } from "@/components/ui/menu/Menu"
-import { Title } from "./Title"
+import { Title } from "./title/Title"
 import { Description } from "./Description"
 
 TimeAgo.addDefaultLocale(en)
@@ -38,7 +37,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         alt="playlist thumbnail"
       />
 
-      <Title text={playlist.title} />
+      <Title text={playlist.title} playlistId={playlist.id} />
 
       <div className={styles["author"]}>by {playlist.author.name}</div>
 
