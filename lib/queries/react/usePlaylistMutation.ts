@@ -6,10 +6,14 @@ export const usePlaylistMutation = ({
 }: {
   onSuccess?: (data?: any) => void
 }) => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: apiQueries.patchPlaylist,
-    onSuccess: async (response) => {
-      console.log("nice!!!")
+    onSuccess: async (data, variables) => {
+      queryClient.setQueryData(["playlist", { id: variables.id }], data)
+
+      onSuccess?.(data)
     },
   })
 }

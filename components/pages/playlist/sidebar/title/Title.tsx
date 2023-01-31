@@ -12,15 +12,14 @@ type Props = {
 
 export const Title: React.FunctionComponent<Props> = ({ text, playlistId }) => {
   const [inEditMode, setInEditMode] = useState(false)
-  const playlistMutation = usePlaylistMutation({})
+  const playlistMutation = usePlaylistMutation({
+    onSuccess: () => {
+      setInEditMode(false)
+    },
+  })
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     playlistMutation.mutate({ id: playlistId, data })
-
-    // await apiQueries.patchPlaylist({ id: playlistId, data })
-
-    console.log({ data })
-    setInEditMode(false)
   }
 
   return (

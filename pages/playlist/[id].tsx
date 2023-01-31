@@ -24,16 +24,13 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ initialData, entries }) => {
   const router = useRouter()
   const { id } = router.query
 
-  const playlistQuery = usePlaylistByIdQuery({
+  const { data: playlist } = usePlaylistByIdQuery({
     id: id as string,
     initialData: initialData.playlist,
   })
-  const { data: playlist } = playlistQuery
 
   const thumbnail = entries?.[0]?.rom?.images?.[0] || "/assets/placeholder.png"
-
   const lastEntryTimestamp = getLatestEntryTimestamp(entries)
-
   const lastUpdated = lastEntryTimestamp
     ? new Date(lastEntryTimestamp)
     : undefined

@@ -20,6 +20,7 @@ export const patchPlaylist = async ({
       ...(description && { description }),
       ...(isPublic && { isPublic }),
     },
+    include: { author: true },
   })
 
   return playlist
