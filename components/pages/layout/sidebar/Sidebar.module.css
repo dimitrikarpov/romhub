@@ -1,19 +1,6 @@
-/* Main container */
-.container {
-  display: flex;
-  flex-direction: column;
-
-  position: relative;
-}
-
-/* Start of TopBar */
-
-/* END OF topBar */
-
-/* START OF sideBar */
 .sideBarContainer {
   display: none;
-  position: absolute;
+  position: fixed;
 
   z-index: 10;
   top: 0;
@@ -51,7 +38,6 @@
 }
 
 .sideBarSection {
-  padding: 12px 0;
   color: rgb(241, 241, 241);
 }
 
@@ -59,8 +45,11 @@
   display: flex;
   align-items: center;
   height: 40px;
-  line-height: 24px;
-  padding: 0 12px;
+  padding: 14px 12px;
+
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
 
   cursor: pointer;
 }
@@ -93,4 +82,3 @@
   bottom: 0;
   opacity: 0.3;
 }
-/* END OF sideBar */

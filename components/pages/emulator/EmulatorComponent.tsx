@@ -1,11 +1,11 @@
 import { memo, useEffect, useRef, useState } from "react"
 import { useRetroarch } from "./useRetroarch"
-import styles from "../../../styles/Emulator.module.css"
 import { UiRom } from "../../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
 import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
 import { apiQueries } from "@/lib/queries/apiQueries"
+import styles from "./EmulatorComponent.module.css"
 
 type Props = {
   coreUrl: string

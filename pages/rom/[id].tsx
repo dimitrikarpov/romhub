@@ -5,7 +5,6 @@ import { useRomDownloader } from "@/components/pages/emulator/useRomDownloader"
 import { UiRom } from "@/types/index"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
 import prisma from "@/lib/prismadb"
-import styles from "../../styles/Emulator.module.css"
 import { NextPageWithLayout } from "../_app"
 import { ReactElement, useRef } from "react"
 import { Layout } from "@/components/pages/layout/Layout"
@@ -20,6 +19,7 @@ import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPla
 import { convertEntity } from "@/lib/convertEntity"
 import { Share } from "@/components/features/share/Share"
 import { Button } from "@/components/ui/button/Button"
+import styles from "../../styles/Rom.module.css"
 
 type Props = { rom: UiRom | undefined; url: string }
 

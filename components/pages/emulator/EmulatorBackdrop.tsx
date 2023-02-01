@@ -1,5 +1,5 @@
-import styles from "../../../styles/Emulator.module.css"
 import { RAStatuses } from "./useRetroarch"
+import styles from "./EmulatorBackdrop.module.css"
 
 type Props = {
   status: RAStatuses

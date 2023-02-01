@@ -4,7 +4,7 @@ import TogglerAndLogo from "../TogglerAndLogo"
 import { HomeIcon } from "@/components/ui/icons"
 import { Playlists } from "./Playlists"
 import { SidebarContext } from "./SidebarContext"
-import styles from "../../../../styles/Layout.module.css"
+import styles from "./Sidebar.module.css"
 
 const SideBar = () => {
   const { isSidebarOpen } = useContext(SidebarContext)

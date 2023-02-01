@@ -1,6 +1,6 @@
-import styles from "../../../styles/Layout.module.css"
 import SideBar from "./sidebar/SideBar"
 import TopBar from "./top-bar/TopBar"
+import styles from "./Layout.module.css"
 
 type Props = {
   children?: React.ReactNode
