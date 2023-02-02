@@ -8,9 +8,13 @@ import { useRouter } from "next/router"
 
 type Props = {
   text: string
+  editable: boolean
 }
 
-export const Description: React.FunctionComponent<Props> = ({ text }) => {
+export const Description: React.FunctionComponent<Props> = ({
+  text,
+  editable,
+}) => {
   const [inEditMode, setInEditMode] = useState(false)
   const playlistMutation = usePlaylistMutation({
     onSuccess: () => {
@@ -28,7 +32,11 @@ export const Description: React.FunctionComponent<Props> = ({ text }) => {
   return (
     <div className={styles["description-container"]}>
       {!inEditMode && (
-        <DescriptionView text={text} toggleToEdit={() => setInEditMode(true)} />
+        <DescriptionView
+          text={text}
+          editable={editable}
+          toggleToEdit={() => setInEditMode(true)}
+        />
       )}
       {inEditMode && (
         <DescriptionForm

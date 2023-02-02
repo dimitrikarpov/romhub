@@ -11,8 +11,10 @@ import { IconButton } from "@/components/ui/icon-button/IconButton"
 import { Menu } from "@/components/ui/menu/Menu"
 import { Title } from "./title/Title"
 import { Description } from "./description/Description"
-import styles from "./PlaylistSidebar.module.css"
 import { PrivacySelect } from "./PrivacySelect"
+import styles from "./PlaylistSidebar.module.css"
+import { Session } from "next-auth"
+import { useSession } from "next-auth/react"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -30,6 +32,12 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   total,
   lastUpdated,
 }) => {
+  const { data: session } = useSession()
+
+  const isTitleEditable = canEditPlaylistTitle(session, playlist)
+  const isDescriptionEditable = canEditPlaylistDescription(session, playlist)
+  const isPrivacyEditable = canEditPlaylistPrivacy(session, playlist)
+
   return (
     <div className={styles["sidebar"]}>
       <img
@@ -38,11 +46,11 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         alt="playlist thumbnail"
       />
 
-      <Title text={playlist.title} />
+      <Title text={playlist.title} editable={isTitleEditable} />
 
       <div className={styles["author"]}>by {playlist.author.name}</div>
 
-      <PrivacySelect isPublic={playlist.isPublic} />
+      {isPrivacyEditable && <PrivacySelect isPublic={playlist.isPublic} />}
 
       <div className={styles["meta-container"]}>
         <div>{total} games</div>
@@ -87,7 +95,43 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         </Menu>
       </div>
 
-      <Description text={playlist.description || "No description"} />
+      <Description
+        text={playlist.description || "No description"}
+        editable={isDescriptionEditable}
+      />
     </div>
+  )
+}
+
+// TODO: [permisson]
+const canEditPlaylistTitle = (session: Session | null, playlist: Playlist) => {
+  return (
+    Boolean(session) &&
+    playlist.authorId === session?.user.id &&
+    playlist.type !== "watch_later"
+  )
+}
+
+// TODO: [permisson]
+const canEditPlaylistDescription = (
+  session: Session | null,
+  playlist: Playlist,
+) => {
+  return (
+    Boolean(session) &&
+    playlist.authorId === session?.user.id &&
+    playlist.type !== "watch_later"
+  )
+}
+
+// TODO: [permisson]
+const canEditPlaylistPrivacy = (
+  session: Session | null,
+  playlist: Playlist,
+) => {
+  return (
+    Boolean(session) &&
+    playlist.authorId === session?.user.id &&
+    playlist.type !== "watch_later"
   )
 }

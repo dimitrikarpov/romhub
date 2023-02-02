@@ -1,6 +1,6 @@
 import { UiRom } from "@/types/index"
-import styles from "./Gallery.module.css"
 import { GalleryItem } from "./GalleryItem"
+import styles from "./Gallery.module.css"
 
 type Props = {
   roms: UiRom[] | undefined

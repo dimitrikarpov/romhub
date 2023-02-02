@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button/Button"
 import { convertEntity } from "@/lib/convertEntity"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
 import styles from "../../styles/Rom.module.css"
+import { Session } from "next-auth"
+import { useSession } from "next-auth/react"
 
 type Props = { rom: UiRom | undefined; url: string }
 
@@ -29,6 +31,9 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
   const shareDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
+
+  const { data: session } = useSession()
+  const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
 
   const openInputsModal = () => {
     inputsDialogRef.current?.showModal()
@@ -90,10 +95,12 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
             <span>Download</span>
           </Button>
 
-          <Button onClick={openSaveModal}>
-            <AddToPlaylistIcon />
-            Save
-          </Button>
+          {displaySaveToDialog && (
+            <Button onClick={openSaveModal}>
+              <AddToPlaylistIcon />
+              Save
+            </Button>
+          )}
         </div>
 
         <div className={styles["actions-box"]}>
@@ -151,6 +158,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       url: `${process.env.NEXT_PUBLIC_DOMAIN}/rom/${id}`,
     },
   }
+}
+
+// TODO: [permisson]
+const canSaveRomToOwnPlaylist = (session: Session | null) => {
+  return Boolean(session)
 }
 
 /**

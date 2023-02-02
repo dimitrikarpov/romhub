@@ -7,9 +7,9 @@ import { Layout } from "@/components/pages/layout/Layout"
 import { Gallery } from "@/components/pages/gallery/Gallery"
 import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
 import { Paginator } from "@/components/pages/gallery/Paginator"
-import styles from "../styles/Home.module.css"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { dbQueries } from "@/lib/queries/dbQueries"
+import styles from "../styles/Home.module.css"
 
 type Props = {
   initialData: {

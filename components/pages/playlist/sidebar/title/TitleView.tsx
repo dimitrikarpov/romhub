@@ -3,18 +3,20 @@ import { PencilIcon } from "@/components/ui/icons"
 import styles from "../PlaylistSidebar.module.css"
 
 type Props = {
-  toggleToEdit: () => void
   text: string
+  editable: boolean
+  toggleToEdit: () => void
 }
 
 export const TitleView: React.FunctionComponent<Props> = ({
   text,
+  editable,
   toggleToEdit,
 }) => {
   return (
     <div className={styles["view"]}>
       <div className={styles["view-text--title"]}>{text}</div>
-      <IconButton icon={PencilIcon} onClick={toggleToEdit} />
+      {editable && <IconButton icon={PencilIcon} onClick={toggleToEdit} />}
     </div>
   )
 }
