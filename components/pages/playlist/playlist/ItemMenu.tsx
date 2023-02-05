@@ -1,3 +1,4 @@
+import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPlaylist"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
 import {
   ThreeDotsMenu,
@@ -7,20 +8,23 @@ import {
   ShareIcon,
 } from "@/components/ui/icons"
 import { Menu } from "@/components/ui/menu/Menu"
+import { DialogBox } from "@/components/ui/modal/DialogBox"
+import { Modal } from "@/components/ui/modal/Modal"
+import { useModal } from "@/components/ui/modal/useModal"
 import { useAddToWatchLaterMutation } from "@/lib/queries/react/useAddToWatchLaterMutation"
 import { UiPlaylistEntry } from "@/types/index"
+import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 
 type Props = {
   entry: UiPlaylistEntry
-  onSaveToPlaylistClick: () => void
 }
 
-export const ItemMenu: React.FunctionComponent<Props> = ({
-  entry,
-  onSaveToPlaylistClick,
-}) => {
+export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   const { data: session } = useSession()
+  const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
+
+  const { visible, show, close } = useModal()
 
   const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
 
@@ -43,12 +47,14 @@ export const ItemMenu: React.FunctionComponent<Props> = ({
           </div>
         )}
 
-        <div onClick={onSaveToPlaylistClick}>
-          <Menu.Item.IconAndText
-            icon={AddToPlaylistIcon}
-            text="Save to playlist"
-          />
-        </div>
+        {displaySaveToDialog && (
+          <div onClick={show}>
+            <Menu.Item.IconAndText
+              icon={AddToPlaylistIcon}
+              text="Save to playlist"
+            />
+          </div>
+        )}
 
         <a href={entry.rom.file}>
           <Menu.Item.IconAndText icon={DownloadIcon} text="Download" />
@@ -56,17 +62,19 @@ export const ItemMenu: React.FunctionComponent<Props> = ({
 
         <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
       </Menu.List>
+
+      {visible && (
+        <Modal>
+          <DialogBox title="Save to..." close={close}>
+            <SaveToPlaylist romId={entry.romId} onClose={close} />
+          </DialogBox>
+        </Modal>
+      )}
     </Menu>
   )
 }
 
-/**
- * Shared:
- * - Save to Watch Later
- * - Savt to playlist
- * - Download
- * - Share
- *
- * Own:
- * - Remove from [playlist-name]
- */
+// TODO: [permisson]
+const canSaveRomToOwnPlaylist = (session: Session | null) => {
+  return Boolean(session)
+}

@@ -1,31 +1,9 @@
-.save-dialog {
-  display: flex;
-  flex-direction: column;
-
-  font-size: 1.4rem;
-  line-height: 2rem;
-  font-weight: 400;
-}
-
-.save-dialog > * {
-  padding: 8px 10px;
-}
-
-.save-dialog header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-}
-
-.save-dialog main {
+.main {
   max-height: 300px;
   max-width: 600px;
 }
 
-.save-dialog main > :not(:last-child) {
+.main > :not(:last-child) {
   margin-bottom: 16px;
 }
 

@@ -1,0 +1,21 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  border: none;
+  background-color: rgba(33, 33, 33, 1);
+  color: #f1f1f1;
+  border-radius: 14px;
+  min-width: 210px;
+}

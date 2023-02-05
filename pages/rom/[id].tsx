@@ -8,26 +8,20 @@ import { EmulatorComponent } from "@/components/pages/rom/EmulatorComponent"
 import { useRomDownloader } from "@/components/pages/rom/useRomDownloader"
 import { InputMapping } from "@/components/pages/rom/InputMapping"
 import { Layout } from "@/components/pages/layout/Layout"
-import {
-  AddToPlaylistIcon,
-  DownloadIcon,
-  GamepadIcon,
-  ShareIcon,
-} from "@/components/ui/icons"
+import { DownloadIcon, GamepadIcon, ShareIcon } from "@/components/ui/icons"
 import { Share } from "@/components/features/share/Share"
-import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPlaylist"
 import { Button } from "@/components/ui/button/Button"
 import { convertEntity } from "@/lib/convertEntity"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
-import styles from "../../styles/Rom.module.css"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
+import { SaveToPlaylistButton } from "@/components/pages/rom/SaveToPlaylistButton"
+import styles from "../../styles/Rom.module.css"
 
 type Props = { rom: UiRom | undefined; url: string }
 
 const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
   const inputsDialogRef = useRef<HTMLDialogElement>(null)
-  const saveToDialogRef = useRef<HTMLDialogElement>(null)
   const shareDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
@@ -41,14 +35,6 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
 
   const closeInputsModal = () => {
     inputsDialogRef.current?.close()
-  }
-
-  const openSaveModal = () => {
-    saveToDialogRef.current?.showModal()
-  }
-
-  const closeSaveModal = () => {
-    saveToDialogRef.current?.close()
   }
 
   const openShareModal = () => {
@@ -95,12 +81,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
             <span>Download</span>
           </Button>
 
-          {displaySaveToDialog && (
-            <Button onClick={openSaveModal}>
-              <AddToPlaylistIcon />
-              Save
-            </Button>
-          )}
+          {displaySaveToDialog && <SaveToPlaylistButton romId={rom!.id} />}
         </div>
 
         <div className={styles["actions-box"]}>
@@ -113,10 +94,6 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         <div className={styles.description}>
           {rom?.description && <p>{rom.description}</p>}
         </div>
-
-        <dialog ref={saveToDialogRef}>
-          <SaveToPlaylist romId={rom!.id} onClose={closeSaveModal} />
-        </dialog>
 
         <dialog ref={inputsDialogRef}>
           <button data-type="close" onClick={() => closeInputsModal()}>

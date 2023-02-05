@@ -2,12 +2,12 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { CrossIcon, PlusIcon } from "@/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
-import styles from "./save-to-playlist.module.css"
 import { usePlaylistWithRomQuery } from "@/lib/queries/react/usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
 import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
 import { useCreatePlaylistMutation } from "@/lib/queries/react/useCreatePlaylistMutation"
 import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+import styles from "./save-to-playlist.module.css"
 
 type Props = {
   romId: string
@@ -55,15 +55,8 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={styles["save-dialog"]}>
-      <header>
-        <div>Save to...</div>
-        <div onClick={onDialogClose} className={styles["close-btn"]}>
-          <CrossIcon />
-        </div>
-      </header>
-
-      <main>
+    <>
+      <div className={styles["main"]}>
         {playlistsQuery.data
           ?.filter(({ type }) => type !== "history")
           .map(({ title, isPublic, id }) => (
@@ -78,9 +71,9 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
               key={id}
             />
           ))}
-      </main>
+      </div>
 
-      <footer>
+      <div className={styles["footer"]}>
         {isFormOpened ? (
           <CreatePlaylistForm onSubmit={onFormSubmit} />
         ) : (
@@ -89,7 +82,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
             <div>Create new playlist</div>
           </div>
         )}
-      </footer>
-    </div>
+      </div>
+    </>
   )
 }
