@@ -1,14 +1,13 @@
-import { useRouter } from "next/router"
 import { useRef } from "react"
+import { useRouter } from "next/router"
 import { Button } from "@/components/ui/button/Button"
-import { DialogBox } from "@/components/ui/dialog/DialogBox"
 import styles from "./Share.module.css"
 
-type Props = {
-  onClose: () => void
-}
+type Props = {}
 
-export const Share: React.FunctionComponent<Props> = ({ onClose }) => {
+// TODO: add url prop
+
+export const Share: React.FunctionComponent<Props> = () => {
   const { asPath } = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
   const url = `${process.env.NEXT_PUBLIC_DOMAIN}/${asPath}`
@@ -23,13 +22,11 @@ export const Share: React.FunctionComponent<Props> = ({ onClose }) => {
   }
 
   return (
-    <DialogBox title="Share" onClose={onClose}>
-      <div className={styles["share-input-box"]}>
-        <input ref={inputRef} value={url} readOnly />
-        <Button variant="blue-blue" onClick={onCopy}>
-          COPY
-        </Button>
-      </div>
-    </DialogBox>
+    <div className={styles["share-input-box"]}>
+      <input ref={inputRef} value={url} readOnly />
+      <Button variant="blue-blue" onClick={onCopy}>
+        COPY
+      </Button>
+    </div>
   )
 }

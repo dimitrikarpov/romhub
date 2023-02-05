@@ -1,49 +1,31 @@
-import { ReactElement, useRef } from "react"
-import Head from "next/head"
+import { ReactElement } from "react"
 import { GetServerSideProps } from "next"
+import Head from "next/head"
+import { Session } from "next-auth"
+import { useSession } from "next-auth/react"
 import prisma from "@/lib/prismadb"
 import { UiRom } from "@/types/index"
 import { NextPageWithLayout } from "../_app"
 import { EmulatorComponent } from "@/components/pages/rom/EmulatorComponent"
 import { useRomDownloader } from "@/components/pages/rom/useRomDownloader"
-import { InputMapping } from "@/components/pages/rom/InputMapping"
 import { Layout } from "@/components/pages/layout/Layout"
-import { DownloadIcon, GamepadIcon, ShareIcon } from "@/components/ui/icons"
-import { Share } from "@/components/features/share/Share"
+import { DownloadIcon } from "@/components/ui/icons"
 import { Button } from "@/components/ui/button/Button"
 import { convertEntity } from "@/lib/convertEntity"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
-import { Session } from "next-auth"
-import { useSession } from "next-auth/react"
 import { SaveToPlaylistButton } from "@/components/pages/rom/SaveToPlaylistButton"
+import { ShareButton } from "@/components/pages/rom/ShareButton"
+import { InputsButton } from "@/components/pages/rom/InputsButton"
 import styles from "../../styles/Rom.module.css"
 
 type Props = { rom: UiRom | undefined; url: string }
 
 const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
-  const inputsDialogRef = useRef<HTMLDialogElement>(null)
-  const shareDialogRef = useRef<HTMLDialogElement>(null)
   const { rom: buffer } = useRomDownloader(rom?.file)
   const coreUrl = rom?.file && getCoreUrlByRomName(rom?.file)
 
   const { data: session } = useSession()
   const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
-
-  const openInputsModal = () => {
-    inputsDialogRef.current?.showModal()
-  }
-
-  const closeInputsModal = () => {
-    inputsDialogRef.current?.close()
-  }
-
-  const openShareModal = () => {
-    shareDialogRef.current?.showModal()
-  }
-
-  const closeShareModal = () => {
-    shareDialogRef.current?.close()
-  }
 
   return (
     <>
@@ -71,10 +53,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         </div>
 
         <div className={styles["actions-box"]}>
-          <Button onClick={openShareModal}>
-            <ShareIcon />
-            Share
-          </Button>
+          <ShareButton />
 
           <Button>
             <DownloadIcon />
@@ -85,26 +64,12 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         </div>
 
         <div className={styles["actions-box"]}>
-          <Button onClick={openInputsModal}>
-            <GamepadIcon />
-            Controls
-          </Button>
+          <InputsButton />
         </div>
 
         <div className={styles.description}>
           {rom?.description && <p>{rom.description}</p>}
         </div>
-
-        <dialog ref={inputsDialogRef}>
-          <button data-type="close" onClick={() => closeInputsModal()}>
-            close
-          </button>
-          <InputMapping />
-        </dialog>
-
-        <dialog ref={shareDialogRef}>
-          <Share onClose={closeShareModal} />
-        </dialog>
       </div>
     </>
   )
