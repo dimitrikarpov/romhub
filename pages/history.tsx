@@ -1,13 +1,13 @@
 import { GetServerSideProps } from "next"
 import { ReactElement } from "react"
-import { Layout } from "../components/pages/layout/Layout"
-import { NextPageWithLayout } from "./_app"
 import { getSession } from "next-auth/react"
+import { Layout } from "@/components/pages/layout/Layout"
+import { NextPageWithLayout } from "./_app"
 import prisma from "@/lib/prismadb"
-import styles from "../styles/History.module.css"
-import { UiPlaylistEntry } from "../types/index"
-import { List } from "../components/pages/history/List"
+import { UiPlaylistEntry } from "@/types/index"
+import { List } from "@/components/pages/history/List"
 import { convertEntity } from "@/lib/convertEntity"
+import styles from "../styles/History.module.css"
 
 type Props = {
   entries: UiPlaylistEntry[]
@@ -54,6 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     where: { playlistId: String(historyPlaylist?.id) },
     orderBy: { assignedAt: "desc" },
     include: { rom: true },
+    take: 15,
   })
 
   const entriesWithUpdatedRoms = entries.map((entry) => ({
