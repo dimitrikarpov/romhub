@@ -1,8 +1,8 @@
 import nextAuth from "next-auth/next"
+import { NextAuthOptions } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
 import prisma from "@/lib/prismadb"
-import { NextAuthOptions } from "next-auth"
 import { dbQueries } from "@/lib/queries/dbQueries"
 
 export const authOptions: NextAuthOptions = {
@@ -16,6 +16,8 @@ export const authOptions: NextAuthOptions = {
   events: {
     createUser: async (message) => {
       /* creates default playlists for new user */
+
+      // TODO: rewrite as single request
       await dbQueries.createPlaylist({
         type: "history",
         title: "History",
@@ -36,23 +38,6 @@ export const authOptions: NextAuthOptions = {
         isPublic: false,
         userId: message.user.id,
       })
-
-      // await prisma.playlist.create({
-      //   data: [
-      //     {
-      //       type: "history",
-      //       title: "History",
-      //       isPublic: false,
-      //       userId: message.user.id,
-      //     },
-      //     {
-      //       type: "watch_later",
-      //       title: "Watch Later",
-      //       isPublic: false,
-      //       userId: message.user.id,
-      //     },
-      //   ],
-      // })
     },
   },
   callbacks: {

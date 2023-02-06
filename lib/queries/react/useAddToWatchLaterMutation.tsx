@@ -7,7 +7,9 @@ export const useAddToWatchLaterMutation = (romId: string) => {
   const { data: session } = useSession()
   const queryClient = useQueryClient()
 
-  const playlistsQuery = useUserPlaylistsQuery(session?.user.id as string)
+  const playlistsQuery = useUserPlaylistsQuery({
+    enabled: Boolean(session?.user.id),
+  })
 
   let playlistId =
     playlistsQuery?.data?.find(({ type }) => type === "watch_later")?.id ||

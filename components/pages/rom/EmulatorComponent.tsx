@@ -20,7 +20,9 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
-    const playlistQuery = useUserPlaylistsQuery(session?.user.id as string)
+    const playlistQuery = useUserPlaylistsQuery({
+      enabled: Boolean(session?.user.id),
+    })
 
     useEffect(() => {
       if (status === "inited") {

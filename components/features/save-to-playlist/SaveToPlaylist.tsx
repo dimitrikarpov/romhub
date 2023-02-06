@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useSession } from "next-auth/react"
-import { CrossIcon, PlusIcon } from "@/components/ui/icons"
+import { PlusIcon } from "@/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
 import { usePlaylistWithRomQuery } from "@/lib/queries/react/usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
@@ -30,12 +30,10 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     setIsFormOpened(true)
   }
 
-  const playlistsQuery = useUserPlaylistsQuery(session?.user.id, true)
-  const playlistsWithRomQuery = usePlaylistWithRomQuery(
-    session?.user.id,
-    romId,
-    true,
-  )
+  const playlistsQuery = useUserPlaylistsQuery({
+    enabled: Boolean(session?.user.id),
+  })
+  const playlistsWithRomQuery = usePlaylistWithRomQuery({ romId })
   const createPlaylistEntryMutation = useCreatePlaylistEntryMutation({
     onSuccess: onDialogClose,
   })

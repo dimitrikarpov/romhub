@@ -1,6 +1,6 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import { z } from "zod"
 import { dbQueries } from "@/lib/queries/dbQueries"
-import type { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,
@@ -42,4 +42,6 @@ export default async function handler(
       res.status(404).send("Not found!")
     }
   }
+
+  // res.status(405).end(`${req.method} Not Allowed`)
 }
