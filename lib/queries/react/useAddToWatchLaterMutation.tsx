@@ -18,7 +18,7 @@ export const useAddToWatchLaterMutation = (romId: string) => {
   const addToWatchLaterMutation = useMutation({
     mutationFn: () => apiQueries.createPlaylistEntry({ playlistId, romId }),
     onSuccess: () => {
-      queryClient.invalidateQueries("playlists-with-rom")
+      queryClient.invalidateQueries("playlists-contains-rom")
     },
   })
 

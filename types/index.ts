@@ -13,5 +13,4 @@ export type TCreatePlaylistFormData = {
   type: TPlaylistType
   title: string
   isPublic: boolean
-  userId: string
 }

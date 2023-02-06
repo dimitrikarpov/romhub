@@ -1,19 +1,11 @@
-import { TPlaylistType } from "@/types/index"
+import { TCreatePlaylistFormData, TPlaylistType } from "@/types/index"
 
-export const createPlaylist = ({
-  userId,
-  title,
-  type = "custom",
-  isPublic = false,
-}: {
-  type: TPlaylistType
-  title: string
-  isPublic: boolean
-  userId: string
-}) => {
+export const createPlaylist = ({ data }: { data: TCreatePlaylistFormData }) => {
+  const { title, type = "custom", isPublic = false } = data
+
   return fetch("/api/playlists", {
     method: "POST",
-    body: JSON.stringify({ type, title, isPublic, userId }),
+    body: JSON.stringify({ type, title, isPublic }),
     headers: {
       "Content-Type": "application/json",
     },

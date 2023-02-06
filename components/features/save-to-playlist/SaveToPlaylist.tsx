@@ -33,7 +33,10 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
   const playlistsQuery = useUserPlaylistsQuery({
     enabled: Boolean(session?.user.id),
   })
-  const playlistsWithRomQuery = usePlaylistWithRomQuery({ romId })
+  const playlistsWithRomQuery = usePlaylistWithRomQuery({
+    romId,
+    enabled: Boolean(session?.user.id),
+  })
   const createPlaylistEntryMutation = useCreatePlaylistEntryMutation({
     onSuccess: onDialogClose,
   })
@@ -45,10 +48,11 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
 
   const onFormSubmit = async (data: IFormInput) => {
     createPlaylistMutation.mutate({
-      type: "custom",
-      isPublic: data.privacy === "public",
-      title: data.title,
-      userId: String(session?.user.id),
+      data: {
+        type: "custom",
+        isPublic: data.privacy === "public",
+        title: data.title,
+      },
     })
   }
 

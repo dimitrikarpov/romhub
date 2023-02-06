@@ -11,7 +11,7 @@ export const useCreatePlaylistEntryMutation = ({
   return useMutation({
     mutationFn: apiQueries.createPlaylistEntry,
     onSuccess: () => {
-      queryClient.invalidateQueries("playlists-with-rom")
+      queryClient.invalidateQueries("playlists-contains-rom")
       onSuccess?.()
     },
   })

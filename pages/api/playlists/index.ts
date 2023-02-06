@@ -21,9 +21,16 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
+    const session = await unstable_getServerSession(req, res, authOptions)
+
+    if (!session) return res.status(404).send("Not Found")
+
     const body = req.body as TCreatePlaylistFormData
 
-    const playlist = await dbQueries.createPlaylist(body)
+    const playlist = await dbQueries.createPlaylist(
+      session.user.id as string,
+      body,
+    )
 
     return res.status(200).json(playlist)
   }

@@ -8,7 +8,7 @@ export const useDeletePlaylistEntryMutation = () => {
     mutationFn: apiQueries.deletePlaylistEntryByRom,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["playlists-with-rom"],
+        queryKey: ["playlists-contains-rom"],
       })
     },
   })
