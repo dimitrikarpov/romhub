@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from "react-query"
 import { apiQueries } from "../apiQueries"
 
-export const useDeletePlaylistEntryByRomMutation = () => {
+export const useDeletePlaylistEntryByRomMutation = ({
+  onSuccess,
+}: {
+  onSuccess?: () => void
+}) => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -10,6 +14,8 @@ export const useDeletePlaylistEntryByRomMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["playlists-contains-rom"],
       })
+
+      onSuccess?.()
     },
   })
 }

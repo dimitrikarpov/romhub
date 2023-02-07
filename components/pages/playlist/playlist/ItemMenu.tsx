@@ -13,15 +13,19 @@ import { DialogBox } from "@/components/ui/modal/DialogBox"
 import { Modal } from "@/components/ui/modal/Modal"
 import { useModal } from "@/components/ui/modal/useModal"
 import { useAddToWatchLaterMutation } from "@/lib/queries/react/useAddToWatchLaterMutation"
+import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
 import { UiPlaylistEntry } from "@/types/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
+import { useQueryClient } from "react-query"
 
 type Props = {
   entry: UiPlaylistEntry
 }
 
 export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
+  const queryClient = useQueryClient()
+
   const { data: session } = useSession()
   const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
   const displayDeleteEntryItem = canDeletePlaylistEntryById(session, entry)
@@ -29,9 +33,23 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   const { visible, show, close } = useModal()
 
   const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
+  const deleteEntryMutation = useDeletePlaylistEntryByRomMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["playlist-entries", { id: entry.playlistId }],
+      })
+    },
+  })
 
   const onSaveToWatchLaterClick = () => {
     addToWatchLaterMutation.mutate()
+  }
+
+  const onDeleteClick = () => {
+    deleteEntryMutation.mutate({
+      playlistId: entry.playlistId,
+      romId: entry.romId,
+    })
   }
 
   return (
@@ -65,7 +83,7 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
 
         {displayDeleteEntryItem && (
-          <div>
+          <div onClick={onDeleteClick}>
             <Menu.Item.IconAndText
               icon={RubbishBinIcon}
               text={`Remove from ${entry.playlist.title}`}

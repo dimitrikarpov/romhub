@@ -25,7 +25,7 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   romId,
 }) => {
   const addMutation = useCreatePlaylistEntryMutation({})
-  const deleteMutation = useDeletePlaylistEntryByRomMutation()
+  const deleteMutation = useDeletePlaylistEntryByRomMutation({})
 
   const onClick = () => {
     if (isChecked) {

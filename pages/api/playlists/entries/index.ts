@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!found) return res.status(404).send("Not found")
 
-    return res.status(200).json(found.entries)
+    return res.status(200).json(found)
   }
 
   if (req.method === "DELETE") {

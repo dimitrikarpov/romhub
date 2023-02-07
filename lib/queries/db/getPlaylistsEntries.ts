@@ -1,18 +1,14 @@
+import { convertEntity } from "@/lib/convertEntity"
 import prisma from "@/lib/prismadb"
 
-// TODO: does it used through apiQuery ??
 export const getPlaylistsEntries = async (playlistId: string) => {
-  const found = await prisma.playlist.findFirst({
-    where: { id: playlistId },
-    include: {
-      entries: {
-        include: {
-          rom: true,
-          playlist: true,
-        },
-      },
-    },
+  const found = await prisma.playlistEntry.findMany({
+    where: { playlistId: playlistId },
+    include: { rom: true, playlist: true },
   })
 
-  return found
+  return found.map((entry) => ({
+    ...entry,
+    rom: convertEntity.rom.toUiRom(entry.rom),
+  }))
 }
