@@ -6,6 +6,7 @@ import {
   AddToPlaylistIcon,
   DownloadIcon,
   ShareIcon,
+  RubbishBinIcon,
 } from "@/components/ui/icons"
 import { Menu } from "@/components/ui/menu/Menu"
 import { DialogBox } from "@/components/ui/modal/DialogBox"
@@ -23,6 +24,7 @@ type Props = {
 export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   const { data: session } = useSession()
   const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
+  const displayDeleteEntryItem = canDeletePlaylistEntryById(session, entry)
 
   const { visible, show, close } = useModal()
 
@@ -61,6 +63,15 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         </a>
 
         <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
+
+        {displayDeleteEntryItem && (
+          <div>
+            <Menu.Item.IconAndText
+              icon={RubbishBinIcon}
+              text={`Remove from ${entry.playlist.title}`}
+            />
+          </div>
+        )}
       </Menu.List>
 
       {visible && (
@@ -77,4 +88,12 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
 // TODO: [permisson]
 const canSaveRomToOwnPlaylist = (session: Session | null) => {
   return Boolean(session)
+}
+
+// TODO: [permisson]
+const canDeletePlaylistEntryById = (
+  session: Session | null,
+  entry: UiPlaylistEntry,
+) => {
+  return session && session.user.id === entry.playlist.authorId
 }

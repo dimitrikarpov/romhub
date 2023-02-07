@@ -79,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // TODO: looks like it better approach than in dbQuery.getPlaylistsEntries
   const entries = await prisma.playlistEntry.findMany({
     where: { playlistId: playlist.id },
-    include: { rom: true },
+    include: { rom: true, playlist: true },
   })
 
   return {

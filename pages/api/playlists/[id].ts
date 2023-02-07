@@ -15,7 +15,7 @@ export default async function handler(
 
     if (!playlist) return res.status(404).send("Not found")
 
-    res.status(200).json(playlist)
+    return res.status(200).json(playlist)
   }
 
   if (req.method === "PATCH") {
@@ -37,11 +37,11 @@ export default async function handler(
         isPublic,
       })
 
-      res.status(200).json(playlist)
+      return res.status(200).json(playlist)
     } catch (e) {
-      res.status(404).send("Not found!")
+      return res.status(404).send("Not found!")
     }
   }
 
-  // res.status(405).end(`${req.method} Not Allowed`)
+  return res.status(405).end(`${req.method} Not Allowed`)
 }

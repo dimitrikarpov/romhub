@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query"
 import { apiQueries } from "../apiQueries"
 
-export const useDeletePlaylistEntryMutation = () => {
+export const useDeletePlaylistEntryByRomMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({

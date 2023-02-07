@@ -23,5 +23,3 @@ export default async function handler(
 
   res.status(405).end(`${req.method} Not Allowed`)
 }
-
-// TODO: looks like place for crfs token

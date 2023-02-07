@@ -5,7 +5,7 @@ import {
   LockIcon,
 } from "@/components/ui/icons"
 import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
-import { useDeletePlaylistEntryMutation } from "@/lib/queries/react/useDeletePlaylistEntryMutation"
+import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
 import classNames from "classnames"
 import styles from "./save-to-playlist.module.css"
 
@@ -25,7 +25,7 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   romId,
 }) => {
   const addMutation = useCreatePlaylistEntryMutation({})
-  const deleteMutation = useDeletePlaylistEntryMutation()
+  const deleteMutation = useDeletePlaylistEntryByRomMutation()
 
   const onClick = () => {
     if (isChecked) {

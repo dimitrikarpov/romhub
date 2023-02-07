@@ -17,26 +17,22 @@ export const authOptions: NextAuthOptions = {
     createUser: async (message) => {
       /* creates default playlists for new user */
 
-      // TODO: rewrite as single request
-      await dbQueries.createPlaylist({
+      await dbQueries.createPlaylist(message.user.id, {
         type: "history",
         title: "History",
         isPublic: false,
-        userId: message.user.id,
       })
 
-      await dbQueries.createPlaylist({
+      await dbQueries.createPlaylist(message.user.id, {
         type: "watch_later",
         title: "Watch Later",
         isPublic: false,
-        userId: message.user.id,
       })
 
-      await dbQueries.createPlaylist({
+      await dbQueries.createPlaylist(message.user.id, {
         type: "custom",
         title: "Favorites",
         isPublic: false,
-        userId: message.user.id,
       })
     },
   },
