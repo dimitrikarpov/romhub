@@ -1,4 +1,5 @@
 import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPlaylist"
+import { Share } from "@/components/features/share/Share"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
 import {
   ThreeDotsMenu,
@@ -30,7 +31,16 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
   const displayDeleteEntryItem = canDeletePlaylistEntryById(session, entry)
 
-  const { visible, show, close } = useModal()
+  const {
+    visible: isSaveToVisible,
+    show: showSaveTo,
+    close: closeSaveTo,
+  } = useModal()
+  const {
+    visible: isShareVisible,
+    show: showShare,
+    close: closeShare,
+  } = useModal()
 
   const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
   const deleteEntryMutation = useDeletePlaylistEntryByRomMutation({
@@ -68,7 +78,7 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         )}
 
         {displaySaveToDialog && (
-          <div onClick={show}>
+          <div onClick={showSaveTo}>
             <Menu.Item.IconAndText
               icon={AddToPlaylistIcon}
               text="Save to playlist"
@@ -80,7 +90,9 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
           <Menu.Item.IconAndText icon={DownloadIcon} text="Download" />
         </a>
 
-        <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
+        <div onClick={showShare}>
+          <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
+        </div>
 
         {displayDeleteEntryItem && (
           <div onClick={onDeleteClick}>
@@ -92,10 +104,18 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         )}
       </Menu.List>
 
-      {visible && (
+      {isSaveToVisible && (
         <Modal>
-          <DialogBox title="Save to..." close={close}>
-            <SaveToPlaylist romId={entry.romId} onClose={close} />
+          <DialogBox title="Save to..." close={closeSaveTo}>
+            <SaveToPlaylist romId={entry.romId} onClose={closeSaveTo} />
+          </DialogBox>
+        </Modal>
+      )}
+
+      {isShareVisible && (
+        <Modal>
+          <DialogBox title="Share" close={closeShare}>
+            <Share type="rom" id={entry.romId} />
           </DialogBox>
         </Modal>
       )}

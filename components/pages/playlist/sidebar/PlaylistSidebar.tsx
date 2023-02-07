@@ -1,7 +1,6 @@
 import {
   CollaborateIcon,
   RubbishBinIcon,
-  ShareIcon,
   ThreeDotsMenu,
 } from "@/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
@@ -15,6 +14,7 @@ import { PrivacySelect } from "./PrivacySelect"
 import styles from "./PlaylistSidebar.module.css"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
+import { ShareIconButton } from "./ShareIconButton"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -37,6 +37,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   const isTitleEditable = canEditPlaylistTitle(session, playlist)
   const isDescriptionEditable = canEditPlaylistDescription(session, playlist)
   const isPrivacyEditable = canEditPlaylistPrivacy(session, playlist)
+  const isShareVisible = canSharePlaylist(playlist)
 
   return (
     <div className={styles["sidebar"]}>
@@ -63,7 +64,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
       </div>
 
       <div className={styles["controls-container"]}>
-        <IconButton icon={ShareIcon} />
+        {isShareVisible && <ShareIconButton />}
 
         <Menu>
           <Menu.Handler>
@@ -134,4 +135,9 @@ const canEditPlaylistPrivacy = (
     playlist.authorId === session?.user.id &&
     playlist.type !== "watch_later"
   )
+}
+
+// TODO: [permisson]
+const canSharePlaylist = (playlist: Playlist) => {
+  return playlist.isPublic && playlist.type === "custom"
 }
