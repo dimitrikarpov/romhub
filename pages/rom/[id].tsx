@@ -55,10 +55,12 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         <div className={styles["actions-box"]}>
           <ShareButton />
 
-          <Button>
-            <DownloadIcon />
-            <span>Download</span>
-          </Button>
+          <a href={rom!.file}>
+            <Button>
+              <DownloadIcon />
+              <span>Download</span>
+            </Button>
+          </a>
 
           {displaySaveToDialog && <SaveToPlaylistButton romId={rom!.id} />}
         </div>
