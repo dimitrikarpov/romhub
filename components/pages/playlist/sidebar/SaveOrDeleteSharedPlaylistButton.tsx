@@ -1,0 +1,49 @@
+import { IconButton } from "@/components/ui/icon-button/IconButton"
+import {
+  PlaylistWithDoneMarkIcon,
+  AddToPlaylistIcon,
+} from "@/components/ui/icons"
+import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+import { Playlist, User } from "@prisma/client"
+import { useSession } from "next-auth/react"
+
+type Props = {
+  playlist: Playlist & { author: User }
+}
+
+export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
+  Props
+> = ({ playlist }) => {
+  const { data: session } = useSession()
+  const { data: playlists } = useUserPlaylistsQuery({})
+
+  if (!session || playlist.authorId === session.user.id) return null
+
+  const isUserAlreadySavedThisPlaylist = playlists?.some(
+    ({ id }) => playlist.id === id,
+  )
+
+  const isSaveButtonVisible =
+    caSaveSharedPlaylist(playlist) && !isUserAlreadySavedThisPlaylist
+  const isRemoveButtonVisible =
+    canRemoveSharedPlaylistFromLibrary() && isUserAlreadySavedThisPlaylist
+
+  return (
+    <>
+      {isSaveButtonVisible && (
+        <IconButton icon={AddToPlaylistIcon} tip="Save playlist" />
+      )}
+      {isRemoveButtonVisible && (
+        <IconButton icon={PlaylistWithDoneMarkIcon} tip="Remove from Library" />
+      )}
+    </>
+  )
+}
+
+// TODO: [permisson]
+const caSaveSharedPlaylist = (playlist: Playlist) => {
+  return playlist.isPublic && playlist.type === "custom" // TODO: maybe check if current user is not author
+}
+
+// TODO: [permisson]
+const canRemoveSharedPlaylistFromLibrary = () => true // TODO: maybe check if current user is not author

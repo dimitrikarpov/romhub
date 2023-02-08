@@ -1,4 +1,5 @@
-import { PlaylistWithDoneMarkIcon, RubbishBinIcon } from "@/components/ui/icons"
+import { useRouter } from "next/router"
+import { RubbishBinIcon } from "@/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en"
@@ -6,12 +7,12 @@ import { IconButton } from "@/components/ui/icon-button/IconButton"
 import { Title } from "./title/Title"
 import { Description } from "./description/Description"
 import { PrivacySelect } from "./PrivacySelect"
-import styles from "./PlaylistSidebar.module.css"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { ShareIconButton } from "./ShareIconButton"
 import { useDeletePlaylistMutation } from "@/lib/queries/react/useDeletePlaylistMutation"
-import { useRouter } from "next/router"
+import styles from "./PlaylistSidebar.module.css"
+import { SaveOrDeleteSharedPlaylistButton } from "./SaveOrDeleteSharedPlaylistButton"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -76,7 +77,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
       <div className={styles["controls-container"]}>
         {isShareVisible && <ShareIconButton />}
 
-        <IconButton icon={PlaylistWithDoneMarkIcon} tip="Remove from Library" />
+        <SaveOrDeleteSharedPlaylistButton playlist={playlist} />
 
         {isDeleteOwnPlaylistVisible && (
           <IconButton
