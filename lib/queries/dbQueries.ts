@@ -7,6 +7,7 @@ import { getPlaylistsEntries } from "./db/getPlaylistsEntries"
 import { getUserPlaylists } from "./db/getUserPlaylists"
 import { getUserPlaylistsContainsRom } from "./db/getUserPlaylistsContainsRom"
 import { patchPlaylist } from "./db/patchPlaylist"
+import { deletePlaylist } from "./db/deletePlaylist"
 
 export const dbQueries = {
   getRoms,
@@ -17,5 +18,6 @@ export const dbQueries = {
   createPlaylist,
   createPlaylistEntry,
   deletePlaylistEntryByRom,
+  deletePlaylist,
   patchPlaylist,
 }

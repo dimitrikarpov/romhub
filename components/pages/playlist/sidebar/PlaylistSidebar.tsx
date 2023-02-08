@@ -1,13 +1,8 @@
-import {
-  CollaborateIcon,
-  RubbishBinIcon,
-  ThreeDotsMenu,
-} from "@/components/ui/icons"
+import { PlaylistWithDoneMarkIcon, RubbishBinIcon } from "@/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en"
 import { IconButton } from "@/components/ui/icon-button/IconButton"
-import { Menu } from "@/components/ui/menu/Menu"
 import { Title } from "./title/Title"
 import { Description } from "./description/Description"
 import { PrivacySelect } from "./PrivacySelect"
@@ -15,6 +10,8 @@ import styles from "./PlaylistSidebar.module.css"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { ShareIconButton } from "./ShareIconButton"
+import { useDeletePlaylistMutation } from "@/lib/queries/react/useDeletePlaylistMutation"
+import { useRouter } from "next/router"
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
@@ -32,12 +29,25 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   total,
   lastUpdated,
 }) => {
+  const router = useRouter()
+
   const { data: session } = useSession()
 
   const isTitleEditable = canEditPlaylistTitle(session, playlist)
   const isDescriptionEditable = canEditPlaylistDescription(session, playlist)
   const isPrivacyEditable = canEditPlaylistPrivacy(session, playlist)
   const isShareVisible = canSharePlaylist(playlist)
+  const isDeleteOwnPlaylistVisible = canDeleteOwnPlaylist(session, playlist)
+
+  const deleteOwnPlaylistMutation = useDeletePlaylistMutation({
+    onSuccess: () => {
+      router.push("/")
+    },
+  })
+
+  const onDeleteOwnPlaylistClick = () => {
+    deleteOwnPlaylistMutation.mutate({ playlistId: playlist.id })
+  }
 
   return (
     <div className={styles["sidebar"]}>
@@ -66,34 +76,15 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
       <div className={styles["controls-container"]}>
         {isShareVisible && <ShareIconButton />}
 
-        <Menu>
-          <Menu.Handler>
-            <IconButton icon={ThreeDotsMenu} />
-          </Menu.Handler>
-          <Menu.List>
-            <Menu.Item>
-              <div
-                onClick={() => {
-                  console.log("clicked")
-                }}
-              >
-                <Menu.Item.IconAndText
-                  icon={CollaborateIcon}
-                  text="Collaborate"
-                />
-              </div>
-              <Menu.Item.Divider />
-              <Menu.Item.IconAndText
-                icon={RubbishBinIcon}
-                text="Delete Playlist"
-              />
-              <Menu.Item.IconAndText
-                icon={CollaborateIcon}
-                text="Add all to..."
-              />
-            </Menu.Item>
-          </Menu.List>
-        </Menu>
+        <IconButton icon={PlaylistWithDoneMarkIcon} tip="Remove from Library" />
+
+        {isDeleteOwnPlaylistVisible && (
+          <IconButton
+            icon={RubbishBinIcon}
+            tip="Delete Playlist"
+            onClick={onDeleteOwnPlaylistClick}
+          />
+        )}
       </div>
 
       <Description
@@ -140,4 +131,13 @@ const canEditPlaylistPrivacy = (
 // TODO: [permisson]
 const canSharePlaylist = (playlist: Playlist) => {
   return playlist.isPublic && playlist.type === "custom"
+}
+
+// TODO: [permisson]
+const canDeleteOwnPlaylist = (session: Session | null, playlist: Playlist) => {
+  return (
+    session &&
+    session.user.id === playlist.authorId &&
+    playlist.type === "custom"
+  )
 }

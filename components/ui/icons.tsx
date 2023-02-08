@@ -46,6 +46,18 @@ export const AddToPlaylistIcon = () => (
   </svg>
 )
 
+export const PlaylistWithDoneMarkIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    preserveAspectRatio="xMidYMid meet"
+    focusable="false"
+  >
+    <g>
+      <path d="M15.06,16.47l-3.76-3.76l1.41-1.41l2.24,2.24l5.3-6.18l1.52,1.3L15.06,16.47z M14,9H2V7h12V9z M2,11h8v2H2V11z M2,15h8v2H2 V15z"></path>
+    </g>
+  </svg>
+)
+
 export const HomeIcon = () => (
   <svg
     viewBox="0 0 24 24"
