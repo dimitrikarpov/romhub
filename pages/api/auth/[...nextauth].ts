@@ -2,6 +2,8 @@ import nextAuth from "next-auth/next"
 import { NextAuthOptions } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
+import TwitchProvider from "next-auth/providers/twitch"
+import YandexProvider from "next-auth/providers/yandex"
 import prisma from "@/lib/prismadb"
 import { dbQueries } from "@/lib/queries/dbQueries"
 
@@ -11,12 +13,23 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      // allowDangerousEmailAccountLinking: true,
+    }),
+    TwitchProvider({
+      clientId: process.env.TWITCH_CLIENT_ID as string,
+      clientSecret: process.env.TWITCH_CLIENT_SECRET as string,
+      // allowDangerousEmailAccountLinking: true,
+    }),
+    YandexProvider({
+      clientId: process.env.YANDEX_CLIENT_ID as string,
+      clientSecret: process.env.YANDEX_CLIENT_SECRET as string,
     }),
   ],
   events: {
     createUser: async (message) => {
-      /* creates default playlists for new user */
+      // TODO: do not create playlists if user already exists (with email account linking)
 
+      /* creates default playlists for new user */
       await dbQueries.createPlaylist(message.user.id, {
         type: "history",
         title: "History",
