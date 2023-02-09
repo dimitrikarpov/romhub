@@ -14,6 +14,9 @@ import { useDeletePlaylistMutation } from "@/lib/queries/react/useDeletePlaylist
 import styles from "./PlaylistSidebar.module.css"
 import { SaveOrDeleteSharedPlaylistButton } from "./SaveOrDeleteSharedPlaylistButton"
 
+// TODO: make a singleton to prevent
+//  [javascript-time-ago] `TimeAgo.addDefaultLocale()` can only be called once. To add other locales, use `TimeAgo.addLocale()`.
+// or use https://github.com/catamphetamine/javascript-time-ago/issues/52
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo("en-US")
 

@@ -78,13 +78,12 @@ model PlaylistsOnUsers {
 }
 
 model PlaylistEntry {
+  id         String   @id @default(cuid())
   romId      String
   rom        Rom      @relation(fields: [romId], references: [id])
   playlistId String
   playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
   assignedAt DateTime @default(now())
-
-  @@id([romId, playlistId])
 }
 
 model Rom {
