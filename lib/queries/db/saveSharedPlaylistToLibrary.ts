@@ -12,8 +12,18 @@ export const saveSharedPlaylistToLibrary = async (
 
   if (!playlist || !caSaveSharedPlaylist(playlist, session)) return
 
-  const result = await prisma.playlistsOnUsers.create({
-    data: { userId: session.user.id as string, playlistId: playlist.id },
+  const result = await prisma.playlistsOnUsers.upsert({
+    where: {
+      userId_playlistId: {
+        userId: session.user.id as string,
+        playlistId,
+      },
+    },
+    update: {},
+    create: {
+      userId: session.user.id as string,
+      playlistId: playlist.id,
+    },
   })
 
   return result
