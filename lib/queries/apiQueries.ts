@@ -8,6 +8,8 @@ import { createPlaylistEntry } from "./api/createPlaylistEntry"
 import { patchPlaylist } from "./api/patchPlayilst"
 import { getPlaylistsEntries } from "./api/getPlaylistsEntries"
 import { deletePlaylist } from "./api/deletePlaylist"
+import { deleteSharedPlaylistFromLibrary } from "./api/deleteSharedPlaylistFromLibrary"
+import { saveSharedPlaylistToLibrary } from "./api/saveSharedPlaylistToLibrary"
 
 export const apiQueries = {
   getRoms,
@@ -20,4 +22,6 @@ export const apiQueries = {
   deletePlaylistEntryByRom,
   deletePlaylist,
   patchPlaylist,
+  saveSharedPlaylistToLibrary,
+  deleteSharedPlaylistFromLibrary,
 }

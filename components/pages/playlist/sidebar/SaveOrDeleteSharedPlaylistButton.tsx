@@ -3,6 +3,8 @@ import {
   PlaylistWithDoneMarkIcon,
   AddToPlaylistIcon,
 } from "@/components/ui/icons"
+import { useAddSharedPlaylistToLibraryMutation } from "@/lib/queries/react/useAddSharedPlaylistToLibraryMutation"
+import { useDeleteSharedPlaylistFromLibraryMutation } from "@/lib/queries/react/useDeleteSharedPlaylistFromLibraryMutation"
 import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
@@ -16,25 +18,54 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
 > = ({ playlist }) => {
   const { data: session } = useSession()
   const { data: playlists } = useUserPlaylistsQuery({})
-
-  if (!session || playlist.authorId === session.user.id) return null
+  const addMutation = useAddSharedPlaylistToLibraryMutation({
+    onSuccess: () => {
+      console.log("added")
+    },
+  })
+  const deleteMutation = useDeleteSharedPlaylistFromLibraryMutation({
+    onSuccess: () => {
+      console.log("deleted")
+    },
+  })
 
   const isUserAlreadySavedThisPlaylist = playlists?.some(
     ({ id }) => playlist.id === id,
   )
-
   const isSaveButtonVisible =
     caSaveSharedPlaylist(playlist) && !isUserAlreadySavedThisPlaylist
   const isRemoveButtonVisible =
     canRemoveSharedPlaylistFromLibrary() && isUserAlreadySavedThisPlaylist
 
+  const addToLibrary = () => {
+    addMutation.mutate({
+      playlistId: playlist.id,
+    })
+  }
+
+  const deleteFromLibrary = () => {
+    deleteMutation.mutate({
+      playlistId: playlist.id,
+    })
+  }
+
+  if (!session || playlist.authorId === session.user.id) return null
+
   return (
     <>
       {isSaveButtonVisible && (
-        <IconButton icon={AddToPlaylistIcon} tip="Save playlist" />
+        <IconButton
+          icon={AddToPlaylistIcon}
+          tip="Save playlist"
+          onClick={addToLibrary}
+        />
       )}
       {isRemoveButtonVisible && (
-        <IconButton icon={PlaylistWithDoneMarkIcon} tip="Remove from Library" />
+        <IconButton
+          icon={PlaylistWithDoneMarkIcon}
+          tip="Remove from Library"
+          onClick={deleteFromLibrary}
+        />
       )}
     </>
   )

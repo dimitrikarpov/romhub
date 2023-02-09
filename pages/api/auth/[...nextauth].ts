@@ -13,12 +13,10 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      // allowDangerousEmailAccountLinking: true,
     }),
     TwitchProvider({
       clientId: process.env.TWITCH_CLIENT_ID as string,
       clientSecret: process.env.TWITCH_CLIENT_SECRET as string,
-      // allowDangerousEmailAccountLinking: true,
     }),
     YandexProvider({
       clientId: process.env.YANDEX_CLIENT_ID as string,

@@ -10,7 +10,6 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const session = await unstable_getServerSession(req, res, authOptions)
-
     if (!session) return res.status(404).send("Not Found")
 
     const playlists = await dbQueries.getUserPlaylists(

@@ -8,6 +8,8 @@ import { getUserPlaylists } from "./db/getUserPlaylists"
 import { getUserPlaylistsContainsRom } from "./db/getUserPlaylistsContainsRom"
 import { patchPlaylist } from "./db/patchPlaylist"
 import { deletePlaylist } from "./db/deletePlaylist"
+import { saveSharedPlaylistToLibrary } from "./db/saveSharedPlaylistToLibrary"
+import { deleteSharedPlaylistFromLibrary } from "./db/deleteSharedPlaylistFromLibrary"
 
 export const dbQueries = {
   getRoms,
@@ -20,4 +22,6 @@ export const dbQueries = {
   deletePlaylistEntryByRom,
   deletePlaylist,
   patchPlaylist,
+  saveSharedPlaylistToLibrary,
+  deleteSharedPlaylistFromLibrary,
 }
