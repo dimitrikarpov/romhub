@@ -61,6 +61,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
       <div className={styles["main"]}>
         {playlistsQuery.data
           ?.filter(({ type }) => type !== "history")
+          ?.filter(({ authorId }) => authorId === session?.user.id)
           .map(({ title, isPublic, id }) => (
             <PlaylistEntry
               title={title}
