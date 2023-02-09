@@ -71,9 +71,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         <div>{total} games</div>
         <div>
           Updated{" "}
-          {lastUpdated
-            ? `${timeAgo.format(lastUpdated, "twitter")} ago`
-            : "never"}
+          {lastUpdated ? timeAgo.format(lastUpdated, "round-minute") : "never"}
         </div>
       </div>
 
