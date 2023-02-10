@@ -1,6 +1,7 @@
 import { UiRom } from "@/types/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
+import { platforms } from "pages/_app"
 import styles from "./Gallery.module.css"
 
 type Props = {
@@ -21,7 +22,7 @@ export const GalleryItem: React.FunctionComponent<Props> = ({ rom }) => {
 
         <div className={styles["card__description"]}>
           <p className={styles["card__platform"]}>
-            Nintendo Entertainment System
+            {platforms[rom.platform].shortName}
           </p>
 
           <a href={`/rom/${rom.id}`} target="_blank">

@@ -2,6 +2,7 @@ import cn from "classnames"
 import { useContext } from "react"
 import { SearchContext } from "@/contexts/search/SearchContext"
 import styles from "./PlatformFilter.module.css"
+import { platforms } from "pages/_app"
 
 export const PlatformFilter: React.FunctionComponent = () => {
   const { platform, selectPlatform } = useContext(SearchContext)
@@ -23,14 +24,4 @@ export const PlatformFilter: React.FunctionComponent = () => {
       ))}
     </div>
   )
-}
-
-type TPlatforms = {
-  [slug: string]: { name: string }
-}
-
-const platforms: TPlatforms = {
-  nes: { name: "Nintendo Entertainment System" },
-  md: { name: "Sega Genesis" },
-  snes: { name: "Super Nintendo Entertainment System" },
 }

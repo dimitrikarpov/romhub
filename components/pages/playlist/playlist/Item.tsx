@@ -1,5 +1,6 @@
 import { UiPlaylistEntry } from "@/types/index"
 import { ItemMenu } from "./ItemMenu"
+import { platforms } from "pages/_app"
 import styles from "./Item.module.css"
 
 type Props = {
@@ -23,7 +24,7 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
             </a>
           </div>
           <div className={styles["item-text__platform"]}>
-            {entry.rom.platform}
+            {platforms[entry.rom.platform].shortName}
           </div>
         </div>
 

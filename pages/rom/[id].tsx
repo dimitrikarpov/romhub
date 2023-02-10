@@ -5,7 +5,7 @@ import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import prisma from "@/lib/prismadb"
 import { UiRom } from "@/types/index"
-import { NextPageWithLayout } from "../_app"
+import { NextPageWithLayout, platforms } from "../_app"
 import { EmulatorComponent } from "@/components/pages/rom/EmulatorComponent"
 import { useRomDownloader } from "@/components/pages/rom/useRomDownloader"
 import { Layout } from "@/components/pages/layout/Layout"
@@ -48,7 +48,9 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         )}
 
         <div className={styles["name-box"]}>
-          <span className={styles["platform"]}>{rom?.platform}</span>
+          <span className={styles["platform"]}>
+            {platforms[rom!.platform].shortName}
+          </span>
           <span className={styles["name"]}>{rom?.name}</span>
         </div>
 

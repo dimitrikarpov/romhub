@@ -9,6 +9,10 @@ export const playlistTypes = ["history", "watch_later", "custom"] as const
 
 export type TPlaylistType = typeof playlistTypes[number]
 
+export type TPlatforms = {
+  [slug: string]: { name: string; shortName: string }
+}
+
 export type TCreatePlaylistFormData = {
   type: TPlaylistType
   title: string
