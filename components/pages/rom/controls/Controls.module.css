@@ -1,0 +1,43 @@
+.dialog-container {
+}
+
+.image-container {
+  width: 450px;
+  position: relative;
+}
+
+.image-container img {
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  font-size: 1.8rem;
+}
+
+.table td {
+  padding: 1rem 0;
+}
+
+.table-row--active {
+  background-color: cadetblue;
+}
+
+.controller-dot-mark {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #52e399;
+  opacity: 0.5;
+}
+
+.controller-dot-mark:hover {
+  cursor: pointer;
+
+  opacity: 0.7;
+}
+
+.control-icon {
+  image-rendering: pixelated;
+}

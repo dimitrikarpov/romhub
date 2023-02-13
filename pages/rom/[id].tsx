@@ -17,6 +17,7 @@ import { SaveToPlaylistButton } from "@/components/pages/rom/SaveToPlaylistButto
 import { ShareButton } from "@/components/pages/rom/ShareButton"
 import { InputsButton } from "@/components/pages/rom/InputsButton"
 import styles from "../../styles/Rom.module.css"
+import { ControlsButton } from "@/components/pages/rom/controls/ControlsButton"
 
 type Props = { rom: UiRom | undefined; url: string }
 
@@ -69,6 +70,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
 
         <div className={styles["actions-box"]}>
           <InputsButton />
+          <ControlsButton />
         </div>
 
         <div className={styles.description}>
