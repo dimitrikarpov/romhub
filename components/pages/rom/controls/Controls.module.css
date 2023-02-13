@@ -40,4 +40,5 @@
 
 .control-icon {
   image-rendering: pixelated;
+  height: 48px;
 }
