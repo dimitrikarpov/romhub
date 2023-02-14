@@ -23,6 +23,70 @@ export type TControlsConfig = {
   elements: TControlElement[]
 }
 
+type TConfigIcons = {
+  [key: string]: {
+    [key: string]: {
+      path: string
+      tooltip: string
+    }
+  }
+}
+
+/* icons downloaded from https://greatdocbrown.itch.io/gamepad-ui?download */
+const configIcons: TConfigIcons = {
+  keyboard: {
+    up: { path: "/assets/controls/k-up.png", tooltip: "UP ARROW" },
+    down: {
+      path: "/assets/controls/k-down.png",
+      tooltip: "DOWN ARROW",
+    },
+    left: {
+      path: "/assets/controls/k-left.png",
+      tooltip: "LEFT ARROW",
+    },
+    right: {
+      path: "/assets/controls/k-right.png",
+      tooltip: "RIGHT ARROW",
+    },
+    space: { path: "/assets/controls/k-space.png", tooltip: "space" },
+    enter: { path: "/assets/controls/k-enter.png", tooltip: "enter" },
+    z: { path: "/assets/controls/k-z.png", tooltip: "Z" },
+    x: { path: "/assets/controls/k-x.png", tooltip: "X" },
+  },
+  ps: {
+    dpadUp: { path: "/assets/controls/ps-up.png", tooltip: "D-PAD UP" },
+    dpadDown: { path: "/assets/controls/ps-down.png", tooltip: "D-PAD DOWN" },
+    dpadLeft: { path: "/assets/controls/ps-left.png", tooltip: "D-PAD LEFT" },
+    dpadRight: {
+      path: "/assets/controls/ps-right.png",
+      tooltip: "D-PAD RIGHT",
+    },
+    options: {
+      path: "/assets/controls/ps-options.png",
+      tooltip: "ps options",
+    },
+    share: { path: "/assets/controls/ps-share.png", tooltip: "ps share" },
+    cross: { path: "/assets/controls/ps-cross.png", tooltip: "ps cross" },
+    circle: { path: "/assets/controls/ps-circle.png", tooltip: "ps circle" },
+  },
+  xbox: {
+    dpadUp: { path: "/assets/controls/ps-up.png", tooltip: "D-PAD UP" },
+    dpadDown: { path: "/assets/controls/ps-down.png", tooltip: "D-PAD DOWN" },
+    dpadLeft: { path: "/assets/controls/ps-left.png", tooltip: "D-PAD LEFT" },
+    dpadRight: {
+      path: "/assets/controls/ps-right.png",
+      tooltip: "D-PAD RIGHT",
+    },
+    options: {
+      path: "/assets/controls/x-options.png",
+      tooltip: "xbox options",
+    },
+    share: { path: "/assets/controls/x-share.png", tooltip: "xbox share" },
+    a: { path: "/assets/controls/x-a.png", tooltip: "xbox A" },
+    b: { path: "/assets/controls/x-b.png", tooltip: "xbox B" },
+  },
+}
+
 export const nesControlsConfig: TControlsConfig = {
   image: "/assets/controls/nes-controller.png",
   elements: [
