@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { TControlIcons } from "./NesControls"
+import { TControlIcons } from "./controls-configs"
 import styles from "./Controls.module.css"
 
 type Props = {
