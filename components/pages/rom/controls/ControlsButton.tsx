@@ -4,7 +4,7 @@ import { DialogBox } from "@/components/ui/modal/DialogBox"
 import { Modal } from "@/components/ui/modal/Modal"
 import { useModal } from "@/components/ui/modal/useModal"
 import { Controls } from "./Controls"
-import { nesControlsConfig } from "./controls-configs"
+import { nesControlsConfig, segaMDControlsConfig } from "./controls-configs"
 
 type Props = {
   platform: string
@@ -39,6 +39,9 @@ const getControls = (platform: string) => {
   switch (platform) {
     case "nes":
       return nesControlsConfig
+
+    case "md":
+      return segaMDControlsConfig
 
     default:
       throw new Error("no config found")
