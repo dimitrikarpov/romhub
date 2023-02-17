@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import { NextPageWithLayout } from "../_app"
@@ -40,19 +41,29 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ initialData }) => {
     : undefined
 
   return (
-    <div className={styles["container"]}>
-      <PlaylistSidebar
-        playlist={playlist!}
-        thumbnail={thumbnail}
-        total={entries!.length}
-        lastUpdated={lastUpdated}
-      />
-      <div className={styles["items-container"]}>
-        {entries!.map((entry) => (
-          <Item entry={entry} key={entry.romId} />
-        ))}
+    <>
+      <Head>
+        <title>{playlist?.title}</title>
+        <meta name="description" content={playlist?.title} />
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content={playlist?.title} />
+        <meta property="og:image" content={thumbnail} />
+      </Head>
+
+      <div className={styles["container"]}>
+        <PlaylistSidebar
+          playlist={playlist!}
+          thumbnail={thumbnail}
+          total={entries!.length}
+          lastUpdated={lastUpdated}
+        />
+        <div className={styles["items-container"]}>
+          {entries!.map((entry) => (
+            <Item entry={entry} key={entry.romId} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
