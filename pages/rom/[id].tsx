@@ -30,7 +30,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
   return (
     <>
       <Head>
-        <title>RomHub ${rom?.name}</title>
+        <title>{rom?.name}</title>
         <meta name="description" content={rom?.name} />
         <link rel="icon" href="/favicon.ico" />
         <meta property="og:title" content={rom?.name} />
