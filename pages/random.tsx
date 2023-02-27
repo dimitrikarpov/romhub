@@ -1,15 +1,20 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement } from "react"
 import { UiRom } from "../types"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "@/components/pages/layout/Layout"
 import { dbQueries } from "@/lib/queries/dbQueries"
+import { RandomGrid } from "@/components/pages/random/RandomGrid"
 
 type Props = {
   roms: UiRom[]
 }
 
 const Random: NextPageWithLayout<Props> = ({ roms }) => {
-  return <p>{JSON.stringify(roms, null, 2)}</p>
+  return (
+    <div>
+      <RandomGrid roms={roms} />
+    </div>
+  )
 }
 
 Random.getLayout = function getLayout(page: ReactElement) {
@@ -19,7 +24,7 @@ Random.getLayout = function getLayout(page: ReactElement) {
 export default Random
 
 export async function getServerSideProps() {
-  const roms = await dbQueries.getRandomRoms(9)
+  const roms = await dbQueries.getRandomRoms(6)
 
   return {
     props: { roms },
