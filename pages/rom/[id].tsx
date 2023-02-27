@@ -49,7 +49,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
 
         <div className={styles["name-box"]}>
           <span className={styles["platform"]}>
-            {platforms[rom!.platform].shortName}
+            {rom && rom.platform && platforms[rom.platform].shortName}
           </span>
           <span className={styles["name"]}>{rom?.name}</span>
         </div>

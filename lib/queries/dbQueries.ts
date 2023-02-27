@@ -10,6 +10,7 @@ import { patchPlaylist } from "./db/patchPlaylist"
 import { deletePlaylist } from "./db/deletePlaylist"
 import { saveSharedPlaylistToLibrary } from "./db/saveSharedPlaylistToLibrary"
 import { deleteSharedPlaylistFromLibrary } from "./db/deleteSharedPlaylistFromLibrary"
+import { getRandomRoms } from "./db/getRandomRoms"
 
 export const dbQueries = {
   getRoms,
@@ -24,4 +25,5 @@ export const dbQueries = {
   patchPlaylist,
   saveSharedPlaylistToLibrary,
   deleteSharedPlaylistFromLibrary,
+  getRandomRoms,
 }
