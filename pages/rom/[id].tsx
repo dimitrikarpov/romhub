@@ -57,22 +57,24 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         <div className={styles["actions-box"]}>
           <ShareButton />
 
-          <a href={rom!.file}>
+          <a href={rom?.file}>
             <Button>
               <DownloadIcon />
               <span>Download</span>
             </Button>
           </a>
 
-          {displaySaveToDialog && <SaveToPlaylistButton romId={rom!.id} />}
+          {displaySaveToDialog && rom && (
+            <SaveToPlaylistButton romId={rom.id} />
+          )}
         </div>
 
         <div className={styles["actions-box"]}>
-          <ControlsButton platform={rom!.platform} />
+          {rom && <ControlsButton platform={rom.platform} />}
         </div>
 
         <div className={styles.description}>
-          {rom?.description && <p>{rom.description}</p>}
+          {rom && rom?.description && <p>{rom.description}</p>}
         </div>
       </div>
     </>
@@ -110,15 +112,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const canSaveRomToOwnPlaylist = (session: Session | null) => {
   return Boolean(session)
 }
-
-/**
-  - download
-  - share
-  - watch later
-  - save to playlist
-
-  - show controls
-  - fullscreen
-  - make savestate/ load from savestate
-  - make screenshot
- */

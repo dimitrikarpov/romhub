@@ -5,9 +5,15 @@
   border: 2px solid;
   border-radius: 8px;
 
-  cursor: pointer;
-
   position: relative;
+}
+
+.nes.item {
+  box-shadow: 0px 0px 10px 4px rgba(235, 204, 92, 0.57);
+}
+
+.md.item {
+  box-shadow: 0px 0px 10px 4px rgba(197, 149, 143, 0.57);
 }
 
 .item-image {
@@ -35,30 +41,75 @@
 }
 
 .nes {
-  border-color: blueviolet;
+  border-color: #ffb84c;
 }
 
 .md {
-  border-color: brown;
+  border-color: #f16767;
 }
 
 .cover {
-  width: 100%;
-  height: 100%;
-
   position: absolute;
 
   background-color: #191919;
-  opacity: 0;
 
-  transition: all 1000ms ease-in-out;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-.cover-visible {
-  opacity: 1;
+.cover-invisible {
+  animation: random_card_display 1000ms ease forwards;
+}
+
+.cover-text {
+  font-size: 2.6rem;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  padding: 2rem 0;
+}
+
+.nes .cover-text {
+  border-top: 1px solid #ffb84c;
+  border-bottom: 1px solid #ffb84c;
+  background-color: #ffb84c2e;
+  color: #ffb84c;
+}
+
+.md .cover-text {
+  border-top: 1px solid #f16767;
+  border-bottom: 1px solid #f16767;
+  background-color: #f1676733;
+  color: #f16767;
 }
 
 .content {
   width: 100%;
   height: 100%;
+}
+
+@keyframes random_card_display {
+  0% {
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  99% {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  100% {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 }

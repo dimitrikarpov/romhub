@@ -1,6 +1,6 @@
+import React, { useContext, useState } from "react"
 import classNames from "classnames"
 import { useRouter } from "next/router"
-import React, { useContext, useState } from "react"
 import { SearchContext } from "@/contexts/search/SearchContext"
 import { ClearIcon, SearchIcon } from "@/components/ui/icons"
 import styles from "./SearchInput.module.css"

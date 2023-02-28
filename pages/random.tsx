@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react"
+import Head from "next/head"
 import { UiRom } from "../types"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "@/components/pages/layout/Layout"
@@ -11,9 +12,15 @@ type Props = {
 
 const Random: NextPageWithLayout<Props> = ({ roms }) => {
   return (
-    <div>
+    <>
+      <Head>
+        <title>RomHub</title>
+        <meta name="description" content="Search and Play!" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <RandomGrid roms={roms} />
-    </div>
+    </>
   )
 }
 
