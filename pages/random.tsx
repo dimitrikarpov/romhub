@@ -29,8 +29,8 @@ const Random: NextPageWithLayout<Props> = ({ initialData }) => {
   return (
     <>
       <Head>
-        <title>RomHub</title>
-        <meta name="description" content="Search and Play!" />
+        <title>RomHub Randomizer</title>
+        <meta name="description" content="Beat a Random!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
