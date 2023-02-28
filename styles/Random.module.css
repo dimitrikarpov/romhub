@@ -1,0 +1,17 @@
+.reroll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding-top: 3rem;
+}
+
+.reroll-btn {
+  border: 1px solid white;
+  padding: 0.7rem 1.5rem;
+  font-size: 2rem;
+
+  background-color: #9198e58c;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -5,12 +5,27 @@ import { NextPageWithLayout } from "./_app"
 import { Layout } from "@/components/pages/layout/Layout"
 import { dbQueries } from "@/lib/queries/dbQueries"
 import { RandomGrid } from "@/components/pages/random/RandomGrid"
+import { useRandomRomsQuery } from "@/lib/queries/react/useRandomRoms"
+import styles from "../styles/Random.module.css"
+import { useQueryClient } from "react-query"
 
 type Props = {
-  roms: UiRom[]
+  initialData: {
+    roms: UiRom[]
+  }
 }
 
-const Random: NextPageWithLayout<Props> = ({ roms }) => {
+const Random: NextPageWithLayout<Props> = ({ initialData }) => {
+  const queryClient = useQueryClient()
+
+  const { data: roms } = useRandomRomsQuery({ initialData: initialData.roms })
+
+  const onRoll = () => {
+    queryClient.invalidateQueries({
+      queryKey: "random",
+    })
+  }
+
   return (
     <>
       <Head>
@@ -19,7 +34,13 @@ const Random: NextPageWithLayout<Props> = ({ roms }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <RandomGrid roms={roms} />
+      {roms && <RandomGrid roms={roms} />}
+
+      <div className={styles["reroll"]}>
+        <div className={styles["reroll-btn"]} onClick={onRoll}>
+          Reroll
+        </div>
+      </div>
     </>
   )
 }
@@ -34,6 +55,6 @@ export async function getServerSideProps() {
   const roms = await dbQueries.getRandomRoms(6)
 
   return {
-    props: { roms },
+    props: { initialData: { roms } },
   }
 }

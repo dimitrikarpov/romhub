@@ -10,6 +10,7 @@ import { getPlaylistsEntries } from "./api/getPlaylistsEntries"
 import { deletePlaylist } from "./api/deletePlaylist"
 import { deleteSharedPlaylistFromLibrary } from "./api/deleteSharedPlaylistFromLibrary"
 import { saveSharedPlaylistToLibrary } from "./api/saveSharedPlaylistToLibrary"
+import { getRandomRoms } from "./api/getRandomRoms"
 
 export const apiQueries = {
   getRoms,
@@ -24,4 +25,5 @@ export const apiQueries = {
   patchPlaylist,
   saveSharedPlaylistToLibrary,
   deleteSharedPlaylistFromLibrary,
+  getRandomRoms,
 }
