@@ -4,8 +4,6 @@ export const createPlaylistEntry = async (
   playlistId: string,
   romId: string,
 ) => {
-  console.log({ playlistId, romId })
-
   const playlist = await prisma.playlist.findUnique({
     where: { id: String(playlistId) },
   })

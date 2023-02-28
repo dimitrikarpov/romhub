@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import cn from "classnames"
 import TogglerAndLogo from "../TogglerAndLogo"
-import { HomeIcon } from "@/components/ui/icons"
+import { DiceIcon, HomeIcon } from "@/components/ui/icons"
 import { Playlists } from "./Playlists"
 import { SidebarContext } from "./SidebarContext"
 import styles from "./Sidebar.module.css"
@@ -25,6 +25,15 @@ const SideBar = () => {
             <div className={styles.sideBarSectionItem}>
               <HomeIcon />
               <p>Home</p>
+            </div>
+          </a>
+        </div>
+
+        <div className={styles.sideBarSection}>
+          <a href="/random">
+            <div className={styles.sideBarSectionItem}>
+              <DiceIcon />
+              <p>Random Roms</p>
             </div>
           </a>
         </div>
