@@ -112,3 +112,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const canSaveRomToOwnPlaylist = (session: Session | null) => {
   return Boolean(session)
 }
+
+/**
+ * Calculates new emulator width and height
+ * depending on container's dimensions
+ * to achieve max emaulator's area with saving aspect ration
+ *
+ * @param ew emulatorWidth
+ * @param eh emulatorHeight
+ * @param cw containerWidth
+ * @param ch containerHeight
+ * @returns [width, height]
+ */
+const getNewEmulatorSize = (
+  ew: number,
+  eh: number,
+  cw: number,
+  ch: number,
+): [width: number, height: number] => {
+  const aspect = ew / eh
+
+  const possibleHeight = Math.floor(cw / aspect)
+  const possibleWidth = Math.floor(ch * aspect)
+
+  const isPossibleWidthWillFitContainerHeight = possibleHeight < ch
+  const isPossibleHeightWillFitContainerWidth = possibleWidth < cw
+
+  if (isPossibleWidthWillFitContainerHeight) return [cw, possibleHeight]
+  if (isPossibleHeightWillFitContainerWidth) return [possibleWidth, ch]
+  return [ew, eh]
+}
