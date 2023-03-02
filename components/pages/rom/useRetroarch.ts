@@ -30,5 +30,5 @@ export const useRetroarch = (
     init()
   }, [coreUrl, canvas])
 
-  return { status, retroarch: retroarch.current }
+  return { status, retroarch }
 }

@@ -1,11 +1,15 @@
 .page-container {
-  width: 800px;
-  margin: 0 auto;
+  /* width: 800px; */
+
+  width: 100%;
+
+  /* margin: 0 auto; */
   margin-top: 24px;
 
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  align-items: center;
 }
 
 .name-box {
