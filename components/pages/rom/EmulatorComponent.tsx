@@ -2,6 +2,7 @@ import {
   memo,
   MutableRefObject,
   RefObject,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -12,8 +13,9 @@ import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useSession } from "next-auth/react"
 import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
 import { apiQueries } from "@/lib/queries/apiQueries"
-import styles from "./EmulatorComponent.module.css"
 import { Retroarch } from "holy-retroarch"
+import { useResizeObserver } from "./useSizeObserver"
+import styles from "./EmulatorComponent.module.css"
 
 type Props = {
   coreUrl: string
@@ -29,6 +31,18 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
+    const onContainerResize = useCallback((target: HTMLDivElement) => {
+      setNewDimensions(
+        canvasRef,
+        isRunningRef,
+        retroarch?.current,
+        target.clientWidth,
+        target.clientHeight,
+      )
+    }, [])
+
+    const containerRef = useResizeObserver(onContainerResize)
+
     const playlistQuery = useUserPlaylistsQuery({
       enabled: Boolean(session?.user.id),
     })
@@ -39,26 +53,6 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
         retroarch?.current?.copyRom(romBuffer)
       }
     }, [status])
-
-    // console.log({ canvasRef })
-
-    useEffect(() => {
-      console.log("MOUNTED!!!!!!!!!!!")
-
-      window.addEventListener("resize", () => {
-        console.log({ fff: isRunningRef.current })
-
-        // cons
-
-        return setNewDimensions(canvasRef, isRunningRef, retroarch?.current)
-      })
-
-      return () => {
-        window.removeEventListener("resize", () =>
-          setNewDimensions(canvasRef, isRunningRef, retroarch?.current),
-        )
-      }
-    }, [])
 
     const saveRomToHistory = async () => {
       if (!session?.user?.id || !playlistQuery.data) return
@@ -81,12 +75,18 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       isRunningRef.current = true
 
       saveRomToHistory()
-      setNewDimensions(canvasRef, isRunningRef, retroarch?.current)
+      setNewDimensions(
+        canvasRef,
+        isRunningRef,
+        retroarch?.current,
+        containerRef.current!.clientWidth,
+        containerRef.current!.clientHeight,
+      )
     }
 
     return (
       <>
-        <div className={styles.container}>
+        <div className={styles.container} ref={containerRef}>
           <canvas ref={canvasRef} id="canvas"></canvas>
 
           {showBackdrop && (
@@ -106,35 +106,24 @@ const setNewDimensions = (
   canvasRef: RefObject<HTMLCanvasElement>,
   isRunningRef: MutableRefObject<boolean>,
   retroarch: Retroarch | undefined,
+  cw: number,
+  ch: number,
 ) => {
-  console.log({ isRunningRef: isRunningRef.current, retroarch })
-
   if (!canvasRef.current) return
-
-  const cw = document.body.scrollWidth
-  const ch = window.innerHeight - 56 - 24 - 20
 
   const ew = canvasRef.current.clientWidth
   const eh = canvasRef.current.clientHeight
 
   const [width, height] = getNewEmulatorSize({
-    ew: ew,
-    eh: eh,
-    cw: cw,
-    ch: ch,
+    ew,
+    eh,
+    cw,
+    ch,
   })
 
   if (!isRunningRef?.current || !retroarch) return
 
-  console.table({ ew, eh, cw, ch, W: width, H: height })
   retroarch.setCanvasSize(width, height)
-
-  // canvasRef.current.setAttribute("width", String(width))
-  // canvasRef.current.setAttribute("height", String(height))
-  // canvasRef.current.setAttribute(
-  //   "style",
-  //   `width: ${width}px; height: ${height}px;`,
-  // )
 }
 
 /**
@@ -159,16 +148,14 @@ const getNewEmulatorSize = ({
   cw: number
   ch: number
 }): [width: number, height: number] => {
-  const aspect = ew / eh
+  const aspect = 800 / 600
 
   const possibleHeight = Math.floor(cw / aspect)
   const possibleWidth = Math.floor(ch * aspect)
 
   const isPossibleWidthWillFitContainerHeight = possibleHeight < ch
-  const isPossibleHeightWillFitContainerWidth = possibleWidth < cw
 
-  if (isPossibleWidthWillFitContainerHeight) return [cw, possibleHeight]
-  if (isPossibleHeightWillFitContainerWidth) return [possibleWidth, ch]
-
-  return [ew, eh]
+  return isPossibleWidthWillFitContainerHeight
+    ? [cw, possibleHeight]
+    : [possibleWidth, ch]
 }
