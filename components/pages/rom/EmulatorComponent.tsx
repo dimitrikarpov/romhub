@@ -1,6 +1,7 @@
 import {
   memo,
   MutableRefObject,
+  RefObject,
   useCallback,
   useEffect,
   useRef,
@@ -15,12 +16,13 @@ import { apiQueries } from "@/lib/queries/apiQueries"
 import { Retroarch } from "holy-retroarch"
 import { useResizeObserver } from "./useSizeObserver"
 import styles from "./EmulatorComponent.module.css"
-import { getNewEmulatorSize } from "./getNewEmulatorSize"
 import {
   BackupIcon,
   BackupRestoreIcon,
   DefaultViewIcon,
+  FullscreenExitIcon,
   FullscreenIcon,
+  GamepadIcon,
   PauseIcon,
   PhotoCameraIcon,
   PlayIcon,
@@ -36,18 +38,14 @@ type Props = {
 export const EmulatorComponent: React.FunctionComponent<Props> = memo(
   ({ coreUrl, romBuffer, rom }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    const canvasBoxRef = useRef<HTMLDivElement>(null)
     const isRunningRef = useRef(false)
     const [showBackdrop, setShowBackdrop] = useState(true)
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
     const onContainerResize = useCallback((target: HTMLDivElement) => {
-      setNewDimensions(
-        isRunningRef,
-        retroarch?.current,
-        target.clientWidth,
-        target.clientHeight,
-      )
+      resizeCanvas(retroarch?.current, isRunningRef, canvasBoxRef)
     }, [])
 
     const containerRef = useResizeObserver(onContainerResize)
@@ -84,37 +82,38 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       isRunningRef.current = true
 
       saveRomToHistory()
-      setNewDimensions(
-        isRunningRef,
-        retroarch?.current,
-        containerRef.current!.clientWidth,
-        containerRef.current!.clientHeight,
-      )
+      resizeCanvas(retroarch?.current, isRunningRef, canvasBoxRef)
     }
 
     return (
       <>
         <div className={styles.container} ref={containerRef}>
-          <div className={styles["controls-overlay"]}>
-            <div className={styles["controls-container"]}>
-              <div>
-                <PlayIcon />
-                <PauseIcon />
-              </div>
-              <div>
-                <BackupIcon />
-                <BackupRestoreIcon />
-                <PhotoCameraIcon />
-              </div>
-              <div>
-                <TheaterModIcon />
-                <DefaultViewIcon />
-                <FullscreenIcon />
+          <div className={styles["canvas-box"]} ref={canvasBoxRef}>
+            <canvas ref={canvasRef} id="canvas"></canvas>
+
+            <div className={styles["controls-overlay"]}>
+              <div className={styles["controls-container"]}>
+                <div>
+                  <PlayIcon />
+                  <PauseIcon />
+                </div>
+                <div>
+                  <BackupIcon />
+                  <BackupRestoreIcon />
+                  <PhotoCameraIcon />
+                  <span title="Controls">
+                    <GamepadIcon />
+                  </span>
+                </div>
+                <div>
+                  <TheaterModIcon />
+                  <DefaultViewIcon />
+                  <FullscreenIcon />
+                  <FullscreenExitIcon />
+                </div>
               </div>
             </div>
           </div>
-
-          <canvas ref={canvasRef} id="canvas"></canvas>
 
           {showBackdrop && (
             <EmulatorBackdrop
@@ -129,14 +128,15 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
   },
 )
 
-const setNewDimensions = (
-  isRunningRef: MutableRefObject<boolean>,
+const resizeCanvas = (
   retroarch: Retroarch | undefined,
-  cw: number,
-  ch: number,
+  isRunningRef: MutableRefObject<boolean>,
+  canvasBoxRef: RefObject<HTMLDivElement>,
 ) => {
-  if (!isRunningRef?.current || !retroarch) return
+  if (!isRunningRef?.current || !retroarch || !canvasBoxRef.current) return
 
-  const [width, height] = getNewEmulatorSize({ cw, ch })
-  retroarch.setCanvasSize(width, height)
+  retroarch.setCanvasSize(
+    canvasBoxRef.current.clientWidth,
+    canvasBoxRef.current.clientWidth / (800 / 600),
+  )
 }

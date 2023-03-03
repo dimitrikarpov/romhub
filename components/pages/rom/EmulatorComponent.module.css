@@ -1,12 +1,25 @@
 .container {
   position: relative;
 
-  width: 100%;
+  /* width: 100%; <========= ??? */
   max-height: calc(100dvh - 56px - 24px - 20px);
+  /* max-width: 100%; */
+
   aspect-ratio: calc(800 / 600);
 
   display: flex;
   justify-content: center;
+
+  background-color: aqua;
+}
+
+.canvas-box {
+  background-color: blueviolet;
+  aspect-ratio: calc(800 / 600);
+  max-width: 100%;
+  max-height: 100%;
+
+  position: relative;
 }
 
 .controls-overlay {
@@ -25,8 +38,8 @@
   height: 50px;
   padding: 0 2rem;
 
-  background-color: rgb(139, 46, 151);
-  opacity: 0.7;
+  background-color: rgba(139, 46, 151, 0.534);
+  /* opacity: 0.7; */
 
   display: flex;
   justify-content: space-between;
@@ -38,4 +51,11 @@
   height: 48px;
   fill: white;
   margin-right: 1rem;
+
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.controls-container svg:hover {
+  opacity: 1;
 }
