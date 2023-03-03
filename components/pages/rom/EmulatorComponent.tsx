@@ -19,15 +19,15 @@ import styles from "./EmulatorComponent.module.css"
 import {
   BackupIcon,
   BackupRestoreIcon,
-  DefaultViewIcon,
   FullscreenExitIcon,
   FullscreenIcon,
   GamepadIcon,
   PauseIcon,
   PhotoCameraIcon,
   PlayIcon,
-  TheaterModIcon,
 } from "@/components/ui/icons"
+import classNames from "classnames"
+import { TheaterModButton } from "./TheaterModButton"
 
 type Props = {
   coreUrl: string
@@ -41,6 +41,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const canvasBoxRef = useRef<HTMLDivElement>(null)
     const isRunningRef = useRef(false)
     const [showBackdrop, setShowBackdrop] = useState(true)
+    const [isInTheaterMod, setIsInTheaterMod] = useState(true)
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
     const { data: session } = useSession()
 
@@ -87,7 +88,12 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
     return (
       <>
-        <div className={styles.container} ref={containerRef}>
+        <div
+          className={classNames(styles.container, {
+            [styles["container-fixed"]]: isInTheaterMod,
+          })}
+          ref={containerRef}
+        >
           <div className={styles["canvas-box"]} ref={canvasBoxRef}>
             <canvas ref={canvasRef} id="canvas"></canvas>
 
@@ -106,8 +112,10 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
                   </span>
                 </div>
                 <div>
-                  <TheaterModIcon />
-                  <DefaultViewIcon />
+                  <TheaterModButton
+                    isInTheaterMod={isInTheaterMod}
+                    toggle={setIsInTheaterMod}
+                  />
                   <FullscreenIcon />
                   <FullscreenExitIcon />
                 </div>

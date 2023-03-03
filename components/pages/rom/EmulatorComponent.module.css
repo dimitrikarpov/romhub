@@ -13,6 +13,10 @@
   background-color: aqua;
 }
 
+.container-fixed {
+  max-height: 600px;
+}
+
 .canvas-box {
   background-color: blueviolet;
   aspect-ratio: calc(800 / 600);
