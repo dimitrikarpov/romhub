@@ -2,7 +2,7 @@
   position: relative;
 
   width: 100%;
-  max-height: calc(100dvh - 56px - 24px);
+  max-height: calc(100dvh - 56px - 24px - 20px);
   aspect-ratio: calc(800 / 600);
 
   display: flex;

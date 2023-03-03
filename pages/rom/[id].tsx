@@ -47,34 +47,36 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
           />
         )}
 
-        <div className={styles["name-box"]}>
-          <span className={styles["platform"]}>
-            {rom && rom.platform && platforms[rom.platform].shortName}
-          </span>
-          <span className={styles["name"]}>{rom?.name}</span>
-        </div>
+        <div className={styles["main"]}>
+          <div className={styles["name-box"]}>
+            <span className={styles["platform"]}>
+              {rom && rom.platform && platforms[rom.platform].shortName}
+            </span>
+            <span className={styles["name"]}>{rom?.name}</span>
+          </div>
 
-        <div className={styles["actions-box"]}>
-          <ShareButton />
+          <div className={styles["actions-box"]}>
+            <ShareButton />
 
-          <a href={rom?.file}>
-            <Button>
-              <DownloadIcon />
-              <span>Download</span>
-            </Button>
-          </a>
+            <a href={rom?.file}>
+              <Button>
+                <DownloadIcon />
+                <span>Download</span>
+              </Button>
+            </a>
 
-          {displaySaveToDialog && rom && (
-            <SaveToPlaylistButton romId={rom.id} />
-          )}
-        </div>
+            {displaySaveToDialog && rom && (
+              <SaveToPlaylistButton romId={rom.id} />
+            )}
+          </div>
 
-        <div className={styles["actions-box"]}>
-          {rom && <ControlsButton platform={rom.platform} />}
-        </div>
+          <div className={styles["actions-box"]}>
+            {rom && <ControlsButton platform={rom.platform} />}
+          </div>
 
-        <div className={styles.description}>
-          {rom && rom?.description && <p>{rom.description}</p>}
+          <div className={styles.description}>
+            {rom && rom?.description && <p>{rom.description}</p>}
+          </div>
         </div>
       </div>
     </>

@@ -1,7 +1,6 @@
 import {
   memo,
   MutableRefObject,
-  RefObject,
   useCallback,
   useEffect,
   useRef,
@@ -16,6 +15,7 @@ import { apiQueries } from "@/lib/queries/apiQueries"
 import { Retroarch } from "holy-retroarch"
 import { useResizeObserver } from "./useSizeObserver"
 import styles from "./EmulatorComponent.module.css"
+import { getNewEmulatorSize } from "./getNewEmulatorSize"
 
 type Props = {
   coreUrl: string
@@ -33,7 +33,6 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
     const onContainerResize = useCallback((target: HTMLDivElement) => {
       setNewDimensions(
-        canvasRef,
         isRunningRef,
         retroarch?.current,
         target.clientWidth,
@@ -76,7 +75,6 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
       saveRomToHistory()
       setNewDimensions(
-        canvasRef,
         isRunningRef,
         retroarch?.current,
         containerRef.current!.clientWidth,
@@ -103,59 +101,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 )
 
 const setNewDimensions = (
-  canvasRef: RefObject<HTMLCanvasElement>,
   isRunningRef: MutableRefObject<boolean>,
   retroarch: Retroarch | undefined,
   cw: number,
   ch: number,
 ) => {
-  if (!canvasRef.current) return
-
-  const ew = canvasRef.current.clientWidth
-  const eh = canvasRef.current.clientHeight
-
-  const [width, height] = getNewEmulatorSize({
-    ew,
-    eh,
-    cw,
-    ch,
-  })
-
   if (!isRunningRef?.current || !retroarch) return
 
+  const [width, height] = getNewEmulatorSize({ cw, ch })
   retroarch.setCanvasSize(width, height)
-}
-
-/**
- * Calculates new emulator width and height
- * depending on container's dimensions
- * to achieve max emaulator's area with saving aspect ration
- *
- * @param ew emulatorWidth
- * @param eh emulatorHeight
- * @param cw containerWidth
- * @param ch containerHeight
- * @returns [width, height]
- */
-const getNewEmulatorSize = ({
-  ew,
-  eh,
-  cw,
-  ch,
-}: {
-  ew: number
-  eh: number
-  cw: number
-  ch: number
-}): [width: number, height: number] => {
-  const aspect = 800 / 600
-
-  const possibleHeight = Math.floor(cw / aspect)
-  const possibleWidth = Math.floor(ch * aspect)
-
-  const isPossibleWidthWillFitContainerHeight = possibleHeight < ch
-
-  return isPossibleWidthWillFitContainerHeight
-    ? [cw, possibleHeight]
-    : [possibleWidth, ch]
 }
