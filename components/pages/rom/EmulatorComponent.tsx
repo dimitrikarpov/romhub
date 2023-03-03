@@ -16,6 +16,16 @@ import { Retroarch } from "holy-retroarch"
 import { useResizeObserver } from "./useSizeObserver"
 import styles from "./EmulatorComponent.module.css"
 import { getNewEmulatorSize } from "./getNewEmulatorSize"
+import {
+  BackupIcon,
+  BackupRestoreIcon,
+  DefaultViewIcon,
+  FullscreenIcon,
+  PauseIcon,
+  PhotoCameraIcon,
+  PlayIcon,
+  TheaterModIcon,
+} from "@/components/ui/icons"
 
 type Props = {
   coreUrl: string
@@ -85,6 +95,25 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     return (
       <>
         <div className={styles.container} ref={containerRef}>
+          <div className={styles["controls-overlay"]}>
+            <div className={styles["controls-container"]}>
+              <div>
+                <PlayIcon />
+                <PauseIcon />
+              </div>
+              <div>
+                <BackupIcon />
+                <BackupRestoreIcon />
+                <PhotoCameraIcon />
+              </div>
+              <div>
+                <TheaterModIcon />
+                <DefaultViewIcon />
+                <FullscreenIcon />
+              </div>
+            </div>
+          </div>
+
           <canvas ref={canvasRef} id="canvas"></canvas>
 
           {showBackdrop && (
