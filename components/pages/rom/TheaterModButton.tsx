@@ -13,12 +13,12 @@ export const TheaterModButton: React.FunctionComponent<Props> = ({
   return (
     <>
       {!isInTheaterMod && (
-        <span onClick={() => toggle(true)}>
+        <span onClick={() => toggle(true)} title="Theater mode">
           <TheaterModIcon />
         </span>
       )}
       {isInTheaterMod && (
-        <span onClick={() => toggle(false)}>
+        <span onClick={() => toggle(false)} title="Default view">
           <DefaultViewIcon />
         </span>
       )}

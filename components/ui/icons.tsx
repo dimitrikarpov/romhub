@@ -363,7 +363,7 @@ export const FullscreenExitIcon = () => (
   </svg>
 )
 
-export const DefaultViewIcon = () => (
+export const TheaterModIcon = () => (
   <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%">
     <path
       d="m 28,11 0,14 -20,0 0,-14 z m -18,2 16,0 0,10 -16,0 0,-10 z"
@@ -373,7 +373,7 @@ export const DefaultViewIcon = () => (
   </svg>
 )
 
-export const TheaterModIcon = () => (
+export const DefaultViewIcon = () => (
   <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%">
     <path
       d="m 26,13 0,10 -16,0 0,-10 z m -14,2 12,0 0,6 -12,0 0,-6 z"
