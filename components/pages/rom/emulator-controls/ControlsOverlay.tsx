@@ -1,4 +1,5 @@
-import { Dispatch, RefObject, SetStateAction } from "react"
+import { Dispatch, RefObject, SetStateAction, useState } from "react"
+import classNames from "classnames"
 import { UiRom } from "@/types/index"
 import { ControlsButton } from "./ControlsButton"
 import { FullscreenButton } from "./FullscreenButton"
@@ -19,8 +20,24 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
   setIsInTheaterMod,
   canvasBoxRef,
 }) => {
+  const [visible, setVisible] = useState(false)
+
+  const onMouseEnter = () => {
+    setVisible(true)
+  }
+
+  const onMouseLeave = () => {
+    setVisible(false)
+  }
+
   return (
-    <div className={styles["controls-overlay"]}>
+    <div
+      className={classNames(styles["controls-overlay"], {
+        [styles["controls-overlay--hidden"]]: !visible,
+      })}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div className={styles["controls-container"]}>
         <div>
           <PlayPauseButton />
