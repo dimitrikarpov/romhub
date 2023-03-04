@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react"
+import classNames from "classnames"
 import { useRetroarch } from "./useRetroarch"
 import { UiRom } from "../../../types"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
@@ -15,12 +16,11 @@ import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery
 import { apiQueries } from "@/lib/queries/apiQueries"
 import { Retroarch } from "holy-retroarch"
 import { useResizeObserver } from "./useSizeObserver"
-import styles from "./EmulatorComponent.module.css"
-import { PauseIcon, PlayIcon } from "@/components/ui/icons"
-import classNames from "classnames"
 import { TheaterModButton } from "./TheaterModButton"
 import { FullscreenButton } from "./FullscreenButton"
 import { ControlsButton } from "./ControlsButton"
+import styles from "./EmulatorComponent.module.css"
+import { PlayPauseButton } from "./PlayPauseButton"
 
 type Props = {
   coreUrl: string
@@ -93,8 +93,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
             <div className={styles["controls-overlay"]}>
               <div className={styles["controls-container"]}>
                 <div>
-                  <PlayIcon />
-                  <PauseIcon />
+                  <PlayPauseButton />
                 </div>
                 <div>
                   <ControlsButton platform={rom.platform} />
