@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/button/Button"
 import { GamepadIcon } from "@/components/ui/icons"
 import { DialogBox } from "@/components/ui/modal/DialogBox"
 import { Modal } from "@/components/ui/modal/Modal"
 import { useModal } from "@/components/ui/modal/useModal"
-import { Controls } from "./Controls"
-import { nesControlsConfig, segaMDControlsConfig } from "./controls-configs"
+import { Controls } from "./controls/Controls"
+import {
+  nesControlsConfig,
+  segaMDControlsConfig,
+} from "./controls/controls-configs"
 
 type Props = {
   platform: string
@@ -19,10 +21,9 @@ export const ControlsButton: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Button onClick={show}>
+      <span onClick={show} title="Controls">
         <GamepadIcon />
-        Controls
-      </Button>
+      </span>
 
       {visible && (
         <Modal>

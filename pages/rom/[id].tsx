@@ -15,7 +15,6 @@ import { convertEntity } from "@/lib/convertEntity"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
 import { SaveToPlaylistButton } from "@/components/pages/rom/SaveToPlaylistButton"
 import { ShareButton } from "@/components/pages/rom/ShareButton"
-import { ControlsButton } from "@/components/pages/rom/controls/ControlsButton"
 import styles from "../../styles/Rom.module.css"
 
 type Props = { rom: UiRom | undefined; url: string }
@@ -68,10 +67,6 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
             {displaySaveToDialog && rom && (
               <SaveToPlaylistButton romId={rom.id} />
             )}
-          </div>
-
-          <div className={styles["actions-box"]}>
-            {rom && <ControlsButton platform={rom.platform} />}
           </div>
 
           <div className={styles.description}>

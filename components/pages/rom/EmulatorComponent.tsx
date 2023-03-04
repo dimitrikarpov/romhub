@@ -16,17 +16,11 @@ import { apiQueries } from "@/lib/queries/apiQueries"
 import { Retroarch } from "holy-retroarch"
 import { useResizeObserver } from "./useSizeObserver"
 import styles from "./EmulatorComponent.module.css"
-import {
-  BackupIcon,
-  BackupRestoreIcon,
-  GamepadIcon,
-  PauseIcon,
-  PhotoCameraIcon,
-  PlayIcon,
-} from "@/components/ui/icons"
+import { PauseIcon, PlayIcon } from "@/components/ui/icons"
 import classNames from "classnames"
 import { TheaterModButton } from "./TheaterModButton"
 import { FullscreenButton } from "./FullscreenButton"
+import { ControlsButton } from "./ControlsButton"
 
 type Props = {
   coreUrl: string
@@ -103,12 +97,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
                   <PauseIcon />
                 </div>
                 <div>
-                  <BackupIcon />
-                  <BackupRestoreIcon />
-                  <PhotoCameraIcon />
-                  <span title="Controls">
-                    <GamepadIcon />
-                  </span>
+                  <ControlsButton platform={rom.platform} />
                 </div>
                 <div>
                   <TheaterModButton
