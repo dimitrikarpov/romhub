@@ -16,11 +16,9 @@ import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery
 import { apiQueries } from "@/lib/queries/apiQueries"
 import { Retroarch } from "holy-retroarch"
 import { useResizeObserver } from "./useSizeObserver"
-import { TheaterModButton } from "./TheaterModButton"
-import { FullscreenButton } from "./FullscreenButton"
-import { ControlsButton } from "./ControlsButton"
+
 import styles from "./EmulatorComponent.module.css"
-import { PlayPauseButton } from "./PlayPauseButton"
+import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 
 type Props = {
   coreUrl: string
@@ -90,23 +88,12 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
           <div className={styles["canvas-box"]} ref={canvasBoxRef}>
             <canvas ref={canvasRef} id="canvas"></canvas>
 
-            <div className={styles["controls-overlay"]}>
-              <div className={styles["controls-container"]}>
-                <div>
-                  <PlayPauseButton />
-                </div>
-                <div>
-                  <ControlsButton platform={rom.platform} />
-                </div>
-                <div>
-                  <TheaterModButton
-                    isInTheaterMod={isInTheaterMod}
-                    toggle={setIsInTheaterMod}
-                  />
-                  <FullscreenButton canvasBoxRef={canvasBoxRef} />
-                </div>
-              </div>
-            </div>
+            <ControlsOverlay
+              rom={rom}
+              canvasBoxRef={canvasBoxRef}
+              isInTheaterMod={isInTheaterMod}
+              setIsInTheaterMod={setIsInTheaterMod}
+            />
           </div>
 
           {showBackdrop && (

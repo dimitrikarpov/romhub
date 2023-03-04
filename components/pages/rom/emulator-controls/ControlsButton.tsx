@@ -2,11 +2,11 @@ import { GamepadIcon } from "@/components/ui/icons"
 import { DialogBox } from "@/components/ui/modal/DialogBox"
 import { Modal } from "@/components/ui/modal/Modal"
 import { useModal } from "@/components/ui/modal/useModal"
-import { Controls } from "./controls/Controls"
+import { Controls } from "../controls/Controls"
 import {
   nesControlsConfig,
   segaMDControlsConfig,
-} from "./controls/controls-configs"
+} from "../controls/controls-configs"
 
 type Props = {
   platform: string
