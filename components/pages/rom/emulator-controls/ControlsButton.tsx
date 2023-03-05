@@ -7,6 +7,7 @@ import {
   nesControlsConfig,
   segaMDControlsConfig,
 } from "../controls/controls-configs"
+import styles from "../EmulatorComponent.module.css"
 
 type Props = {
   platform: string
@@ -21,7 +22,7 @@ export const ControlsButton: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <span onClick={show} title="Controls">
+      <span onClick={show} title="Controls" className={styles["controls-icon"]}>
         <GamepadIcon />
       </span>
 

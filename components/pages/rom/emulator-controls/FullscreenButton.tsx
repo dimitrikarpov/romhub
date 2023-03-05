@@ -1,5 +1,6 @@
 import { RefObject, useEffect, useState } from "react"
 import { FullscreenExitIcon, FullscreenIcon } from "@/components/ui/icons"
+import styles from "../EmulatorComponent.module.css"
 
 type Props = {
   canvasBoxRef: RefObject<HTMLDivElement>
@@ -40,12 +41,20 @@ export const FullscreenButton: React.FunctionComponent<Props> = ({
   return (
     <>
       {isInFullscreen && (
-        <span onClick={onExitFullscreen} title="Exit full screen">
+        <span
+          onClick={onExitFullscreen}
+          title="Exit full screen"
+          className={styles["controls-icon"]}
+        >
           <FullscreenExitIcon />
         </span>
       )}
       {!isInFullscreen && (
-        <span onClick={onFullscreen} title="Full screen">
+        <span
+          onClick={onFullscreen}
+          title="Full screen"
+          className={styles["controls-icon"]}
+        >
           <FullscreenIcon />
         </span>
       )}

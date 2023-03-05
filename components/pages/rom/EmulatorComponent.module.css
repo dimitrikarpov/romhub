@@ -50,7 +50,7 @@
   align-items: center;
 }
 
-.controls-container svg {
+.controls-icon > svg {
   width: 48px;
   height: 48px;
   fill: white;
@@ -60,6 +60,6 @@
   cursor: pointer;
 }
 
-.controls-container svg:hover {
+.controls-icon > svg:hover {
   opacity: 1;
 }
