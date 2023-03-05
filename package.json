@@ -25,6 +25,7 @@
     "crypto": "^1.0.1",
     "date-fns": "^2.29.3",
     "express": "^4.18.2",
+    "file-saver": "^2.0.5",
     "formidable": "^2.0.1",
     "holy-retroarch": "^0.0.15",
     "javascript-time-ago": "^2.5.9",
@@ -37,6 +38,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.42.0",
     "react-query": "^3.39.2",
+    "sanitize-filename": "^1.6.3",
     "serve": "^14.1.2",
     "short-uuid": "^4.2.2",
     "ts-node": "^10.9.1",
@@ -44,6 +46,7 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/formidable": "^2.0.5",
     "@types/mime": "^3.0.1",
     "concurrently": "^7.6.0",

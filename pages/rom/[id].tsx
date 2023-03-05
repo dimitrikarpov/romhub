@@ -9,12 +9,11 @@ import { NextPageWithLayout, platforms } from "../_app"
 import { EmulatorComponent } from "@/components/pages/rom/EmulatorComponent"
 import { useRomDownloader } from "@/components/pages/rom/useRomDownloader"
 import { Layout } from "@/components/pages/layout/Layout"
-import { DownloadIcon } from "@/components/ui/icons"
-import { Button } from "@/components/ui/button/Button"
 import { convertEntity } from "@/lib/convertEntity"
 import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
 import { SaveToPlaylistButton } from "@/components/pages/rom/SaveToPlaylistButton"
 import { ShareButton } from "@/components/pages/rom/ShareButton"
+import { DonwloadButton } from "@/components/pages/rom/DownloadButton"
 import styles from "../../styles/Rom.module.css"
 
 type Props = { rom: UiRom | undefined; url: string }
@@ -57,12 +56,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
           <div className={styles["actions-box"]}>
             <ShareButton />
 
-            <a href={rom?.file}>
-              <Button>
-                <DownloadIcon />
-                <span>Download</span>
-              </Button>
-            </a>
+            <DonwloadButton name={rom?.name} file={rom?.file} />
 
             {displaySaveToDialog && rom && (
               <SaveToPlaylistButton romId={rom.id} />
