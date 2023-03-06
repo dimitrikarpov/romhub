@@ -4,10 +4,13 @@ import TogglerAndLogo from "../TogglerAndLogo"
 import { DiceIcon, HomeIcon } from "@/components/ui/icons"
 import { Playlists } from "./Playlists"
 import { SidebarContext } from "./SidebarContext"
+import { SignInButton } from "../top-bar/SignInButton"
 import styles from "./Sidebar.module.css"
+import { useSession } from "next-auth/react"
 
 const SideBar = () => {
   const { isSidebarOpen } = useContext(SidebarContext)
+  const { data: session } = useSession()
 
   return (
     <>
@@ -38,6 +41,18 @@ const SideBar = () => {
           </a>
         </div>
 
+        {!session && (
+          <div className={styles.sideBarSection}>
+            <div className={styles.registerSectionContent}>
+              <div>
+                Login to create private or public playlists, share them or save
+                shared playlists
+              </div>
+              <SignInButton />
+            </div>
+          </div>
+        )}
+
         <Playlists />
       </aside>
 
@@ -51,3 +66,5 @@ const SideBar = () => {
 }
 
 export default SideBar
+
+//

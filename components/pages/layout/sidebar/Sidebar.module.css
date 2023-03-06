@@ -82,3 +82,19 @@
   bottom: 0;
   opacity: 0.3;
 }
+
+.registerSectionContent {
+  display: block;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 18px 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

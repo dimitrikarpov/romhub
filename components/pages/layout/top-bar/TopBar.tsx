@@ -14,7 +14,7 @@ const TopBar = () => {
 
       <SearchInput />
 
-      <div>{session ? <AccountButton /> : <SignInButton />}</div>
+      {session ? <AccountButton /> : <SignInButton />}
     </div>
   )
 }
