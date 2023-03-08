@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { KeyboardEventHandler, useContext, useState } from "react"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import { SearchContext } from "@/contexts/search/SearchContext"
@@ -31,9 +31,19 @@ export const SearchInput = () => {
       : search(value)
   }
 
+  const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if (event.key === "Enter") onSubmit()
+    if (event.key === "Escape") onClear()
+  }
+
   return (
     <div className={styles.searchBox}>
-      <input value={value} onChange={onChange} placeholder="Search" />
+      <input
+        value={value}
+        onChange={onChange}
+        placeholder="Search"
+        onKeyDown={onKeyDown}
+      />
       <button
         className={classNames(styles.searchBoxClearButton, {
           [styles.searchBoxClearButton_hidden]: value === "",
