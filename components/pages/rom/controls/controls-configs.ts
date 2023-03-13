@@ -24,8 +24,8 @@ export type TControlsConfig = {
 }
 
 type TConfigIcons = {
-  [key: string]: {
-    [key: string]: {
+  [device: string]: {
+    [button: string]: {
       path: string
       tooltip: string
     }

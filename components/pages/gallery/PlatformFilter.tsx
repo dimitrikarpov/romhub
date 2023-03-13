@@ -2,7 +2,7 @@ import cn from "classnames"
 import { useContext } from "react"
 import { SearchContext } from "@/contexts/search/SearchContext"
 import styles from "./PlatformFilter.module.css"
-import { platforms } from "pages/_app"
+import { platforms } from "config/index"
 
 export const PlatformFilter: React.FunctionComponent = () => {
   const { platform, selectPlatform } = useContext(SearchContext)

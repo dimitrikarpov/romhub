@@ -1,6 +1,6 @@
 import { UiPlaylistEntry } from "@/types/index"
 import { ItemMenu } from "./ItemMenu"
-import { platforms } from "pages/_app"
+import { platforms } from "config/index"
 import styles from "./Item.module.css"
 
 type Props = {

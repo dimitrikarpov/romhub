@@ -1,7 +1,7 @@
 import { UiRom } from "@/types/index"
+import { platforms } from "config/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
-import { platforms } from "pages/_app"
 import styles from "./Gallery.module.css"
 
 type Props = {
