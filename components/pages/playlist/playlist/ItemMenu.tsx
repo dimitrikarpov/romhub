@@ -13,6 +13,7 @@ import { Menu } from "@/components/ui/menu/Menu"
 import { DialogBox } from "@/components/ui/modal/DialogBox"
 import { Modal } from "@/components/ui/modal/Modal"
 import { useModal } from "@/components/ui/modal/useModal"
+import { downloadRom } from "@/lib/downloadRom"
 import { useAddToWatchLaterMutation } from "@/lib/queries/react/useAddToWatchLaterMutation"
 import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
 import { UiPlaylistEntry } from "@/types/index"
@@ -62,6 +63,10 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
     })
   }
 
+  const onDownloadClick = () => {
+    downloadRom(entry.rom.file, entry.rom.name)
+  }
+
   return (
     <Menu>
       <Menu.Handler>
@@ -86,9 +91,9 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
           </div>
         )}
 
-        <a href={entry.rom.file}>
+        <div onClick={onDownloadClick}>
           <Menu.Item.IconAndText icon={DownloadIcon} text="Download" />
-        </a>
+        </div>
 
         <div onClick={showShare}>
           <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
