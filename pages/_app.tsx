@@ -4,8 +4,9 @@ import type { AppProps } from "next/app"
 import { SessionProvider } from "next-auth/react"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
+import { Provider } from "react-redux"
 import { SearchProvider } from "../contexts/search/SearchProvider"
-import { SidebarProvider } from "@/components/pages/layout/sidebar/SidebarProvider"
+import { store } from "../lib/store"
 import "../styles/globals.css"
 
 const client = new QueryClient()
@@ -14,16 +15,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
-    <QueryClientProvider client={client}>
-      <SessionProvider session={pageProps.session}>
-        <SearchProvider>
-          <SidebarProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={client}>
+        <SessionProvider session={pageProps.session}>
+          <SearchProvider>
             {getLayout(<Component {...pageProps} />)}
-          </SidebarProvider>
-        </SearchProvider>
-      </SessionProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+          </SearchProvider>
+        </SessionProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </Provider>
   )
 }
 

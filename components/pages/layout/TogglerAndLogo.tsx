@@ -1,14 +1,14 @@
-import { useContext } from "react"
 import { MenuIcon } from "@/components/ui/icons"
-import { SidebarContext } from "./sidebar/SidebarContext"
+import { useDispatch } from "react-redux"
+import { toggle } from "@/components/pages/layout/sidebar/sideBarSlice"
 import styles from "./TogglerAndLogo.module.css"
 
 const TogglerAndLogo = () => {
-  const { toggleSidebar } = useContext(SidebarContext)
+  const dispatch = useDispatch()
 
   return (
     <div className={styles.menuAndLogoBox}>
-      <div className={styles.menuBox} onClick={toggleSidebar}>
+      <div className={styles.menuBox} onClick={() => dispatch(toggle())}>
         <MenuIcon />
       </div>
       <a href="/">

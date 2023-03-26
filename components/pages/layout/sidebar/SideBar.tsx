@@ -1,15 +1,15 @@
-import { useContext } from "react"
 import cn from "classnames"
 import TogglerAndLogo from "../TogglerAndLogo"
 import { DiceIcon, HomeIcon } from "@/components/ui/icons"
 import { Playlists } from "./Playlists"
-import { SidebarContext } from "./SidebarContext"
 import { SignInButton } from "../top-bar/SignInButton"
-import styles from "./Sidebar.module.css"
 import { useSession } from "next-auth/react"
+import { useSelector } from "react-redux"
+import { selectIsSidebarOpen } from "./sideBarSlice"
+import styles from "./Sidebar.module.css"
 
 const SideBar = () => {
-  const { isSidebarOpen } = useContext(SidebarContext)
+  const isSidebarOpen = useSelector(selectIsSidebarOpen)
   const { data: session } = useSession()
 
   return (
@@ -66,5 +66,3 @@ const SideBar = () => {
 }
 
 export default SideBar
-
-//
