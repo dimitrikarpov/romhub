@@ -19,12 +19,11 @@ type Props = {
 }
 
 const Home: NextPageWithLayout<Props> = ({ initialData }) => {
-  const { skip, platform, titleStartsWith } = useContext(SearchContext)
+  const { skip, platform } = useContext(SearchContext)
 
   const romsQuery = useRomsQuery({
     skip,
     platform,
-    titleStartsWith,
     initialData,
   })
 

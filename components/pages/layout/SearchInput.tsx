@@ -1,15 +1,18 @@
 import React, { KeyboardEventHandler, useContext, useState } from "react"
 import classNames from "classnames"
 import { useRouter } from "next/router"
-import { SearchContext } from "@/contexts/search/SearchContext"
+// import { SearchContext } from "@/contexts/search/SearchContext"
 import { ClearIcon, SearchIcon } from "@/components/ui/icons"
 import styles from "./SearchInput.module.css"
 
 export const SearchInput = () => {
-  const { titleStartsWith, search } = useContext(SearchContext)
   const router = useRouter()
 
-  const [value, setValue] = useState<string>("")
+  console.log({ router })
+
+  const [value, setValue] = useState<string>(
+    () => router.query.search_query as string,
+  )
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -20,15 +23,15 @@ export const SearchInput = () => {
   const onClear = () => {
     setValue("")
 
-    if (titleStartsWith !== "") {
-      router.route !== "/" ? router.push("/").then(() => search()) : search()
-    }
+    // if (titleStartsWith !== "") {
+    //   router.route !== "/" ? router.push("/").then(() => search()) : search()
+    // }
   }
 
   const onSubmit = () => {
-    router.route !== "/"
-      ? router.push("/").then(() => search(value))
-      : search(value)
+    // router.route !== "/"
+    //   ? router.push("/").then(() => search(value))
+    //   : search(value)
   }
 
   const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
