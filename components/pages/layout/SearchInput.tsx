@@ -29,7 +29,7 @@ export const SearchInput = () => {
 
     dispatch(setSearch(value.trim()))
 
-    if (router.route === "/") {
+    if (router.route !== "/results") {
       router.push({ pathname: "/results", query: { search_query: value } })
     }
   }

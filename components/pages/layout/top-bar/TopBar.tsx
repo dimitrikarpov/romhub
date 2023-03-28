@@ -4,16 +4,17 @@ import TogglerAndLogo from "../TogglerAndLogo"
 import styles from "./styles.module.css"
 import { SignInButton } from "./SignInButton"
 import { AccountButton } from "./AccountButton"
+import { useRouter } from "next/router"
 
 const TopBar = () => {
   const { data: session } = useSession()
+  const router = useRouter()
+  const shouldDisplaySearchInput = router.route !== "/rom/[id]"
 
   return (
     <div className={styles.topBar}>
       <TogglerAndLogo />
-
-      <SearchInput />
-
+      {shouldDisplaySearchInput && <SearchInput />}
       {session ? <AccountButton /> : <SignInButton />}
     </div>
   )
