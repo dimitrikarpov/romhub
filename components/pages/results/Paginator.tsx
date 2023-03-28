@@ -61,6 +61,8 @@ export const Paginator: React.FunctionComponent<Props> = ({
     setPage(value)
   }
 
+  if (total <= pageSize) return null
+
   return (
     <div className={styles.paginator}>
       <button disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>

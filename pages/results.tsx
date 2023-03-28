@@ -16,6 +16,7 @@ import { Paginator } from "@/components/pages/results/Paginator"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { Item } from "@/components/pages/results/Item"
 import styles from "../styles/Results.module.css"
+import { NotFoundIcon } from "@/components/ui/icons"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -52,6 +53,20 @@ const Results: NextPageWithLayout<
           <Item rom={rom} key={rom.id} />
         ))}
       </div>
+
+      {total === 0 && (
+        <div className={styles["not-found-box"]}>
+          <div>
+            <NotFoundIcon />
+          </div>
+          <div>
+            <p className={styles["not-found-title"]}>No results found</p>
+            <p className={styles["not-found-subtitle"]}>
+              Try different keywords or remove search filters
+            </p>
+          </div>
+        </div>
+      )}
 
       <Paginator skip={skip} setSkip={doSkip} total={total} pageSize={5} />
     </div>
