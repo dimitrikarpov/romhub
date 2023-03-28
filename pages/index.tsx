@@ -1,14 +1,13 @@
-import React, { ReactElement, useContext } from "react"
+import React, { ReactElement, useState } from "react"
 import Head from "next/head"
-import { UiRom } from "../types"
-import { SearchContext } from "../contexts/search/SearchContext"
+import { TPlatformSlug, UiRom } from "../types"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "@/components/pages/layout/Layout"
 import { Gallery } from "@/components/pages/gallery/Gallery"
 import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
-import { Paginator } from "@/components/pages/gallery/Paginator"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { dbQueries } from "@/lib/queries/dbQueries"
+import { Paginator } from "@/components/pages/results/Paginator"
 import styles from "../styles/Home.module.css"
 
 type Props = {
@@ -19,10 +18,12 @@ type Props = {
 }
 
 const Home: NextPageWithLayout<Props> = ({ initialData }) => {
-  const { skip, platform } = useContext(SearchContext)
+  const [platform, setPlatform] = useState<TPlatformSlug | undefined>()
+  const [skip, setSkip] = useState(0)
 
   const romsQuery = useRomsQuery({
     skip,
+    take: 15,
     platform,
     initialData,
   })
@@ -30,6 +31,11 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
   const { data } = romsQuery
   const roms = data?.data
   const total = data?.total
+
+  const selectPlatform = (slug: TPlatformSlug | undefined) => {
+    setSkip(0)
+    setPlatform(slug)
+  }
 
   return (
     <>
@@ -40,12 +46,17 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
       </Head>
 
       <main className={styles.main}>
-        <PlatformFilter />
+        <PlatformFilter value={platform} onChange={selectPlatform} />
 
         <Gallery roms={roms} />
 
         <div className={styles.paginatorContainer}>
-          <Paginator skip={skip} total={total} />
+          <Paginator
+            skip={skip}
+            setSkip={setSkip}
+            total={total}
+            pageSize={15}
+          />
         </div>
       </main>
     </>
@@ -59,7 +70,7 @@ Home.getLayout = function getLayout(page: ReactElement) {
 export default Home
 
 export async function getServerSideProps() {
-  const initialData = await dbQueries.getRoms({})
+  const initialData = await dbQueries.getRoms({ take: 15 })
 
   return {
     props: {

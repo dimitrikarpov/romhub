@@ -1,26 +1,33 @@
-import cn from "classnames"
-import { useContext } from "react"
-import { SearchContext } from "@/contexts/search/SearchContext"
-import styles from "./PlatformFilter.module.css"
 import { platforms } from "config/index"
+import { TPlatformSlug } from "@/types/index"
+import { PlatformFilterItem } from "./PlatformFilterItem"
+import styles from "./PlatformFilter.module.css"
 
-export const PlatformFilter: React.FunctionComponent = () => {
-  const { platform, selectPlatform } = useContext(SearchContext)
+type Props = {
+  value: TPlatformSlug | undefined
+  onChange: (value: TPlatformSlug | undefined) => void
+}
 
-  const items = { all: { name: "All" }, ...platforms }
-
+export const PlatformFilter: React.FunctionComponent<Props> = ({
+  value,
+  onChange,
+}) => {
   return (
     <div className={styles.platformsSelectorContainer}>
-      {Object.entries(items).map(([slug, { name }]) => (
-        <span
-          className={cn(styles.platformSelectorItem, {
-            [styles.platformSelectorItemActive]: platform === slug,
-          })}
-          onClick={() => selectPlatform(slug)}
-          key={slug}
-        >
-          {name}
-        </span>
+      <PlatformFilterItem
+        value={undefined}
+        title="All"
+        isActive={value === undefined}
+        onChange={onChange}
+      />
+
+      {Object.entries(platforms).map(([slug, { name }]) => (
+        <PlatformFilterItem
+          value={slug as TPlatformSlug}
+          title={name}
+          isActive={slug === value}
+          onChange={onChange}
+        />
       ))}
     </div>
   )
