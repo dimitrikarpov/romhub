@@ -1,14 +1,14 @@
-import React, { KeyboardEventHandler, useContext, useState } from "react"
+import React, { KeyboardEventHandler, useState } from "react"
 import classNames from "classnames"
 import { useRouter } from "next/router"
-// import { SearchContext } from "@/contexts/search/SearchContext"
+import { useDispatch } from "react-redux"
 import { ClearIcon, SearchIcon } from "@/components/ui/icons"
+import { setSearch } from "@/components/pages/results/searchSlice"
 import styles from "./SearchInput.module.css"
 
 export const SearchInput = () => {
   const router = useRouter()
-
-  console.log({ router })
+  const dispatch = useDispatch()
 
   const [value, setValue] = useState<string>(
     () => router.query.search_query as string,
@@ -22,16 +22,16 @@ export const SearchInput = () => {
 
   const onClear = () => {
     setValue("")
-
-    // if (titleStartsWith !== "") {
-    //   router.route !== "/" ? router.push("/").then(() => search()) : search()
-    // }
   }
 
   const onSubmit = () => {
-    // router.route !== "/"
-    //   ? router.push("/").then(() => search(value))
-    //   : search(value)
+    if (!Boolean(value.trim())) return
+
+    dispatch(setSearch(value.trim()))
+
+    if (router.route === "/") {
+      router.push({ pathname: "/results", query: { search_query: value } })
+    }
   }
 
   const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {

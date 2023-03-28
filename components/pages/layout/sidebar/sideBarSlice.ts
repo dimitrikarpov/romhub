@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import type { PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "@/lib/store"
 
 export interface SidebarSlice {

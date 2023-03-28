@@ -1,0 +1,17 @@
+.container {
+  padding-bottom: 3rem;
+}
+
+.filters-box {
+  padding-bottom: 3rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}

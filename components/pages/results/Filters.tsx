@@ -1,20 +1,17 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { useState } from "react"
 import classNames from "classnames"
 import { Button } from "@/components/ui/button/Button"
 import { ThreeSlidersIcon } from "@/components/ui/icons"
-import styles from "./Filters.module.css"
 import { platforms } from "config"
 import { TPlatformSlug } from "@/types/index"
+import { useDispatch, useSelector } from "react-redux"
+import { selectPlatform, setPlatform } from "./searchSlice"
+import styles from "./Filters.module.css"
 
-type Props = {
-  platform: TPlatformSlug | undefined
-  setPlatform: Dispatch<SetStateAction<TPlatformSlug | undefined>>
-}
+export const Filters = () => {
+  const dispatch = useDispatch()
+  const platform = useSelector(selectPlatform)
 
-export const Filters: React.FunctionComponent<Props> = ({
-  platform,
-  setPlatform,
-}) => {
   const [isVisible, setIsVisible] = useState(true)
 
   const toggle = () => {
@@ -22,7 +19,7 @@ export const Filters: React.FunctionComponent<Props> = ({
   }
 
   const select = (shortName: TPlatformSlug | undefined) => {
-    setPlatform(shortName)
+    dispatch(setPlatform(shortName))
   }
 
   return (
@@ -65,6 +62,12 @@ export const Filters: React.FunctionComponent<Props> = ({
                 {name}
               </p>
             ))}
+          </div>
+
+          <div className={styles["filters-group"]}>
+            <div className={styles["filter-group-name"]}>type</div>
+            <p className={styles["filter-group-entry"]}>Rom</p>
+            <p className={styles["filter-group-entry"]}>Playlist</p>
           </div>
 
           <div className={styles["filters-group"]}>

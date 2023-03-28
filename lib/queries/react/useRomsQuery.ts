@@ -9,14 +9,18 @@ type initialData = {
 
 export const useRomsQuery = ({
   skip,
+  take = 10,
   platform,
   titleStartsWith,
   initialData,
+  enabled = true,
 }: {
   skip?: number
+  take?: number
   platform?: string
   titleStartsWith?: string
   initialData?: initialData
+  enabled?: boolean
 }) => {
   const query = useQuery({
     queryKey: [
@@ -30,11 +34,12 @@ export const useRomsQuery = ({
     queryFn: () =>
       apiQueries.getRoms({
         ...(skip && { skip }),
+        ...(take && { take }),
         where: {
           AND: [
             {
               platform: {
-                in: platform && platform !== "all" ? [platform] : undefined,
+                in: platform ? [platform] : undefined,
               },
             },
             { name: { startsWith: titleStartsWith } },
@@ -42,6 +47,7 @@ export const useRomsQuery = ({
         },
       }),
     initialData,
+    enabled,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     retry: false,
