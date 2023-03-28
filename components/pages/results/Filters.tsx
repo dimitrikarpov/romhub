@@ -12,7 +12,7 @@ export const Filters = () => {
   const dispatch = useDispatch()
   const platform = useSelector(selectPlatform)
 
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
   const toggle = () => {
     setIsVisible((value) => !value)
