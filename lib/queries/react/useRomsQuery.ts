@@ -11,14 +11,14 @@ export const useRomsQuery = ({
   skip,
   take = 10,
   platform,
-  titleStartsWith,
+  titleContains,
   initialData,
   enabled = true,
 }: {
   skip?: number
   take?: number
   platform?: string
-  titleStartsWith?: string
+  titleContains?: string
   initialData?: initialData
   enabled?: boolean
 }) => {
@@ -28,7 +28,7 @@ export const useRomsQuery = ({
       {
         skip,
         platform,
-        search: titleStartsWith,
+        search: titleContains,
       },
     ],
     queryFn: () =>
@@ -42,7 +42,7 @@ export const useRomsQuery = ({
                 in: platform ? [platform] : undefined,
               },
             },
-            { name: { startsWith: titleStartsWith } },
+            { name: { contains: titleContains } },
           ],
         },
       }),

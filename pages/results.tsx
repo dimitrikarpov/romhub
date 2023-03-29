@@ -15,8 +15,8 @@ import {
 import { Paginator } from "@/components/pages/results/Paginator"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { Item } from "@/components/pages/results/Item"
-import styles from "../styles/Results.module.css"
 import { NotFoundIcon } from "@/components/ui/icons"
+import styles from "../styles/Results.module.css"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -31,7 +31,7 @@ const Results: NextPageWithLayout<
     take: 5,
     platform,
     initialData,
-    titleStartsWith: search || search_query,
+    titleContains: search || search_query,
   })
 
   const doSkip = (skip: number) => {
@@ -95,7 +95,7 @@ export const getServerSideProps: GetServerSideProps<{
   }
 
   const initialData = await dbQueries.getRoms({
-    where: { name: { startsWith: search_query } },
+    where: { name: { contains: search_query } },
     take: 5,
   })
 

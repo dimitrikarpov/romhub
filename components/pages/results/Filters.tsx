@@ -5,7 +5,7 @@ import { ThreeSlidersIcon } from "@/components/ui/icons"
 import { platforms } from "config"
 import { TPlatformSlug } from "@/types/index"
 import { useDispatch, useSelector } from "react-redux"
-import { selectPlatform, setPlatform } from "./searchSlice"
+import { selectPlatform, setPlatform, setSkip } from "./searchSlice"
 import styles from "./Filters.module.css"
 
 export const Filters = () => {
@@ -20,6 +20,8 @@ export const Filters = () => {
 
   const select = (shortName: TPlatformSlug | undefined) => {
     dispatch(setPlatform(shortName))
+    dispatch(setSkip(0))
+    setIsVisible(false)
   }
 
   return (

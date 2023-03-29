@@ -27,6 +27,7 @@ export const PlatformFilter: React.FunctionComponent<Props> = ({
           title={name}
           isActive={slug === value}
           onChange={onChange}
+          key={slug}
         />
       ))}
     </div>
