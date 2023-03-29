@@ -7,7 +7,7 @@ import { Gallery } from "@/components/pages/gallery/Gallery"
 import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { dbQueries } from "@/lib/queries/dbQueries"
-import { Paginator } from "@/components/pages/results/Paginator"
+import { Paginator } from "@/components/ui/paginator/Paginator"
 import styles from "../styles/Home.module.css"
 
 type Props = {

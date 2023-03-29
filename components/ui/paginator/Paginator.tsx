@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { Button } from "../button/Button"
+import { LeftChevronIcon, RightChevronIcon } from "../icons"
 import styles from "./Paginator.module.css"
 
 type Props = {
@@ -65,11 +67,11 @@ export const Paginator: React.FunctionComponent<Props> = ({
 
   return (
     <div className={styles.paginator}>
-      <button disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>
-        prev
-      </button>
+      <Button disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>
+        <LeftChevronIcon />
+      </Button>
 
-      <span>
+      <div>
         <input
           type="number"
           value={String(value)}
@@ -77,14 +79,14 @@ export const Paginator: React.FunctionComponent<Props> = ({
           onKeyDown={onInputKeyDown}
         />{" "}
         / {totalPages}
-      </span>
+      </div>
 
-      <button
+      <Button
         disabled={!canFetchNext(pageSize, skip, total)}
         onClick={nextPage}
       >
-        next
-      </button>
+        <RightChevronIcon />
+      </Button>
     </div>
   )
 }

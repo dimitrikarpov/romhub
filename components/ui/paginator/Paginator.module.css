@@ -1,0 +1,34 @@
+.paginator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  font-weight: 500;
+}
+
+.paginator input {
+  width: 50px;
+  color: white;
+  background: black;
+
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  font-weight: 500;
+
+  border: 1px solid gray;
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.paginator svg {
+  width: 36px;
+  height: 36px;
+  fill: white;
+}
+
+.paginator > *:not(:last-child) {
+  margin-right: 1rem;
+}

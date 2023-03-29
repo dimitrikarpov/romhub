@@ -12,7 +12,7 @@ import {
   selectSkip,
   setSkip,
 } from "@/components/pages/results/searchSlice"
-import { Paginator } from "@/components/pages/results/Paginator"
+import { Paginator } from "@/components/ui/paginator/Paginator"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { Item } from "@/components/pages/results/Item"
 import { NotFoundIcon } from "@/components/ui/icons"

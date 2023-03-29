@@ -12,6 +12,7 @@ type Props = {
   startIcon?: React.ReactNode
   children: React.ReactNode
   onClick?: () => void
+  disabled?: boolean
 }
 
 export const Button: React.FunctionComponent<Props> = ({
@@ -20,6 +21,7 @@ export const Button: React.FunctionComponent<Props> = ({
   children,
   onClick,
   type = "button",
+  disabled = false,
 }) => {
   return (
     <button
@@ -33,6 +35,7 @@ export const Button: React.FunctionComponent<Props> = ({
         [styles["button--transparent-transpared"]]:
           variant === "transparent-transpared",
       })}
+      disabled={disabled}
     >
       {children}
     </button>
