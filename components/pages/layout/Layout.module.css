@@ -5,3 +5,8 @@
 
   position: relative;
 }
+
+.sidebar-and-main-container {
+  display: flex;
+  flex-direction: row;
+}

@@ -6,7 +6,7 @@ import {
   WatchLaterIcon,
 } from "@/components/ui/icons"
 import { TPlaylistType } from "@/types/index"
-import styles from "./Sidebar.module.css"
+import styles from "../aside/Aside.module.css"
 
 const getIconByType = (type: TPlaylistType) => {
   switch (type) {

@@ -1,0 +1,142 @@
+/* ================== sidebar ================== */
+.aside-container {
+  background-color: rgb(15, 15, 15);
+}
+
+/* full sidebar */
+@media (min-width: 1251px) {
+  .aside-container {
+    min-width: 240px;
+  }
+}
+
+/* mini sidebar */
+@media (max-width: 1250px) {
+  .aside-container {
+    min-width: 72px;
+    width: 72px;
+  }
+}
+
+/* drawer sidebar */
+@media (max-width: 775px) {
+  .aside-container {
+    display: none;
+    position: fixed;
+
+    z-index: 10;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+  }
+}
+
+.aside-container--drawer {
+  display: block;
+  animation: fade_in_show 0.1s;
+}
+
+.drawer-backdrop {
+  position: absolute;
+  z-index: 9;
+  background-color: #0f0f0f;
+  opacity: 0;
+
+  transition: opacity 200ms ease;
+}
+
+.drawer-backdrop--visible {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.3;
+}
+
+@keyframes fade_in_show {
+  0% {
+    opacity: 0;
+    transform: scaleZ(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleZ(1);
+  }
+}
+
+/* toggler */
+.sideBarTogglerContainer {
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+/* ================== sections and items ================== */
+.sideBarSection {
+  color: rgb(241, 241, 241);
+}
+
+.sideBarSectionItem {
+  display: flex;
+  align-items: center;
+
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
+
+  cursor: pointer;
+}
+
+/* full sidebar */
+@media (min-width: 1251px) {
+  .sideBarSectionItem {
+    height: 40px;
+    padding: 14px 12px;
+  }
+
+  .sideBarSectionItem svg {
+    margin-right: 24px;
+  }
+}
+
+/* mini sidebar */
+@media (max-width: 1250px) {
+  .sideBarSectionItem {
+    flex-direction: column;
+    height: auto;
+    padding: 16px 0 14px;
+  }
+
+  .sideBarSectionItem svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.sideBarSectionItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.sideBarSectionItem svg {
+  width: 24px;
+  height: 24px;
+  fill: rgb(241, 241, 241);
+}
+
+.registerSectionContent {
+  display: block;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-weight: 400;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 18px 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
