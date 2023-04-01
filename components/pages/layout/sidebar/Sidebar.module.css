@@ -5,6 +5,7 @@
 
 .sidebar-container--full {
   min-width: 240px;
+  width: 240px;
 }
 
 .sidebar-container--mini {
