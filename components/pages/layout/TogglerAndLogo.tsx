@@ -1,7 +1,7 @@
 import { MenuIcon } from "@/components/ui/icons"
 import { useDispatch } from "react-redux"
 import { toggle } from "@/components/pages/layout/sidebar/sideBarSlice"
-import { useWindowSizeForSidebar } from "./aside/useWindowSizeForSidebar"
+import { useWindowSizeForSidebar } from "./sidebar/useWindowSizeForSidebar"
 import styles from "./TogglerAndLogo.module.css"
 
 const TogglerAndLogo = () => {

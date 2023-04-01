@@ -4,17 +4,17 @@ import { useWindowSizeForSidebar } from "./useWindowSizeForSidebar"
 import { MiniSidebarContent } from "./MiniSidebarContent"
 import { useDispatch, useSelector } from "react-redux"
 import {
-  selectIsSidebarOpen,
+  selectisDrawerOpen,
   selectSidebarVariant,
   resetSidebar,
-} from "../sidebar/sideBarSlice"
+} from "./sideBarSlice"
 import { useEffect } from "react"
 import TogglerAndLogo from "../TogglerAndLogo"
-import styles from "./Aside.module.css"
+import styles from "./Sidebar.module.css"
 
-export const Aside = () => {
+export const Sidebar = () => {
   const dispatch = useDispatch()
-  const isSidebarOpen = useSelector(selectIsSidebarOpen)
+  const isDrawerOpen = useSelector(selectisDrawerOpen)
   const storedVariant = useSelector(selectSidebarVariant)
   const variation = useWindowSizeForSidebar()
 
@@ -28,16 +28,16 @@ export const Aside = () => {
     <>
       <div
         className={cn(styles["drawer-backdrop"], {
-          [styles["drawer-backdrop--visible"]]: isSidebarOpen,
+          [styles["drawer-backdrop--visible"]]: isDrawerOpen,
         })}
       ></div>
       <div
-        className={cn(styles["aside-container"], {
-          [styles["aside-container--full"]]: variant === "full",
-          [styles["aside-container--mini"]]: variant === "mini",
-          [styles["aside-container--drawer"]]: variant === "drawer",
-          [styles["aside-container--drawer_visible"]]:
-            variant === "drawer" && isSidebarOpen,
+        className={cn(styles["sidebar-container"], {
+          [styles["sidebar-container--full"]]: variant === "full",
+          [styles["sidebar-container--mini"]]: variant === "mini",
+          [styles["sidebar-container--drawer"]]: variant === "drawer",
+          [styles["sidebar-container--drawer_visible"]]:
+            variant === "drawer" && isDrawerOpen,
         })}
       >
         {variant === "full" && <FullSidebarContent />}

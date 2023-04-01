@@ -1,5 +1,5 @@
 import { DiceIcon, HomeIcon } from "@/components/ui/icons"
-import styles from "./Aside.module.css"
+import styles from "./Sidebar.module.css"
 
 export const MiniSidebarContent = () => {
   return (

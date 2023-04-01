@@ -1,20 +1,14 @@
-import cn from "classnames"
-import TogglerAndLogo from "../TogglerAndLogo"
 import { DiceIcon, HomeIcon } from "@/components/ui/icons"
+import { useSession } from "next-auth/react"
 import { Playlists } from "../sidebar/Playlists"
 import { SignInButton } from "../top-bar/SignInButton"
-import { useSession } from "next-auth/react"
-import styles from "./Aside.module.css"
+import styles from "./Sidebar.module.css"
 
-export const DrawerSidebarContent = () => {
+export const FullSidebarContent = () => {
   const { data: session } = useSession()
 
   return (
     <>
-      <div className={styles.sideBarTogglerContainer}>
-        <TogglerAndLogo />
-      </div>
-
       <div className={styles.sideBarSection}>
         <a href="/">
           <div className={styles.sideBarSectionItem}>

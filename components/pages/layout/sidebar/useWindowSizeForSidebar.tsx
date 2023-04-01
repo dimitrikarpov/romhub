@@ -22,7 +22,3 @@ export const useWindowSizeForSidebar = () => {
     ? "mini"
     : "full"
 }
-
-// 0 - 775
-// 776 - 1250
-// 1251 -> more

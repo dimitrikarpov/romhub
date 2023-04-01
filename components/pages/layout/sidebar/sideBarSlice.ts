@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "@/lib/store"
 
 export interface SidebarSlice {
-  isSidebarOpen: boolean
+  isDrawerOpen: boolean
   sidebarVariant: "full" | "mini" | "drawer" | undefined
 }
 
 const initialState: SidebarSlice = {
-  isSidebarOpen: false,
+  isDrawerOpen: false,
   sidebarVariant: undefined,
 }
 
@@ -33,10 +33,10 @@ export const sidebarSlice = createSlice({
           state.sidebarVariant === "mini"
         ) {
           state.sidebarVariant = "drawer"
-          state.isSidebarOpen = true
+          state.isDrawerOpen = true
         } else {
           state.sidebarVariant = "mini"
-          state.isSidebarOpen = false
+          state.isDrawerOpen = false
         }
       }
 
@@ -45,27 +45,21 @@ export const sidebarSlice = createSlice({
           state.sidebarVariant === undefined ||
           state.sidebarVariant === "drawer"
         ) {
-          state.isSidebarOpen = !state.isSidebarOpen
+          state.isDrawerOpen = !state.isDrawerOpen
         }
       }
     },
-    setVariant: (
-      state,
-      action: PayloadAction<SidebarSlice["sidebarVariant"]>,
-    ) => {
-      state.sidebarVariant = action.payload
-    },
     resetSidebar: (state) => {
-      state.isSidebarOpen = false
+      state.isDrawerOpen = false
       state.sidebarVariant = undefined
     },
   },
 })
 
-export const { toggle, setVariant, resetSidebar } = sidebarSlice.actions
+export const { toggle, resetSidebar } = sidebarSlice.actions
 
-export const selectIsSidebarOpen = (state: RootState) =>
-  state.sidebar.isSidebarOpen
+export const selectisDrawerOpen = (state: RootState) =>
+  state.sidebar.isDrawerOpen
 export const selectSidebarVariant = (state: RootState) =>
   state.sidebar.sidebarVariant
 
