@@ -1,6 +1,8 @@
 .main {
   padding-top: 2rem;
   background-color: #0f0f0f;
+
+  margin: 0 auto;
 }
 
 .paginatorContainer {

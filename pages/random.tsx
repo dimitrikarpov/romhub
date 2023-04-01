@@ -3,8 +3,8 @@ import Head from "next/head"
 import { Layout } from "@/components/pages/layout/Layout"
 import { RandomGrid } from "@/components/pages/random/RandomGrid"
 import { useRandomRomsQuery } from "@/lib/queries/react/useRandomRoms"
-import styles from "../styles/Random.module.css"
 import { useQueryClient } from "react-query"
+import styles from "../styles/Random.module.css"
 
 const Random = () => {
   const queryClient = useQueryClient()
@@ -25,11 +25,13 @@ const Random = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {roms && <RandomGrid roms={roms} />}
+      <div className={styles["pageContainer"]}>
+        {roms && <RandomGrid roms={roms} />}
 
-      <div className={styles["reroll"]}>
-        <div className={styles["reroll-btn"]} onClick={onRoll}>
-          Reroll
+        <div className={styles["reroll"]}>
+          <div className={styles["reroll-btn"]} onClick={onRoll}>
+            Roll
+          </div>
         </div>
       </div>
     </>
