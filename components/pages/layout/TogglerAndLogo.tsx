@@ -10,7 +10,10 @@ const TogglerAndLogo = () => {
 
   return (
     <div className={styles.menuAndLogoBox}>
-      <div className={styles.menuBox} onClick={() => dispatch(toggle())}>
+      <div
+        className={styles.menuBox}
+        onClick={() => dispatch(toggle(variation))}
+      >
         <MenuIcon />
       </div>
       <a href="/">
