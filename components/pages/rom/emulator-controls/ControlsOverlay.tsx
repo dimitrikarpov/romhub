@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, useState } from "react"
+import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react"
 import classNames from "classnames"
 import { UiRom } from "@/types/index"
 import { ControlsButton } from "./ControlsButton"
@@ -20,13 +20,24 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
   setIsInTheaterMod,
   canvasBoxRef,
 }) => {
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
   const [visible, setVisible] = useState(false)
 
-  const onMouseEnter = () => {
-    setVisible(true)
+  const onMouseMove = () => {
+    !visible && setVisible(true)
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+
+    timerRef.current = setTimeout(() => {
+      setVisible(false)
+    }, 1000)
   }
 
   const onMouseLeave = () => {
+    timerRef.current && clearTimeout(timerRef.current)
     setVisible(false)
   }
 
@@ -35,8 +46,8 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
       className={classNames(styles["controls-overlay"], {
         [styles["controls-overlay--hidden"]]: !visible,
       })}
-      onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onMouseMove={onMouseMove}
     >
       <div className={styles["controls-container"]}>
         <div>

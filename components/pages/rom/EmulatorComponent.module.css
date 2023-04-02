@@ -37,6 +37,7 @@
 
 .controls-overlay--hidden {
   opacity: 0;
+  cursor: none;
 }
 
 .controls-container {
