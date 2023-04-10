@@ -2,7 +2,6 @@ import { useState } from "react"
 import { SubmitHandler } from "react-hook-form"
 import { DescriptionForm, IFormInput } from "./DescriptionForm"
 import { DescriptionView } from "./DescriptionView"
-import styles from "../PlaylistSidebar.module.css"
 import { usePlaylistMutation } from "@/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
 
@@ -30,7 +29,7 @@ export const Description: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={styles["description-container"]}>
+    <div>
       {!inEditMode && (
         <DescriptionView
           text={text}

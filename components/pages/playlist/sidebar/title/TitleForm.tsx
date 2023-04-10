@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button/Button"
-import styles from "../PlaylistSidebar.module.css"
 
 export interface IFormInput {
   title: string
@@ -20,17 +19,17 @@ export const TitleForm: React.FunctionComponent<Props> = ({
   const { register, handleSubmit } = useForm<IFormInput>()
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles["form"]}>
-      <div className={styles["input-underline"]}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="border-0 border-b border-b-white pb-[2px]">
         <input
           type="text"
-          className={styles["input"]}
           defaultValue={value}
+          className="w-full border-none bg-transparent text-2xl font-bold leading-8 tracking-wider text-white outline-none	"
           {...register("title")}
         />
       </div>
 
-      <div className={styles["form-controls"]}>
+      <div className="flex justify-end gap-4">
         <Button variant="transparent-transpared" onClick={toggleToView}>
           Cancel
         </Button>

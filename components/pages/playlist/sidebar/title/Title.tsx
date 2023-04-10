@@ -2,7 +2,6 @@ import { useState } from "react"
 import { SubmitHandler } from "react-hook-form"
 import { TitleView } from "./TitleView"
 import { IFormInput, TitleForm } from "./TitleForm"
-import styles from "../PlaylistSidebar.module.css"
 import { usePlaylistMutation } from "@/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
 
@@ -27,7 +26,7 @@ export const Title: React.FunctionComponent<Props> = ({ text, editable }) => {
   }
 
   return (
-    <div className={styles["title-container"]}>
+    <div>
       {!inEditMode && (
         <TitleView
           text={text}

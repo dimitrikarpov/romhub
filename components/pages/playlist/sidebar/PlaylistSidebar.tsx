@@ -11,7 +11,6 @@ import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { ShareIconButton } from "./ShareIconButton"
 import { useDeletePlaylistMutation } from "@/lib/queries/react/useDeletePlaylistMutation"
-import styles from "./PlaylistSidebar.module.css"
 import { SaveOrDeleteSharedPlaylistButton } from "./SaveOrDeleteSharedPlaylistButton"
 
 // TODO: make a singleton to prevent
@@ -54,20 +53,22 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={styles["sidebar"]}>
+    <div className="flex h-[876px] w-full max-w-[23rem] flex-col gap-6 rounded-2xl bg-gradient-to-b from-[rgba(60,65,114,0.8)] to-[rgba(15,15,15,1)] p-6">
       <img
         src={thumbnail}
-        className={styles["thumbnail"]}
+        className="w-full rounded-xl"
         alt="playlist thumbnail"
       />
 
       <Title text={playlist.title} editable={isTitleEditable} />
 
-      <div className={styles["author"]}>by {playlist.author.name}</div>
+      <div className="text-sm font-medium leading-8">
+        by {playlist.author.name}
+      </div>
 
       {isPrivacyEditable && <PrivacySelect isPublic={playlist.isPublic} />}
 
-      <div className={styles["meta-container"]}>
+      <div className="flex gap-4 text-xs font-normal leading-5 text-[#ffffffb3]">
         <div>{total} games</div>
         <div>
           Updated{" "}
@@ -75,7 +76,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         </div>
       </div>
 
-      <div className={styles["controls-container"]}>
+      <div className="flex gap-4">
         {isShareVisible && <ShareIconButton />}
 
         <SaveOrDeleteSharedPlaylistButton playlist={playlist} />

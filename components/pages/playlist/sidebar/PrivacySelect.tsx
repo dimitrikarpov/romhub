@@ -1,6 +1,5 @@
 import { usePlaylistMutation } from "@/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
-import styles from "./PlaylistSidebar.module.css"
 
 type Props = {
   isPublic: boolean
@@ -20,10 +19,18 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
   const defaultValue = isPublic ? "public" : "private"
 
   return (
-    <div className={styles["privacy"]}>
-      <select onChange={onChange} defaultValue={defaultValue}>
-        <option value="private">Private</option>
-        <option value="public">Public</option>
+    <div className="ml-[-4px]">
+      <select
+        onChange={onChange}
+        defaultValue={defaultValue}
+        className="border-none bg-transparent text-sm leading-5 tracking-wide text-white outline-none"
+      >
+        <option value="private" className="bg-black text-white">
+          Private
+        </option>
+        <option value="public" className="bg-black text-white">
+          Public
+        </option>
       </select>
     </div>
   )
