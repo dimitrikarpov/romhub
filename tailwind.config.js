@@ -9,7 +9,18 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-roboto)"],
+      },
+      keyframes: {
+        "random-card-display": {
+          "0%": { opacity: "1", width: "100%", height: "100%" },
+          "99%": { opacity: "0", width: "100%", height: "100%" },
+          "100%": { opacity: "0", width: "0", height: "0" },
+        },
+      },
+    },
   },
   plugins: [],
 }
