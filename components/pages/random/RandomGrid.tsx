@@ -1,6 +1,5 @@
-import { UiRom } from "@/types/index"
-import styles from "./RandomGrid.module.css"
-import { RandomGridItem } from "./RandomGridItem"
+import { UiRom } from '@/types/index'
+import { RandomGridItem } from './RandomGridItem'
 
 type Props = {
   roms: UiRom[]
@@ -8,8 +7,8 @@ type Props = {
 
 export const RandomGrid: React.FunctionComponent<Props> = ({ roms }) => {
   return (
-    <div className={styles["grid-wrapper"]}>
-      <div className={styles["grid"]}>
+    <div className="pt-16">
+      <div className="mx-auto my-0 grid w-fit grid-cols-3 grid-rows-2 gap-10">
         {roms.map((rom) => (
           <RandomGridItem rom={rom} key={rom.id} />
         ))}

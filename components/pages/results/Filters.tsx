@@ -1,12 +1,11 @@
-import { useState } from "react"
-import classNames from "classnames"
-import { Button } from "@/components/ui/button/Button"
-import { ThreeSlidersIcon } from "@/components/ui/icons"
-import { platforms } from "config"
-import { TPlatformSlug } from "@/types/index"
-import { useDispatch, useSelector } from "react-redux"
-import { selectPlatform, setPlatform, setSkip } from "./searchSlice"
-import styles from "./Filters.module.css"
+import { useState } from 'react'
+import { Button } from '@/components/ui/button/Button'
+import { ThreeSlidersIcon } from '@/components/ui/icons'
+import { platforms } from 'config'
+import { TPlatformSlug } from '@/types/index'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectPlatform, setPlatform, setSkip } from './searchSlice'
+import clsx from 'clsx'
 
 export const Filters = () => {
   const dispatch = useDispatch()
@@ -25,11 +24,11 @@ export const Filters = () => {
   }
 
   return (
-    <div className={styles["filters-component-container"]}>
+    <div className="flex flex-col">
       <div
-        className={classNames(
-          styles["filters-visibility-toggler"],
-          isVisible && styles["hide-bottom-border"],
+        className={clsx(
+          'border-0 border-b border-[rgba(255,255,255,0.2)]',
+          isVisible && 'border-b-0',
         )}
       >
         <Button variant="transparent-transpared" onClick={toggle}>
@@ -39,16 +38,18 @@ export const Filters = () => {
       </div>
 
       {isVisible && (
-        <div className={styles["filters"]}>
-          <div className={styles["filters-group"]}>
-            <div className={styles["filter-group-name"]}>platform</div>
+        <div className="flex justify-between border-0 border-b border-[rgba(255,255,255,0.2)]">
+          <div>
+            <div className="mx-0 my-1 border-0 border-b border-[rgba(255,255,255,0.2)] px-0 py-4 text-sm font-medium uppercase leading-4 text-[#f1f1f1]">
+              platform
+            </div>
 
             <p
-              className={classNames(
-                styles["filter-group-entry"],
-                !platform && styles["filter-group-entry--selected"],
-              )}
               onClick={() => select(undefined)}
+              className={clsx(
+                'cursor-pointer px-0 py-4 text-sm text-[#aaa]',
+                !platform && 'font-medium text-[#f1f1f1]',
+              )}
             >
               All
             </p>
@@ -56,9 +57,9 @@ export const Filters = () => {
               <p
                 key={shortName}
                 onClick={() => select(slug as TPlatformSlug)}
-                className={classNames(
-                  styles["filter-group-entry"],
-                  platform === slug && styles["filter-group-entry--selected"],
+                className={clsx(
+                  'cursor-pointer px-0 py-4 text-sm text-[#aaa]',
+                  platform === slug && 'font-medium text-[#f1f1f1]',
                 )}
               >
                 {name}
@@ -66,16 +67,28 @@ export const Filters = () => {
             ))}
           </div>
 
-          <div className={styles["filters-group"]}>
-            <div className={styles["filter-group-name"]}>type</div>
-            <p className={styles["filter-group-entry"]}>Rom</p>
-            <p className={styles["filter-group-entry"]}>Playlist</p>
+          <div>
+            <div className="mx-0 my-1 border-0 border-b border-[rgba(255,255,255,0.2)] px-0 py-4 text-sm font-medium uppercase leading-4 text-[#f1f1f1]">
+              type
+            </div>
+            <p className="cursor-not-allowed px-0 py-[15px] text-sm text-[#aaa] ">
+              Rom
+            </p>
+            <p className="cursor-not-allowed px-0 py-[15px] text-sm text-[#aaa]">
+              Playlist
+            </p>
           </div>
 
-          <div className={styles["filters-group"]}>
-            <div className={styles["filter-group-name"]}>Sort By</div>
-            <p className={styles["filter-group-entry"]}>Rating</p>
-            <p className={styles["filter-group-entry"]}>Upload date</p>
+          <div>
+            <div className="mx-0 my-1 border-0 border-b border-[rgba(255,255,255,0.2)] px-0 py-4 text-sm font-medium uppercase leading-4 text-[#f1f1f1]">
+              Sort By
+            </div>
+            <p className="cursor-not-allowed px-0 py-4 text-sm text-[#aaa]">
+              Rating
+            </p>
+            <p className="cursor-not-allowed px-0 py-4 text-sm text-[#aaa]">
+              Upload date
+            </p>
           </div>
         </div>
       )}

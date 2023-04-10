@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@layer base {
+  .pixelated {
+    image-rendering: pixelated;
+  }
+}
 
 :root {
   --gallery-image-default-width: 360px;
@@ -11,27 +17,12 @@
   --gallery-image-hover-height: 248px;
 }
 
-html {
-  font-size: 10px;
-}
-
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: "Roboto", "Arial", sans-serif;
+  font-family: 'Roboto', 'Arial', sans-serif;
 
   color: white;
   background-color: #0f0f0f;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 dialog {
@@ -49,7 +40,7 @@ dialog::backdrop {
   opacity: 0.4;
 }
 
-dialog button[data-type="close"] {
+dialog button[data-type='close'] {
   display: inline-block;
   background-color: rgb(50, 30, 88);
   border: none;
@@ -60,6 +51,6 @@ dialog button[data-type="close"] {
   font-size: 1.6rem;
 }
 
-dialog button[data-type="close"]:hover {
+dialog button[data-type='close']:hover {
   background-color: rgba(50, 30, 88, 0.767);
 }
