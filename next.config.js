@@ -2,8 +2,9 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
-  transpilePackages: ["holy-retroarch"],
-  swcPlugins: [["next-superjson-plugin", {}]],
+  experimental: {
+    transpilePackages: ["holy-retroarch"],
+  },
 }
 
 module.exports = nextConfig
