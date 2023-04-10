@@ -1,10 +1,9 @@
-import React, { ReactElement } from "react"
-import Head from "next/head"
-import { Layout } from "@/components/pages/layout/Layout"
-import { RandomGrid } from "@/components/pages/random/RandomGrid"
-import { useRandomRomsQuery } from "@/lib/queries/react/useRandomRoms"
-import { useQueryClient } from "react-query"
-import styles from "../styles/Random.module.css"
+import React, { ReactElement } from 'react'
+import Head from 'next/head'
+import { Layout } from '@/components/pages/layout/Layout'
+import { RandomGrid } from '@/components/pages/random/RandomGrid'
+import { useRandomRomsQuery } from '@/lib/queries/react/useRandomRoms'
+import { useQueryClient } from 'react-query'
 
 const Random = () => {
   const queryClient = useQueryClient()
@@ -13,7 +12,7 @@ const Random = () => {
 
   const onRoll = () => {
     queryClient.invalidateQueries({
-      queryKey: "random",
+      queryKey: 'random',
     })
   }
 
@@ -25,11 +24,14 @@ const Random = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles["pageContainer"]}>
+      <div className="mx-auto my-0">
         {roms && <RandomGrid roms={roms} />}
 
-        <div className={styles["reroll"]}>
-          <div className={styles["reroll-btn"]} onClick={onRoll}>
+        <div className="flex items-center justify-center pt-12">
+          <div
+            onClick={onRoll}
+            className="cursor-pointer rounded-[4px] border border-solid border-white bg-[#9198e58c] px-6 py-3 text-[2rem]"
+          >
             Roll
           </div>
         </div>

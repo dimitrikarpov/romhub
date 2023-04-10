@@ -1,6 +1,6 @@
-import { TPlatformSlug } from "@/types/index"
 import { DialogBox } from "@/components/ui/modal/DialogBox"
 import { Modal } from "@/components/ui/modal/Modal"
+import { TPlatformSlug } from "@/types/index"
 import { Controls } from "../controls/Controls"
 import {
   nesControlsConfig,

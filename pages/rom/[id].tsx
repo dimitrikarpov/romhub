@@ -1,21 +1,20 @@
-import { ReactElement } from "react"
-import { GetServerSideProps } from "next"
-import Head from "next/head"
-import { Session } from "next-auth"
-import { useSession } from "next-auth/react"
-import prisma from "@/lib/prismadb"
-import { UiRom } from "@/types/index"
-import { NextPageWithLayout } from "../_app"
-import { EmulatorComponent } from "@/components/pages/rom/EmulatorComponent"
-import { useRomDownloader } from "@/components/pages/rom/useRomDownloader"
-import { Layout } from "@/components/pages/layout/Layout"
-import { convertEntity } from "@/lib/convertEntity"
-import { getCoreUrlByRomName } from "@/lib/getCoreUrlByFilename"
-import { SaveToPlaylistButton } from "@/components/pages/rom/SaveToPlaylistButton"
-import { ShareButton } from "@/components/pages/rom/ShareButton"
-import { DonwloadButton } from "@/components/pages/rom/DownloadButton"
-import { platforms } from "config/index"
-import styles from "../../styles/Rom.module.css"
+import { ReactElement } from 'react'
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import { Session } from 'next-auth'
+import { useSession } from 'next-auth/react'
+import prisma from '@/lib/prismadb'
+import { UiRom } from '@/types/index'
+import { NextPageWithLayout } from '../_app'
+import { EmulatorComponent } from '@/components/pages/rom/EmulatorComponent'
+import { useRomDownloader } from '@/components/pages/rom/useRomDownloader'
+import { Layout } from '@/components/pages/layout/Layout'
+import { convertEntity } from '@/lib/convertEntity'
+import { getCoreUrlByRomName } from '@/lib/getCoreUrlByFilename'
+import { SaveToPlaylistButton } from '@/components/pages/rom/SaveToPlaylistButton'
+import { ShareButton } from '@/components/pages/rom/ShareButton'
+import { DonwloadButton } from '@/components/pages/rom/DownloadButton'
+import { platforms } from 'config/index'
 
 type Props = { rom: UiRom | undefined; url: string }
 
@@ -37,7 +36,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
         <meta property="og:url" content={url} />
       </Head>
 
-      <div className={styles["page-container"]}>
+      <div className="mt-6 flex w-full grow flex-col">
         {buffer && coreUrl && rom && (
           <EmulatorComponent
             coreUrl={String(coreUrl)}
@@ -46,15 +45,15 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
           />
         )}
 
-        <div className={styles["main"]}>
-          <div className={styles["name-box"]}>
-            <span className={styles["platform"]}>
+        <div className="mx-auto my-0 w-[80dvw]">
+          <div className="px-0 py-8 text-[2rem] font-semibold leading-[2.8rem]">
+            <span className="mr-8 uppercase text-[#9e9e9e]">
               {rom && rom.platform && platforms[rom.platform].shortName}
             </span>
-            <span className={styles["name"]}>{rom?.name}</span>
+            <span className="text-white">{rom?.name}</span>
           </div>
 
-          <div className={styles["actions-box"]}>
+          <div className="flex justify-end gap-4">
             <ShareButton />
 
             <DonwloadButton name={rom?.name} file={rom?.file} />
@@ -64,7 +63,7 @@ const RomPage: NextPageWithLayout<Props> = ({ rom, url }) => {
             )}
           </div>
 
-          <div className={styles.description}>
+          <div className="p-4">
             {rom && rom?.description && <p>{rom.description}</p>}
           </div>
         </div>

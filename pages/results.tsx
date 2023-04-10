@@ -1,22 +1,21 @@
-import { ReactElement } from "react"
-import { NextPageWithLayout } from "./_app"
-import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { Layout } from "@/components/pages/layout/Layout"
-import { dbQueries } from "@/lib/queries/dbQueries"
-import { Filters } from "@/components/pages/results/Filters"
-import { UiRom } from "@/types/index"
-import { useDispatch, useSelector } from "react-redux"
+import { ReactElement } from 'react'
+import { NextPageWithLayout } from './_app'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { Layout } from '@/components/pages/layout/Layout'
+import { dbQueries } from '@/lib/queries/dbQueries'
+import { Filters } from '@/components/pages/results/Filters'
+import { UiRom } from '@/types/index'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   selectSearch,
   selectPlatform,
   selectSkip,
   setSkip,
-} from "@/components/pages/results/searchSlice"
-import { Paginator } from "@/components/ui/paginator/Paginator"
-import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
-import { Item } from "@/components/pages/results/Item"
-import { NotFoundIcon } from "@/components/ui/icons"
-import styles from "../styles/Results.module.css"
+} from '@/components/pages/results/searchSlice'
+import { Paginator } from '@/components/ui/paginator/Paginator'
+import { useRomsQuery } from '@/lib/queries/react/useRomsQuery'
+import { Item } from '@/components/pages/results/Item'
+import { NotFoundIcon } from '@/components/ui/icons'
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -43,25 +42,27 @@ const Results: NextPageWithLayout<
   const total = data?.total
 
   return (
-    <div className={styles["container"]}>
-      <div className={styles["filters-box"]}>
+    <div className="mx-auto my-0 max-w-[900px] pb-12 pt-8">
+      <div className="pb-12">
         <Filters />
       </div>
 
-      <div className={styles["list"]}>
+      <div className="flex flex-col gap-8 pb-12">
         {roms?.map((rom) => (
           <Item rom={rom} key={rom.id} />
         ))}
       </div>
 
       {total === 0 && (
-        <div className={styles["not-found-box"]}>
-          <div>
+        <div className="mx-auto my-0 flex flex-col items-center pt-[140px] text-center">
+          <div className="[&_svg]:w-[424px]">
             <NotFoundIcon />
           </div>
           <div>
-            <p className={styles["not-found-title"]}>No results found</p>
-            <p className={styles["not-found-subtitle"]}>
+            <p className="mb-4 text-[2.4rem] font-normal leading-[3.2rem] text-white">
+              No results found
+            </p>
+            <p className="text-[1.4rem] font-normal leading-8">
               Try different keywords or remove search filters
             </p>
           </div>
@@ -88,7 +89,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   const { search_query } = context.query
 
-  if (!search_query || typeof search_query !== "string") {
+  if (!search_query || typeof search_query !== 'string') {
     return {
       notFound: true,
     }

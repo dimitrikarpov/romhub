@@ -7,7 +7,6 @@ import prisma from "@/lib/prismadb"
 import { UiPlaylistEntry } from "@/types/index"
 import { List } from "@/components/pages/history/List"
 import { convertEntity } from "@/lib/convertEntity"
-import styles from "../styles/History.module.css"
 
 type Props = {
   entries: UiPlaylistEntry[]
@@ -15,7 +14,7 @@ type Props = {
 
 const History: NextPageWithLayout<Props> = ({ entries }) => {
   return (
-    <div className={styles["container"]}>
+    <div>
       <List entries={entries} />
     </div>
   )

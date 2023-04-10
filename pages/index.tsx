@@ -8,7 +8,6 @@ import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { dbQueries } from "@/lib/queries/dbQueries"
 import { Paginator } from "@/components/ui/paginator/Paginator"
-import styles from "../styles/Home.module.css"
 
 type Props = {
   initialData: {
@@ -45,12 +44,12 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main className="pt-8 bg-[#0f0f0f] my-0 mx-auto">
         <PlatformFilter value={platform} onChange={selectPlatform} />
 
         <Gallery roms={roms} />
 
-        <div className={styles.paginatorContainer}>
+        <div className="py-12 px-0">
           <Paginator
             skip={skip}
             setSkip={setSkip}

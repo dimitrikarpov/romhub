@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit"
 import sidebarSlice from "@/components/pages/layout/sidebar/sideBarSlice"
 import searchSlice from "@/components/pages/results/searchSlice"
+import { configureStore } from "@reduxjs/toolkit"
 
 export const store = configureStore({
   reducer: {

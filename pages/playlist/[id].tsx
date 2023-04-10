@@ -11,7 +11,6 @@ import { Layout } from "@/components/pages/layout/Layout"
 import { dbQueries } from "@/lib/queries/dbQueries"
 import { usePlaylistByIdQuery } from "@/lib/queries/react/usePlaylistByIdQuery"
 import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
-import styles from "../../styles/Playlist.module.css"
 
 type Props = {
   initialData: {
@@ -50,14 +49,14 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ initialData }) => {
         <meta property="og:image" content={thumbnail} />
       </Head>
 
-      <div className={styles["container"]}>
+      <div className="flex gap-4 w-[1200px] my-0 mx-auto pt-12">
         <PlaylistSidebar
           playlist={playlist!}
           thumbnail={thumbnail}
           total={entries!.length}
           lastUpdated={lastUpdated}
         />
-        <div className={styles["items-container"]}>
+        <div className="basis-full">
           {entries!.map((entry) => (
             <Item entry={entry} key={entry.romId} />
           ))}
