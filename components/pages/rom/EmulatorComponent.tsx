@@ -1,3 +1,9 @@
+import { apiQueries } from "@/lib/queries/apiQueries"
+import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+import { UiRom } from "@/types/index"
+import clsx from "clsx"
+import { Retroarch } from "holy-retroarch"
+import { useSession } from "next-auth/react"
 import {
   memo,
   MutableRefObject,
@@ -7,18 +13,10 @@ import {
   useRef,
   useState,
 } from "react"
-import classNames from "classnames"
-import { useRetroarch } from "./useRetroarch"
-import { UiRom } from "../../../types"
-import { EmulatorBackdrop } from "./EmulatorBackdrop"
-import { useSession } from "next-auth/react"
-import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
-import { apiQueries } from "@/lib/queries/apiQueries"
-import { Retroarch } from "holy-retroarch"
-import { useResizeObserver } from "./useSizeObserver"
-
-import styles from "./EmulatorComponent.module.css"
 import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
+import { EmulatorBackdrop } from "./EmulatorBackdrop"
+import { useRetroarch } from "./useRetroarch"
+import { useResizeObserver } from "./useSizeObserver"
 
 type Props = {
   coreUrl: string
@@ -80,12 +78,16 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     return (
       <>
         <div
-          className={classNames(styles.container, {
-            [styles["container-fixed"]]: !isInTheaterMod,
-          })}
           ref={containerRef}
+          className={clsx(
+            "relative flex aspect-[calc(800/600)] max-h-[calc(100dvh-56px-24px-20px)] justify-center",
+            !isInTheaterMod && "max-h-[600px]",
+          )}
         >
-          <div className={styles["canvas-box"]} ref={canvasBoxRef}>
+          <div
+            ref={canvasBoxRef}
+            className="relative aspect-[calc(800/600)] max-h-full max-w-full"
+          >
             <canvas ref={canvasRef} id="canvas"></canvas>
 
             <ControlsOverlay

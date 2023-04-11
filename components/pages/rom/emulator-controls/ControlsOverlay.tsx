@@ -1,13 +1,12 @@
-import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react"
-import classNames from "classnames"
+import { useModal } from "@/components/ui/modal/useModal"
 import { UiRom } from "@/types/index"
+import clsx from "clsx"
+import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react"
 import { ControlsButton } from "./ControlsButton"
+import { ControlsModal } from "./ControlsModal"
 import { FullscreenButton } from "./FullscreenButton"
 import { PlayPauseButton } from "./PlayPauseButton"
 import { TheaterModButton } from "./TheaterModButton"
-import styles from "../EmulatorComponent.module.css"
-import { ControlsModal } from "./ControlsModal"
-import { useModal } from "@/components/ui/modal/useModal"
 
 type Props = {
   canvasBoxRef: RefObject<HTMLDivElement>
@@ -37,7 +36,7 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
 
     timerRef.current = setTimeout(() => {
       setVisible(false)
-    }, 1000)
+    }, 3000)
   }
 
   const onMouseLeave = () => {
@@ -48,20 +47,22 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
   return (
     <>
       <div
-        className={classNames(styles["controls-overlay"], {
-          [styles["controls-overlay--hidden"]]: !visible,
-        })}
         onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
+        className={clsx(
+          "absolute inset-0 flex flex-col justify-end",
+          visible && "cursor-default opacity-100",
+          !visible && "cursor-none opacity-0",
+        )}
       >
-        <div className={styles["controls-container"]}>
+        <div className="flex h-[50px] items-center justify-between bg-[rgba(12,12,12,0.719)] px-5 py-0 [&_svg]:h-[48px] [&_svg]:w-[48px] [&_svg]:cursor-pointer [&_svg]:fill-white [&_svg]:opacity-90 hover:[&_svg]:opacity-100">
           <div>
             <PlayPauseButton />
           </div>
           <div>
             <ControlsButton show={showControlsModal} />
           </div>
-          <div>
+          <div className="flex">
             <TheaterModButton
               isInTheaterMod={isInTheaterMod}
               toggle={setIsInTheaterMod}

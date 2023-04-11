@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
 import { DefaultViewIcon, TheaterModIcon } from "@/components/ui/icons"
-import styles from "../EmulatorComponent.module.css"
 
 type Props = {
   isInTheaterMod: boolean
@@ -14,20 +13,12 @@ export const TheaterModButton: React.FunctionComponent<Props> = ({
   return (
     <>
       {!isInTheaterMod && (
-        <span
-          onClick={() => toggle(true)}
-          title="Theater mode"
-          className={styles["controls-icon"]}
-        >
+        <span onClick={() => toggle(true)} title="Theater mode">
           <TheaterModIcon />
         </span>
       )}
       {isInTheaterMod && (
-        <span
-          onClick={() => toggle(false)}
-          title="Default view"
-          className={styles["controls-icon"]}
-        >
+        <span onClick={() => toggle(false)} title="Default view">
           <DefaultViewIcon />
         </span>
       )}

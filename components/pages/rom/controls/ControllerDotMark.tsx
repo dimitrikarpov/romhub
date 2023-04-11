@@ -1,5 +1,3 @@
-import styles from "./Controls.module.css"
-
 type Props = {
   top?: string
   left?: string
@@ -29,9 +27,9 @@ export const ControllerDotMark: React.FunctionComponent<Props> = ({
   return (
     <div
       style={style}
-      className={styles["controller-dot-mark"]}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
+      className="absolute h-[15px] w-[15px] rounded-full bg-[#52e399] opacity-50 hover:cursor-pointer hover:opacity-70"
     ></div>
   )
 }

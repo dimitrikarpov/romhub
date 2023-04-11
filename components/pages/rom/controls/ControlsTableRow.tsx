@@ -1,6 +1,5 @@
-import classNames from "classnames"
 import { TControlIcons } from "./controls-configs"
-import styles from "./Controls.module.css"
+import clsx from "clsx"
 
 type Props = {
   name: string
@@ -14,18 +13,14 @@ export const ControlsTableRow: React.FunctionComponent<Props> = ({
   icons,
 }) => {
   return (
-    <tr
-      className={classNames({
-        [styles["table-row--active"]]: hovered === name,
-      })}
-    >
+    <tr className={clsx(hovered === name && "bg-[cadetblue]")}>
       <td>{name}</td>
 
       <td>
         <img
           src={icons.keyboard.path}
           alt=""
-          className={styles["control-icon"]}
+          className="pixelated h-8 max-w-none"
           title={icons.keyboard.tooltip}
           key={icons.keyboard.path}
         />
@@ -35,7 +30,7 @@ export const ControlsTableRow: React.FunctionComponent<Props> = ({
         <img
           src={icons.ps.path}
           alt=""
-          className={styles["control-icon"]}
+          className="pixelated h-8 max-w-none"
           title={icons.ps.tooltip}
           key={icons.ps.path}
         />
@@ -45,7 +40,7 @@ export const ControlsTableRow: React.FunctionComponent<Props> = ({
         <img
           src={icons.xbox.path}
           alt=""
-          className={styles["control-icon"]}
+          className="pixelated h-8 max-w-none"
           title={icons.xbox.tooltip}
           key={icons.xbox.path}
         />

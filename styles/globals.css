@@ -8,6 +8,9 @@
   }
 }
 
+@layer components {
+}
+
 :root {
   --gallery-image-default-width: 360px;
   --gallery-image-default-height: 202px;

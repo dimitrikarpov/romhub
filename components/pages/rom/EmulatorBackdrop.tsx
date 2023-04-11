@@ -1,5 +1,4 @@
 import { RAStatuses } from "./useRetroarch"
-import styles from "./EmulatorBackdrop.module.css"
 
 type Props = {
   status: RAStatuses
@@ -14,10 +13,10 @@ export const EmulatorBackdrop: React.FunctionComponent<Props> = ({
 }) => {
   return (
     <div
-      className={styles.skeleton}
+      className="absolute inset-0 bg-contain bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${image})` }}
     >
-      <div className={styles.skeletonBackDrop}>
+      <div className="flex h-full w-full items-center justify-center backdrop-blur">
         {status !== "inited" && <span>loading...</span>}
         {status === "inited" && <button onClick={onStartClick}>start!</button>}
       </div>
