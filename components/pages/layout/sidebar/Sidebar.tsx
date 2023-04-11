@@ -1,4 +1,3 @@
-import cn from "classnames"
 import { FullSidebarContent } from "./FullSidebarContent"
 import { useWindowSizeForSidebar } from "./useWindowSizeForSidebar"
 import { MiniSidebarContent } from "./MiniSidebarContent"
@@ -11,6 +10,7 @@ import {
 import { useEffect } from "react"
 import TogglerAndLogo from "../TogglerAndLogo"
 import styles from "./Sidebar.module.css"
+import clsx from "clsx"
 
 export const Sidebar = () => {
   const dispatch = useDispatch()
@@ -27,24 +27,31 @@ export const Sidebar = () => {
   return (
     <>
       <div
-        className={cn(styles["drawer-backdrop"], {
-          [styles["drawer-backdrop--visible"]]: isDrawerOpen,
-        })}
+        className={clsx(
+          "absolute z-[9] bg-[#0f0f0f] opacity-0 transition-opacity duration-200",
+          isDrawerOpen && "inset-0 opacity-30",
+        )}
       ></div>
       <div
-        className={cn(styles["sidebar-container"], {
-          [styles["sidebar-container--full"]]: variant === "full",
-          [styles["sidebar-container--mini"]]: variant === "mini",
-          [styles["sidebar-container--drawer"]]: variant === "drawer",
-          [styles["sidebar-container--drawer_visible"]]:
-            variant === "drawer" && isDrawerOpen,
-        })}
+        data-sidebar={variant}
+        className={clsx(
+          "bg-[#0f0f0f]",
+          variant === "full" && "w-[240px] min-w-[240px]",
+          variant === "mini" && "w-[72px] min-w-[72px]",
+          variant === "drawer" && "fixed inset-0 z-10 w-[240px]",
+          variant === "drawer" &&
+            isDrawerOpen &&
+            "block animate-[fade-in-show_0.1s]",
+          variant === "drawer" &&
+            !isDrawerOpen &&
+            "hidden animate-[fade-in-show_0.1s]",
+        )}
       >
         {variant === "full" && <FullSidebarContent />}
         {variant === "mini" && <MiniSidebarContent />}
         {variant === "drawer" && (
           <>
-            <div className={styles.sideBarTogglerContainer}>
+            <div className="flex h-14 items-center pl-[10px]">
               <TogglerAndLogo />
             </div>
             <FullSidebarContent />

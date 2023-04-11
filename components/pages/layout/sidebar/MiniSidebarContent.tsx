@@ -1,26 +1,21 @@
 import { DiceIcon, HomeIcon } from "@/components/ui/icons"
-import styles from "./Sidebar.module.css"
 
 export const MiniSidebarContent = () => {
   return (
     <>
-      <div className={styles.sideBarSection}>
-        <a href="/">
-          <div className={styles.sideBarSectionItem}>
-            <HomeIcon />
-            <p>Home</p>
-          </div>
-        </a>
-      </div>
+      <a href="/">
+        <div className="sidebarItem">
+          <HomeIcon />
+          <p>Home</p>
+        </div>
+      </a>
 
-      <div className={styles.sideBarSection}>
-        <a href="/random">
-          <div className={styles.sideBarSectionItem}>
-            <DiceIcon />
-            <p>Random</p>
-          </div>
-        </a>
-      </div>
+      <a href="/random">
+        <div className="sidebarItem">
+          <DiceIcon />
+          <p>Random</p>
+        </div>
+      </a>
     </>
   )
 }

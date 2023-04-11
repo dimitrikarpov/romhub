@@ -1,5 +1,4 @@
 import TopBar from "./top-bar/TopBar"
-import styles from "./Layout.module.css"
 import { Sidebar } from "./sidebar/Sidebar"
 
 type Props = {
@@ -8,9 +7,9 @@ type Props = {
 
 export const Layout: React.FunctionComponent<Props> = ({ children }) => {
   return (
-    <div className={styles.container}>
+    <div className="relative flex min-h-[100dvh] flex-col">
       <TopBar />
-      <div className={styles["sidebar-and-main-container"]}>
+      <div className="flex">
         <Sidebar />
         {children}
       </div>

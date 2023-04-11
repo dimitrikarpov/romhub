@@ -6,7 +6,6 @@ import {
   WatchLaterIcon,
 } from "@/components/ui/icons"
 import { TPlaylistType } from "@/types/index"
-import styles from "./Sidebar.module.css"
 
 const getIconByType = (type: TPlaylistType) => {
   switch (type) {
@@ -40,14 +39,12 @@ export const Playlists = () => {
         playlistQuery.data?.map(({ type, title, id }) => {
           const Icon = getIconByType(type as TPlaylistType)
           return (
-            <div className={styles.sideBarSection} key={id}>
-              <a href={getUrl(type as TPlaylistType, id)}>
-                <div className={styles.sideBarSectionItem}>
-                  <Icon />
-                  <p>{title}</p>
-                </div>
-              </a>
-            </div>
+            <a href={getUrl(type as TPlaylistType, id)} key={id}>
+              <div className="sidebarItem">
+                <Icon />
+                <p>{title}</p>
+              </div>
+            </a>
           )
         })}
     </>

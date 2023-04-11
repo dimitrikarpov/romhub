@@ -1,7 +1,6 @@
 import { useSession, signOut } from "next-auth/react"
 import { SignOutIcon } from "@/components/ui/icons"
 import { Menu } from "@/components/ui/menu/Menu"
-import styles from "./styles.module.css"
 
 export const AccountButton = () => {
   const { data: session } = useSession()
@@ -9,14 +8,22 @@ export const AccountButton = () => {
   return (
     <Menu>
       <Menu.Handler>
-        <div className={styles.accountDropdownBoxRegistered}>
-          <img src={session?.user?.image || ""} alt="avatar" />
+        <div className="mx-[15px] my-0">
+          <img
+            src={session?.user?.image || ""}
+            className="h-8 w-8 rounded-full"
+            alt="avatar"
+          />
         </div>
       </Menu.Handler>
       <Menu.List position="left">
         <Menu.Item>
-          <div className={styles.accountDropdownMenuUserBox}>
-            <img src={session?.user?.image || ""} alt="avatar" />
+          <div className="flex items-center justify-center gap-4">
+            <img
+              src={session?.user?.image || ""}
+              className="h-10 w-10 rounded-full"
+              alt="avatar"
+            />
             <p>{session?.user?.name}</p>
           </div>
         </Menu.Item>

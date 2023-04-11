@@ -1,10 +1,9 @@
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/router"
 import { SearchInput } from "../SearchInput"
 import TogglerAndLogo from "../TogglerAndLogo"
-import styles from "./styles.module.css"
-import { SignInButton } from "./SignInButton"
 import { AccountButton } from "./AccountButton"
-import { useRouter } from "next/router"
+import { SignInButton } from "./SignInButton"
 
 const TopBar = () => {
   const { data: session } = useSession()
@@ -12,7 +11,7 @@ const TopBar = () => {
   const shouldDisplaySearchInput = router.route !== "/rom/[id]"
 
   return (
-    <div className={styles.topBar}>
+    <div className="flex h-14 items-center justify-between bg-[#0f0f0f] px-[10px] py-0">
       <TogglerAndLogo />
       {shouldDisplaySearchInput && <SearchInput />}
       {session ? <AccountButton /> : <SignInButton />}

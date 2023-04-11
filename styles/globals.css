@@ -9,6 +9,61 @@
 }
 
 @layer components {
+  /* icons */
+  .child-svg-24-w svg {
+    width: 24px;
+    height: 24px;
+    fill: #f1f1f1;
+  }
+
+  .child-svg-32-w svg {
+    width: 32px;
+    height: 32px;
+    fill: #f1f1f1;
+  }
+
+  /* sidebar */
+  .sidebarItem {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .sidebarItem:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  .sidebarItem svg {
+    width: 24px;
+    height: 24px;
+    fill: rgb(241, 241, 241);
+  }
+
+  [data-sidebar="full"] .sidebarItem,
+  [data-sidebar="drawer"] .sidebarItem {
+    height: 40px;
+    padding: 14px 12px;
+  }
+
+  [data-sidebar="mini"] .sidebarItem {
+    flex-direction: column;
+    height: auto;
+    padding: 16px 0 14px;
+  }
+
+  [data-sidebar="full"] .sidebarItem svg,
+  [data-sidebar="drawer"] .sidebarItem svg {
+    margin-right: 24px;
+  }
+
+  [data-sidebar="mini"] .sidebarItem svg {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 :root {

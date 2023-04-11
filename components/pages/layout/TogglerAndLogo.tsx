@@ -2,23 +2,26 @@ import { MenuIcon } from "@/components/ui/icons"
 import { useDispatch } from "react-redux"
 import { toggle } from "@/components/pages/layout/sidebar/sideBarSlice"
 import { useWindowSizeForSidebar } from "./sidebar/useWindowSizeForSidebar"
-import styles from "./TogglerAndLogo.module.css"
 
 const TogglerAndLogo = () => {
   const dispatch = useDispatch()
   const variation = useWindowSizeForSidebar()
 
   return (
-    <div className={styles.menuAndLogoBox}>
+    <div className="flex cursor-pointer select-none items-center gap-[10px]">
       <div
-        className={styles.menuBox}
+        className="child-svg-32-w p-2 hover:rounded-full hover:bg-[#ffffff1a]"
         onClick={() => dispatch(toggle(variation))}
       >
         <MenuIcon />
       </div>
       <a href="/">
-        <div className={styles.logoBox}>
-          <img src="/assets/mushroom.png" />
+        <div className="flex h-5 items-center gap-[5px] text-[21px] font-black text-white">
+          <img
+            src="/assets/mushroom.png"
+            className="h-full w-full"
+            alt="romhub logo"
+          />
           <span>RomHub</span>
         </div>
       </a>
@@ -27,13 +30,3 @@ const TogglerAndLogo = () => {
 }
 
 export default TogglerAndLogo
-
-/*
-
-if wstate === full => rstate = mini
-if rstate === mini && wstate === full => full
-
-if wstate === mini => drawer
-if rstate === mini => drawer
-
-*/
