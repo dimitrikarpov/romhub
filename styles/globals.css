@@ -10,6 +10,20 @@
 
 @layer components {
   /* icons */
+  .c-svg-18 svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .c-svg-w svg {
+    fill: #f1f1f1;
+  }
+
+  .c-svg-24 svg {
+    width: 24px;
+    height: 24px;
+  }
+
   .child-svg-24-w svg {
     width: 24px;
     height: 24px;
@@ -195,8 +209,8 @@ dialog button[data-type="close"] {
   cursor: pointer;
   color: white;
 
-  padding: 0.5rem 1rem;
-  font-size: 1.6rem;
+  padding: 5px 10px;
+  font-size: 16px;
 }
 
 dialog button[data-type="close"]:hover {

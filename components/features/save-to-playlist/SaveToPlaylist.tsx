@@ -7,7 +7,6 @@ import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
 import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
 import { useCreatePlaylistMutation } from "@/lib/queries/react/useCreatePlaylistMutation"
 import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
-import styles from "./save-to-playlist.module.css"
 
 type Props = {
   romId: string
@@ -58,7 +57,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <div className={styles["main"]}>
+      <div className="max-h-80 max-w-[600px] [&>*:not(:last-child)]:mb-4">
         {playlistsQuery.data
           ?.filter(({ type }) => type !== "history")
           ?.filter(({ authorId }) => authorId === session?.user.id)
@@ -76,16 +75,17 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
           ))}
       </div>
 
-      <div className={styles["footer"]}>
-        {isFormOpened ? (
-          <CreatePlaylistForm onSubmit={onFormSubmit} />
-        ) : (
-          <div className={styles["create-btn"]} onClick={onFormOpen}>
-            <PlusIcon />
-            <div>Create new playlist</div>
-          </div>
-        )}
-      </div>
+      {!isFormOpened && (
+        <div
+          onClick={onFormOpen}
+          className="child-svg-24-w flex cursor-pointer items-center justify-center gap-2"
+        >
+          <PlusIcon />
+          <div>Create new playlist</div>
+        </div>
+      )}
+
+      {isFormOpened && <CreatePlaylistForm onSubmit={onFormSubmit} />}
     </>
   )
 }

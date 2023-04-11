@@ -6,8 +6,7 @@ import {
 } from "@/components/ui/icons"
 import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
 import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
-import classNames from "classnames"
-import styles from "./save-to-playlist.module.css"
+import clsx from "clsx"
 
 type Props = {
   title: string
@@ -38,16 +37,20 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={styles["item"]} onClick={onClick}>
+    <div
+      onClick={onClick}
+      className="flex cursor-pointer items-center justify-between"
+    >
       <div
-        className={classNames(styles["item-checkbox"], {
-          [styles["item-checkbox--checked"]]: isChecked,
-        })}
+        className={clsx(
+          "c-svg-24 c-svg-w",
+          isChecked && "[&_svg]:fill-[#3ea6ff]",
+        )}
       >
         {isChecked ? <CheckboxCheckedIcon /> : <CheckboxBlankIcon />}
       </div>
       <div>{title}</div>
-      <div className={styles["item-visibility"]}>
+      <div className="c-svg-18 c-svg-w">
         {isPublic ? <GlobeIcon /> : <LockIcon />}
       </div>
     </div>

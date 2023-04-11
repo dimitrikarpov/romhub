@@ -80,7 +80,8 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
         <div
           ref={containerRef}
           className={clsx(
-            "relative flex aspect-[calc(800/600)] max-h-[calc(100dvh-56px-24px-20px)] justify-center",
+            "relative flex aspect-[calc(800/600)] justify-center",
+            isInTheaterMod && "max-h-[calc(100dvh-56px-24px-20px)]",
             !isInTheaterMod && "max-h-[600px]",
           )}
         >
