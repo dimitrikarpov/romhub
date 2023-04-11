@@ -1,6 +1,5 @@
-import cn from "classnames"
 import { TPlatformSlug } from "@/types/index"
-import styles from "./PlatformFilter.module.css"
+import clsx from "clsx"
 
 type Props = {
   value: TPlatformSlug | undefined
@@ -17,10 +16,12 @@ export const PlatformFilterItem: React.FunctionComponent<Props> = ({
 }) => {
   return (
     <span
-      className={cn(styles.platformSelectorItem, {
-        [styles.platformSelectorItemActive]: isActive,
-      })}
       onClick={() => onChange(value)}
+      className={clsx(
+        "min-w-fit cursor-pointer rounded-md px-3 py-1 text-sm tracking-wide",
+        !isActive && "bg-[#ffffff1a] text-white",
+        isActive && "bg-white text-black",
+      )}
     >
       {title}
     </span>

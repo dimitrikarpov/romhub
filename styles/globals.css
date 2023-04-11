@@ -64,6 +64,100 @@
     width: 24px;
     height: 24px;
   }
+
+  /* gallery card */
+  .card-container {
+    color: white;
+    position: relative;
+
+    height: 320px;
+  }
+
+  .card {
+    width: 360px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .card-container:hover .card {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    animation: card_hover_resize 350ms ease 1000ms forwards;
+  }
+
+  .card img {
+    width: 100%;
+    aspect-ratio: 1.7;
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    transition: aspect-ratio 0.3s ease;
+    transition-delay: 1000ms;
+  }
+
+  .card-container:hover .card img {
+    aspect-ratio: 1.3;
+    border-bottom-left-radius: initial;
+    border-bottom-right-radius: initial;
+  }
+
+  .card__controls {
+    opacity: 0;
+    height: 0;
+
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    margin-top: 1rem;
+  }
+
+  .card__controls > * {
+    background-color: rgba(128, 128, 128, 0.295);
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    border-radius: 10px;
+
+    cursor: pointer;
+  }
+
+  .card-container:hover .card__controls {
+    animation-name: card_hover_show_controls;
+    animation-duration: 150ms;
+    animation-delay: 1050ms;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes card_hover_resize {
+    0% {
+      width: 360px;
+      transform: translate3d(0px);
+      background-color: transparent;
+      z-index: 0;
+    }
+
+    100% {
+      width: 440px;
+      transform: translate3d(300px);
+      background-color: #282828;
+
+      z-index: 5;
+    }
+  }
+
+  @keyframes card_hover_show_controls {
+    from {
+      opacity: 0;
+      height: 0;
+    }
+
+    to {
+      opacity: 1;
+      height: 24px;
+    }
+  }
 }
 
 :root {

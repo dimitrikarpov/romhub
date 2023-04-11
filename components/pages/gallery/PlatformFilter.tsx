@@ -1,7 +1,6 @@
 import { platforms } from "config/index"
 import { TPlatformSlug } from "@/types/index"
 import { PlatformFilterItem } from "./PlatformFilterItem"
-import styles from "./PlatformFilter.module.css"
 
 type Props = {
   value: TPlatformSlug | undefined
@@ -13,7 +12,7 @@ export const PlatformFilter: React.FunctionComponent<Props> = ({
   onChange,
 }) => {
   return (
-    <div className={styles.platformsSelectorContainer}>
+    <div className="flex h-14 items-center gap-3 bg-[#0f0f0f] px-2 py-0">
       <PlatformFilterItem
         value={undefined}
         title="All"

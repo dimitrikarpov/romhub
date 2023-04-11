@@ -23,7 +23,7 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
       <select
         onChange={onChange}
         defaultValue={defaultValue}
-        className="border-none bg-transparent text-sm leading-5 tracking-wide text-white outline-none"
+        className="border-none bg-transparent text-sm tracking-wide text-white outline-none"
       >
         <option value="private" className="bg-black text-white">
           Private

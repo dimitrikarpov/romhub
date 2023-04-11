@@ -1,6 +1,5 @@
 import { UiRom } from "@/types/index"
 import { GalleryItem } from "./GalleryItem"
-import styles from "./Gallery.module.css"
 
 type Props = {
   roms: UiRom[] | undefined
@@ -8,7 +7,7 @@ type Props = {
 
 export const Gallery: React.FunctionComponent<Props> = ({ roms = [] }) => {
   return (
-    <div className={styles["gallery"]}>
+    <div className="mx-auto my-0 grid w-fit grid-cols-[repeat(3,360px)] items-center justify-center gap-5 ">
       {roms.map((rom) => (
         <GalleryItem rom={rom} key={rom.id} />
       ))}
