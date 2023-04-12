@@ -1,11 +1,11 @@
-import { UiPlaylistEntry } from '@/types/index'
+import { UiPlaylistEntry } from "@/types/index"
 
 type Props = {
   entry: UiPlaylistEntry
 }
 
 export const Item: React.FunctionComponent<Props> = ({ entry }) => {
-  const image = entry.rom.images[0] || '/assets/placeholder.png'
+  const image = entry.rom.images[0] || "/assets/placeholder.png"
 
   return (
     <div className="flex gap-8">
@@ -18,11 +18,9 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
       </a>
       <div>
         <a href={`/rom/${entry.rom.id}`} target="_blank">
-          <p className="text-[1.8rem] font-normal leading-[2.6rem] text-[#f1f1f1]">
-            {entry.rom.name}
-          </p>
+          <p className="text-xl font-normal text-[#f1f1f1]">{entry.rom.name}</p>
         </a>
-        <p className="text-[1.2rem] font-normal leading-[1.8rem] text-[#aaaaaa]">
+        <p className="text-xs font-normal text-[#aaaaaa]">
           {entry.assignedAt.toLocaleDateString()}
         </p>
       </div>
