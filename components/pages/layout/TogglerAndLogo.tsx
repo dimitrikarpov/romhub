@@ -10,7 +10,7 @@ const TogglerAndLogo = () => {
   return (
     <div className="flex cursor-pointer select-none items-center gap-[10px]">
       <div
-        className="child-svg-32-w p-2 hover:rounded-full hover:bg-[#ffffff1a]"
+        className="c-svg-32 c-svg-w p-2 hover:rounded-full hover:bg-[#ffffff1a]"
         onClick={() => dispatch(toggle(variation))}
       >
         <MenuIcon />

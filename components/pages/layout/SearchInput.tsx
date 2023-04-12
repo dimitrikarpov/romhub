@@ -49,7 +49,7 @@ export const SearchInput = () => {
       />
       <button
         className={clsx(
-          "child-svg-24-w absolute right-[62px] top-[7px] block cursor-pointer border-none bg-[#121212] hover:rounded-full hover:bg-[#ffffff1a]",
+          "c-svg-24 c-svg-w absolute right-[62px] top-[7px] block cursor-pointer border-none bg-[#121212] hover:rounded-full hover:bg-[#ffffff1a]",
           value === "" && "hidden",
         )}
       >
@@ -59,7 +59,7 @@ export const SearchInput = () => {
       </button>
       <button
         onClick={onSubmit}
-        className="child-svg-24-w cursor-pointer rounded-br-full rounded-tr-full border border-l-0 border-[#878787bf] bg-[#ffffff1f] py-[7px] pl-4 pr-5"
+        className="c-svg-24 c-svg-w cursor-pointer rounded-br-full rounded-tr-full border border-l-0 border-[#878787bf] bg-[#ffffff1f] py-[7px] pl-4 pr-5"
       >
         <SearchIcon />
       </button>

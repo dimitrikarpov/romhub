@@ -78,7 +78,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
       {!isFormOpened && (
         <div
           onClick={onFormOpen}
-          className="child-svg-24-w flex cursor-pointer items-center justify-center gap-2"
+          className="c-svg-24 c-svg-w flex cursor-pointer items-center justify-center gap-2"
         >
           <PlusIcon />
           <div>Create new playlist</div>

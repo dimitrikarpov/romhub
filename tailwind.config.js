@@ -10,6 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Roboto", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
+      },
       keyframes: {
         "random-card-display": {
           "0%": { opacity: "1", width: "100%", height: "100%" },

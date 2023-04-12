@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,13 +25,7 @@
     height: 24px;
   }
 
-  .child-svg-24-w svg {
-    width: 24px;
-    height: 24px;
-    fill: #f1f1f1;
-  }
-
-  .child-svg-32-w svg {
+  .c-svg-32 svg {
     width: 32px;
     height: 32px;
     fill: #f1f1f1;
