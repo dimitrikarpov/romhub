@@ -9,7 +9,6 @@ import {
 } from "./sideBarSlice"
 import { useEffect } from "react"
 import TogglerAndLogo from "../TogglerAndLogo"
-import styles from "./Sidebar.module.css"
 import clsx from "clsx"
 
 export const Sidebar = () => {

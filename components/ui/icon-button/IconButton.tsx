@@ -1,5 +1,3 @@
-import styles from "./IconButton.module.css"
-
 type Props = {
   icon: React.ElementType
   tip?: string
@@ -12,11 +10,9 @@ export const IconButton: React.FunctionComponent<Props> = ({
   onClick,
 }) => {
   return (
-    <div className={styles["button"]} onClick={onClick} title={tip}>
-      <div className={styles["icon-circle"]}>
-        <div className={styles["icon-box"]}>
-          <Icon />
-        </div>
+    <div onClick={onClick} title={tip} className="inline-flex cursor-pointer">
+      <div className="c-svg-w c-svg-24 w-fit self-baseline rounded-full bg-transparent p-2 transition-colors duration-300 hover:bg-[#ffffff33]">
+        <Icon />
       </div>
     </div>
   )

@@ -2,7 +2,6 @@ import { useState } from "react"
 import { ControllerDotMark } from "./ControllerDotMark"
 import { ControlsTableRow } from "./ControlsTableRow"
 import { TControlsConfig } from "./controls-configs"
-import styles from "./Controls.module.css"
 
 type Props = {
   config: TControlsConfig

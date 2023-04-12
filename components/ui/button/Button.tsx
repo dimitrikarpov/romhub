@@ -1,5 +1,4 @@
-import classNames from "classnames"
-import styles from "./Button.module.css"
+import clsx from "clsx"
 
 type Props = {
   type?: "button" | "submit"
@@ -27,14 +26,17 @@ export const Button: React.FunctionComponent<Props> = ({
     <button
       type={type}
       onClick={onClick}
-      className={classNames(styles["button"], {
-        [styles["button--max-width"]]: maxWidth,
-        [styles["button--default"]]: variant === "default",
-        [styles["button--transparent-blue"]]: variant === "transparent-blue",
-        [styles["button--blue-blue"]]: variant === "blue-blue",
-        [styles["button--transparent-transpared"]]:
-          variant === "transparent-transpared",
-      })}
+      className={clsx(
+        "c-svg-24 c-svg-w flex cursor-pointer items-center gap-2 rounded-3xl border-none px-3 py-0 text-sm/9 transition-colors duration-300 disabled:pointer-events-none disabled:opacity-75",
+        maxWidth ? "w-full" : "w-fit",
+        variant === "default" && "bg-[#ffffff14] text-white hover:bg-[#717171]",
+        variant === "transparent-blue" &&
+          "bg-transparent text-[#3ea6ff] hover:bg-[#263850]",
+        variant === "blue-blue" &&
+          "bg-[#3ea6ff] text-[#0f0f0f] hover:bg-[#65b8ff]",
+        variant === "transparent-transpared" &&
+          "bg-transparent text-white hover:bg-[#ffffff1a]",
+      )}
       disabled={disabled}
     >
       {children}
