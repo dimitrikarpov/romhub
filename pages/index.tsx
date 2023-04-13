@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react"
 import Head from "next/head"
-import { TPlatformSlug, UiRom } from "../types"
+import { TPlatformSlug } from "../types"
 import { NextPageWithLayout } from "./_app"
 import { Layout } from "@/components/pages/layout/Layout"
 import { Gallery } from "@/components/pages/gallery/Gallery"
@@ -8,15 +8,12 @@ import { PlatformFilter } from "@/components/pages/gallery/PlatformFilter"
 import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
 import { dbQueries } from "@/lib/queries/dbQueries"
 import { Paginator } from "@/components/ui/paginator/Paginator"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import { DBQueryResult } from "@/types/utils"
 
-type Props = {
-  initialData: {
-    data: UiRom[]
-    total: number
-  }
-}
-
-const Home: NextPageWithLayout<Props> = ({ initialData }) => {
+const Home: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ initialData }) => {
   const [platform, setPlatform] = useState<TPlatformSlug | undefined>()
   const [skip, setSkip] = useState(0)
 
@@ -44,12 +41,12 @@ const Home: NextPageWithLayout<Props> = ({ initialData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="pt-8 bg-[#0f0f0f] my-0 mx-auto">
+      <main className="mx-auto my-0 bg-[#0f0f0f] pt-8">
         <PlatformFilter value={platform} onChange={selectPlatform} />
 
         <Gallery roms={roms} />
 
-        <div className="py-12 px-0">
+        <div className="px-0 py-12">
           <Paginator
             skip={skip}
             setSkip={setSkip}
@@ -68,7 +65,9 @@ Home.getLayout = function getLayout(page: ReactElement) {
 
 export default Home
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps<{
+  initialData: DBQueryResult<typeof dbQueries.getRoms>
+}> = async () => {
   const initialData = await dbQueries.getRoms({ take: 15 })
 
   return {

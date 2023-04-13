@@ -1,9 +1,8 @@
 import Head from "next/head"
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { useRouter } from "next/router"
 import { NextPageWithLayout } from "../_app"
 import { getSession } from "next-auth/react"
-import { Playlist, User } from "@prisma/client"
 import { PlaylistSidebar } from "@/components/pages/playlist/sidebar/PlaylistSidebar"
 import { UiPlaylistEntry } from "@/types/index"
 import { Item } from "@/components/pages/playlist/playlist/Item"
@@ -11,15 +10,11 @@ import { Layout } from "@/components/pages/layout/Layout"
 import { dbQueries } from "@/lib/queries/dbQueries"
 import { usePlaylistByIdQuery } from "@/lib/queries/react/usePlaylistByIdQuery"
 import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
+import { DBQueryResult } from "@/types/utils"
 
-type Props = {
-  initialData: {
-    playlist: Playlist & { author: User }
-    entries: UiPlaylistEntry[]
-  }
-}
-
-const PlaylistPage: NextPageWithLayout<Props> = ({ initialData }) => {
+const PlaylistPage: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ initialData }) => {
   const router = useRouter()
   const { id } = router.query
 
@@ -49,7 +44,7 @@ const PlaylistPage: NextPageWithLayout<Props> = ({ initialData }) => {
         <meta property="og:image" content={thumbnail} />
       </Head>
 
-      <div className="flex gap-4 w-[1200px] my-0 mx-auto pt-12">
+      <div className="mx-auto my-0 flex w-[1200px] gap-4 pt-12">
         <PlaylistSidebar
           playlist={playlist!}
           thumbnail={thumbnail}
@@ -72,7 +67,12 @@ PlaylistPage.getLayout = function getLayout(page: React.ReactElement) {
 
 export default PlaylistPage
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<{
+  initialData: {
+    playlist: DBQueryResult<typeof dbQueries.getPlaylistById>
+    entries: DBQueryResult<typeof dbQueries.getPlaylistsEntries>
+  }
+}> = async (context) => {
   const session = await getSession({ req: context.req })
 
   const id = context.query.id as string
@@ -84,10 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     (!playlist.isPublic && playlist.authorId !== session?.user?.id)
   )
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
+      notFound: true,
     }
 
   const entries = await dbQueries.getPlaylistsEntries(playlist.id)

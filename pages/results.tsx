@@ -1,21 +1,21 @@
-import { ReactElement } from 'react'
-import { NextPageWithLayout } from './_app'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { Layout } from '@/components/pages/layout/Layout'
-import { dbQueries } from '@/lib/queries/dbQueries'
-import { Filters } from '@/components/pages/results/Filters'
-import { UiRom } from '@/types/index'
-import { useDispatch, useSelector } from 'react-redux'
+import { ReactElement } from "react"
+import { NextPageWithLayout } from "./_app"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import { Layout } from "@/components/pages/layout/Layout"
+import { dbQueries } from "@/lib/queries/dbQueries"
+import { Filters } from "@/components/pages/results/Filters"
+import { useDispatch, useSelector } from "react-redux"
 import {
   selectSearch,
   selectPlatform,
   selectSkip,
   setSkip,
-} from '@/components/pages/results/searchSlice'
-import { Paginator } from '@/components/ui/paginator/Paginator'
-import { useRomsQuery } from '@/lib/queries/react/useRomsQuery'
-import { Item } from '@/components/pages/results/Item'
-import { NotFoundIcon } from '@/components/ui/icons'
+} from "@/components/pages/results/searchSlice"
+import { Paginator } from "@/components/ui/paginator/Paginator"
+import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
+import { Item } from "@/components/pages/results/Item"
+import { NotFoundIcon } from "@/components/ui/icons"
+import { DBQueryResult } from "@/types/utils"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -81,15 +81,12 @@ Results.getLayout = function getLayout(page: ReactElement) {
 export default Results
 
 export const getServerSideProps: GetServerSideProps<{
-  initialData: {
-    total: number
-    data: UiRom[]
-  }
+  initialData: DBQueryResult<typeof dbQueries.getRoms>
   search_query: string
 }> = async (context) => {
   const { search_query } = context.query
 
-  if (!search_query || typeof search_query !== 'string') {
+  if (!search_query || typeof search_query !== "string") {
     return {
       notFound: true,
     }

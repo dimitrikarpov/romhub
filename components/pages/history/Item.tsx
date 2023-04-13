@@ -1,7 +1,8 @@
-import { UiPlaylistEntry } from "@/types/index"
+import { UiRom } from "@/types/index"
+import { PlaylistEntry } from "@prisma/client"
 
 type Props = {
-  entry: UiPlaylistEntry
+  entry: PlaylistEntry & { rom: UiRom }
 }
 
 export const Item: React.FunctionComponent<Props> = ({ entry }) => {

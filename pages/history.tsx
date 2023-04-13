@@ -1,18 +1,17 @@
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { ReactElement } from "react"
 import { getSession } from "next-auth/react"
 import { Layout } from "@/components/pages/layout/Layout"
 import { NextPageWithLayout } from "./_app"
 import prisma from "@/lib/prismadb"
-import { UiPlaylistEntry } from "@/types/index"
+import { UiRom } from "@/types/index"
 import { List } from "@/components/pages/history/List"
 import { convertEntity } from "@/lib/convertEntity"
+import { PlaylistEntry } from "@prisma/client"
 
-type Props = {
-  entries: UiPlaylistEntry[]
-}
-
-const History: NextPageWithLayout<Props> = ({ entries }) => {
+const History: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ entries }) => {
   return (
     <div>
       <List entries={entries} />
@@ -26,15 +25,16 @@ History.getLayout = function getLayout(page: ReactElement) {
 
 export default History
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<{
+  entries: (PlaylistEntry & {
+    rom: UiRom
+  })[]
+}> = async (context) => {
   const session = await getSession({ req: context.req })
 
   if (!session) {
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
+      notFound: true,
     }
   }
 
@@ -49,8 +49,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     select: { id: true },
   })
 
+  if (!historyPlaylist) {
+    return {
+      notFound: true,
+    }
+  }
+
   const entries = await prisma.playlistEntry.findMany({
-    where: { playlistId: String(historyPlaylist?.id) },
+    where: { playlistId: historyPlaylist.id },
     orderBy: { assignedAt: "desc" },
     include: { rom: true },
     take: 15,
