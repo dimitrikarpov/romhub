@@ -9,9 +9,10 @@ export const SearchInput = () => {
   const router = useRouter()
   const dispatch = useDispatch()
 
-  const [value, setValue] = useState<string>(
-    () => router.query.search_query as string,
-  )
+  const [value, setValue] = useState<string>(() => {
+    const { search_query } = router.query
+    return typeof search_query === "string" ? search_query : ""
+  })
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
