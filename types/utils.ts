@@ -1,8 +1,8 @@
 /**
  * Overrides prop T2 in type T1
- * example
  *
- * ```type AB = Override<A, { b: number }>```
+ * @example
+ * type AB = Override<A, { b: number }>
  */
 export type Override<T1, T2> = Omit<T1, keyof T2> & T2
 
@@ -12,3 +12,14 @@ export type Override<T1, T2> = Omit<T1, keyof T2> & T2
 export type DBQueryResult<T extends (...args: any) => any> = NonNullable<
   Awaited<ReturnType<T>>
 >
+
+/**
+ * search and convert prop with data value type in to string type
+ *
+ * @example
+ * ConvertDatePropToString<{ a: "b" }>          // {a: 'b'}
+ * ConvertDatePropToString<{ a: "b"; c: Date }> // {a: 'b', c: string}
+ */
+export type ConvertDatePropToString<T extends object> = {
+  [key in keyof T]: T[key] extends Date ? string : T[key]
+}

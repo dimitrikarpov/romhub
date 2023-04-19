@@ -1,4 +1,4 @@
-import { Rom } from "@prisma/client"
+import { Playlist, Rom } from "@prisma/client"
 import { UiRom } from "../types"
 import { createUrl } from "./storage"
 
@@ -13,6 +13,11 @@ export const convertEntity = {
         : undefined
 
       return { ...rom, file, ...(images && { images }) }
+    },
+  },
+  playlist: {
+    serializeDates: (playlist: Playlist) => {
+      return { ...playlist, updatedAt: playlist.updatedAt.toString() }
     },
   },
 }
