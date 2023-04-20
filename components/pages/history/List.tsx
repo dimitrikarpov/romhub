@@ -1,11 +1,10 @@
-import { UiRom } from "@/types/index"
 import { Item } from "./Item"
-import { PlaylistEntry } from "@prisma/client"
+import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
 
 type Props = {
-  entries: (PlaylistEntry & {
-    rom: UiRom
-  })[]
+  entries: NonNullable<
+    ReturnType<typeof usePlaylistEntriesQuery>["data"]
+  >["data"]
 }
 
 export const List: React.FunctionComponent<Props> = ({ entries }) => {
@@ -16,7 +15,7 @@ export const List: React.FunctionComponent<Props> = ({ entries }) => {
       </h2>
 
       {entries.map((entry) => (
-        <Item entry={entry} key={entry.romId} />
+        <Item entry={entry} key={entry.assignedAt.toString()} />
       ))}
     </div>
   )

@@ -1,7 +1,22 @@
 import { useQuery } from "react-query"
 import { apiQueries } from "@/lib/queries/apiQueries"
+import { convertEntity } from "@/lib/convertEntity"
 
 type initialData = Awaited<ReturnType<typeof apiQueries.getPlaylistsEntries>>
+
+const transformData = (data: initialData) => {
+  return {
+    total: data.total,
+    data: data.data.map((entry) => {
+      return {
+        ...entry,
+        ...convertEntity.playlistEntry.unserializeDates(entry),
+        rom: convertEntity.rom.toUiRom(entry.rom),
+        playlist: convertEntity.playlist.unserializeDates(entry.playlist),
+      }
+    }),
+  }
+}
 
 export const usePlaylistEntriesQuery = ({
   id,
@@ -17,6 +32,7 @@ export const usePlaylistEntriesQuery = ({
     queryFn: () => apiQueries.getPlaylistsEntries({ playlistId: id as string }),
     enabled: Boolean(id) && enabled,
     initialData,
+    select: transformData,
   })
 
   return query

@@ -3,11 +3,13 @@ import { dbQueries } from "@/lib/queries/dbQueries"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    const { playlistId } = req.query
+    const { playlistId, skip, take } = req.query
 
     if (!playlistId) return res.status(404).send("Not found")
 
-    const found = await dbQueries.getPlaylistsEntries(playlistId as string)
+    const found = await dbQueries.getPlaylistsEntries({
+      playlistId: playlistId as string,
+    })
 
     if (!found) return res.status(404).send("Not found")
 

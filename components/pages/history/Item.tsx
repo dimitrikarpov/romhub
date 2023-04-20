@@ -1,16 +1,17 @@
-import { UiRom } from "@/types/index"
-import { PlaylistEntry } from "@prisma/client"
+import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
 
 type Props = {
-  entry: PlaylistEntry & { rom: UiRom }
+  entry: NonNullable<
+    ReturnType<typeof usePlaylistEntriesQuery>["data"]
+  >["data"][0]
 }
 
 export const Item: React.FunctionComponent<Props> = ({ entry }) => {
-  const image = entry.rom.images[0] || "/assets/placeholder.png"
+  const image = entry.rom.images?.[0] || "/assets/placeholder.png"
 
   return (
     <div className="flex gap-8">
-      <a href={`/rom/${entry.rom.id}`} target="_blank">
+      <a href={`/rom/${entry.rom.id}`} target="_blank" className="shrink-0">
         <img
           src={image}
           className="aspect-[1.78] w-[246px] rounded-lg object-cover"
