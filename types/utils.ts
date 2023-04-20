@@ -19,7 +19,10 @@ export type DBQueryResult<T extends (...args: any) => any> = NonNullable<
  * @example
  * ConvertDatePropToString<{ a: "b" }>          // {a: 'b'}
  * ConvertDatePropToString<{ a: "b"; c: Date }> // {a: 'b', c: string}
+ * ConvertDatePropToString<{ a: Date | null }>  // {a: string | null}
  */
 export type ConvertDatePropToString<T extends object> = {
-  [key in keyof T]: T[key] extends Date ? string : T[key]
+  [key in keyof T]: Date extends T[key]
+    ? Exclude<T[key], Date> | string
+    : T[key]
 }
