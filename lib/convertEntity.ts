@@ -1,9 +1,23 @@
-import { Playlist, PlaylistEntry, Rom } from "@prisma/client"
+import { Playlist, PlaylistEntry, Rom, User } from "@prisma/client"
 import { UiRom } from "../types"
 import { createUrl } from "./storage"
 import { ConvertDatePropToString } from "@/types/utils"
 
 export const convertEntity = {
+  user: {
+    serializeDates: (user: User) => ({
+      ...user,
+      emailVerified:
+        user.emailVerified === null ? null : user.emailVerified.toString(),
+    }),
+
+    unserializeDates: (user: ConvertDatePropToString<User>) => ({
+      ...user,
+      emailVerified:
+        user.emailVerified === null ? null : new Date(user.emailVerified),
+    }),
+  },
+
   rom: {
     toUiRom: (rom: Rom): UiRom => {
       const file = createUrl(rom.file, "roms")

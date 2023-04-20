@@ -1,3 +1,4 @@
+import { convertEntity } from "@/lib/convertEntity"
 import prisma from "@/lib/prismadb"
 
 export const getPlaylistById = async (id: string) => {
@@ -6,5 +7,11 @@ export const getPlaylistById = async (id: string) => {
     include: { author: true },
   })
 
-  return playlist
+  if (!playlist) throw new Error("aa")
+
+  return {
+    ...playlist,
+    ...convertEntity.playlist.serializeDates(playlist),
+    author: convertEntity.user.serializeDates(playlist.author),
+  }
 }

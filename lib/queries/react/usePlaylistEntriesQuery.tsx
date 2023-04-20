@@ -4,20 +4,6 @@ import { convertEntity } from "@/lib/convertEntity"
 
 type initialData = Awaited<ReturnType<typeof apiQueries.getPlaylistsEntries>>
 
-const transformData = (data: initialData) => {
-  return {
-    total: data.total,
-    data: data.data.map((entry) => {
-      return {
-        ...entry,
-        ...convertEntity.playlistEntry.unserializeDates(entry),
-        rom: convertEntity.rom.toUiRom(entry.rom),
-        playlist: convertEntity.playlist.unserializeDates(entry.playlist),
-      }
-    }),
-  }
-}
-
 export const usePlaylistEntriesQuery = ({
   id,
   enabled = true,
@@ -36,4 +22,18 @@ export const usePlaylistEntriesQuery = ({
   })
 
   return query
+}
+
+const transformData = (data: initialData) => {
+  return {
+    total: data.total,
+    data: data.data.map((entry) => {
+      return {
+        ...entry,
+        ...convertEntity.playlistEntry.unserializeDates(entry),
+        rom: convertEntity.rom.toUiRom(entry.rom),
+        playlist: convertEntity.playlist.unserializeDates(entry.playlist),
+      }
+    }),
+  }
 }

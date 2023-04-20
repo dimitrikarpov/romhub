@@ -25,14 +25,11 @@ const PlaylistPage: NextPageWithLayout<
 
   const { data: entries } = usePlaylistEntriesQuery({
     id: id as string,
-    initialData: initialData.entries,
   })
 
-  const thumbnail = entries?.[0]?.rom?.images?.[0] || "/assets/placeholder.png"
-  const lastEntryTimestamp = getLatestEntryTimestamp(entries!)
-  const lastUpdated = lastEntryTimestamp
-    ? new Date(lastEntryTimestamp)
-    : undefined
+  const thumbnail =
+    entries?.data?.[0]?.rom?.images?.[0] || "/assets/placeholder.png"
+  const lastEntryTimestamp = getLatestEntryTimestamp(entries?.data) // TODO: [perf] use memo
 
   return (
     <>
@@ -48,11 +45,11 @@ const PlaylistPage: NextPageWithLayout<
         <PlaylistSidebar
           playlist={playlist!}
           thumbnail={thumbnail}
-          total={entries!.length}
-          lastUpdated={lastUpdated}
+          total={entries?.total || 0}
+          lastUpdated={lastEntryTimestamp}
         />
         <div className="basis-full">
-          {entries!.map((entry) => (
+          {entries?.data?.map((entry) => (
             <Item entry={entry} key={entry.romId} />
           ))}
         </div>
@@ -70,7 +67,6 @@ export default PlaylistPage
 export const getServerSideProps: GetServerSideProps<{
   initialData: {
     playlist: DBQueryResult<typeof dbQueries.getPlaylistById>
-    entries: DBQueryResult<typeof dbQueries.getPlaylistsEntries>
   }
 }> = async (context) => {
   const session = await getSession({ req: context.req })
@@ -87,20 +83,20 @@ export const getServerSideProps: GetServerSideProps<{
       notFound: true,
     }
 
-  const entries = await dbQueries.getPlaylistsEntries(playlist.id)
-
   return {
     props: {
       initialData: {
         playlist,
-        entries,
       },
     },
   }
 }
 
-const getLatestEntryTimestamp = (entries: UiPlaylistEntry[]): number =>
-  entries.reduce((acc, entry) => {
+const getLatestEntryTimestamp = (entries: UiPlaylistEntry[] = []) => {
+  const latestEntryTimestamp = entries.reduce((acc, entry) => {
     const entryTime = new Date(String(entry.assignedAt)).getTime()
     return entryTime > acc ? entryTime : acc
   }, 0)
+
+  return latestEntryTimestamp ? new Date(latestEntryTimestamp) : undefined
+}
