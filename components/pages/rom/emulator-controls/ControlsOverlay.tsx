@@ -1,5 +1,5 @@
-import { useModal } from "@/components/ui/modal/useModal"
-import { UiRom } from "@/types/index"
+import { useModal } from "~/components/ui/modal/useModal"
+import { UiRom } from "~/types/index"
 import clsx from "clsx"
 import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react"
 import { ControlsButton } from "./ControlsButton"

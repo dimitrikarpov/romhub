@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
-import { apiQueries } from "@/lib/queries/apiQueries"
-import { UiRom } from "@/types/index"
+import { apiQueries } from "~/lib/queries/apiQueries"
+import { UiRom } from "~/types/index"
 
 type initialData = {
   data: UiRom[]

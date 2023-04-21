@@ -1,4 +1,4 @@
-import prisma from "@/lib/prismadb"
+import prisma from "~/lib/prismadb"
 
 // TODO: refactor input params to {id, data}
 

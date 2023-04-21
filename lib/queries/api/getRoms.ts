@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client"
-import { UiRom } from "@/types/index"
+import { UiRom } from "~/types/index"
 
 type fetchRomsData = {
   data: UiRom[]

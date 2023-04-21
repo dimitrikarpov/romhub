@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { z } from "zod"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import { dbQueries } from "~/lib/queries/dbQueries"
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,6 +1,6 @@
 import { Playlist } from "@prisma/client"
 import { Session } from "next-auth"
-import prisma from "@/lib/prismadb"
+import prisma from "~/lib/prismadb"
 
 export const deleteSharedPlaylistFromLibrary = async (
   session: Session,

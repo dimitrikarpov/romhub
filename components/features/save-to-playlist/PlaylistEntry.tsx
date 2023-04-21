@@ -3,9 +3,9 @@ import {
   CheckboxCheckedIcon,
   GlobeIcon,
   LockIcon,
-} from "@/components/ui/icons"
-import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
-import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
+} from "~/components/ui/icons"
+import { useCreatePlaylistEntryMutation } from "~/lib/queries/react/useCreatePlaylistEntryMutation"
+import { useDeletePlaylistEntryByRomMutation } from "~/lib/queries/react/useDeletePlaylistEntryByRomMutation"
 import clsx from "clsx"
 
 type Props = {

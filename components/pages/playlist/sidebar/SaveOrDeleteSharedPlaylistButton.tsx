@@ -1,11 +1,11 @@
-import { IconButton } from "@/components/ui/icon-button/IconButton"
+import { IconButton } from "~/components/ui/icon-button/IconButton"
 import {
   PlaylistWithDoneMarkIcon,
   AddToPlaylistIcon,
-} from "@/components/ui/icons"
-import { useAddSharedPlaylistToLibraryMutation } from "@/lib/queries/react/useAddSharedPlaylistToLibraryMutation"
-import { useDeleteSharedPlaylistFromLibraryMutation } from "@/lib/queries/react/useDeleteSharedPlaylistFromLibraryMutation"
-import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+} from "~/components/ui/icons"
+import { useAddSharedPlaylistToLibraryMutation } from "~/lib/queries/react/useAddSharedPlaylistToLibraryMutation"
+import { useDeleteSharedPlaylistFromLibraryMutation } from "~/lib/queries/react/useDeleteSharedPlaylistFromLibraryMutation"
+import { useUserPlaylistsQuery } from "~/lib/queries/react/useUserPlaylistsQuery"
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
 

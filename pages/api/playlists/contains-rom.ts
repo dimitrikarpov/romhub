@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import { dbQueries } from "~/lib/queries/dbQueries"
 
 /**
  * Find user playlists that contains specific rom

@@ -1,6 +1,6 @@
 import { Rom } from "@prisma/client"
-import prisma from "@/lib/prismadb"
-import { convertEntity } from "@/lib/convertEntity"
+import prisma from "~/lib/prismadb"
+import { convertEntity } from "~/lib/convertEntity"
 
 export const getRandomRoms = async (limit = 6) => {
   const result: Rom[] =

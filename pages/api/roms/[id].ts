@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import prisma from "@/lib/prismadb"
-import { convertEntity } from "@/lib/convertEntity"
+import prisma from "~/lib/prismadb"
+import { convertEntity } from "~/lib/convertEntity"
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,5 +1,5 @@
-import { setSearch } from "@/components/pages/results/searchSlice"
-import { ClearIcon, SearchIcon } from "@/components/ui/icons"
+import { setSearch } from "~/components/pages/results/searchSlice"
+import { ClearIcon, SearchIcon } from "~/components/ui/icons"
 import clsx from "clsx"
 import { useRouter } from "next/router"
 import React, { KeyboardEventHandler, useState } from "react"

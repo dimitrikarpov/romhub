@@ -2,7 +2,7 @@ import { useState } from "react"
 import { SubmitHandler } from "react-hook-form"
 import { DescriptionForm, IFormInput } from "./DescriptionForm"
 import { DescriptionView } from "./DescriptionView"
-import { usePlaylistMutation } from "@/lib/queries/react/usePlaylistMutation"
+import { usePlaylistMutation } from "~/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
 
 type Props = {

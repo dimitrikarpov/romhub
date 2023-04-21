@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { TPlatformSlug } from "@/types/index"
-import { RootState } from "@/lib/store"
+import { TPlatformSlug } from "~/types/index"
+import { RootState } from "~/lib/store"
 
 export interface SearchSlice {
   search: string | undefined

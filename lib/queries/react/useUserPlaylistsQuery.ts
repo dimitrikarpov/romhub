@@ -1,5 +1,5 @@
 import { useQuery } from "react-query"
-import { apiQueries } from "@/lib/queries/apiQueries"
+import { apiQueries } from "~/lib/queries/apiQueries"
 
 export const useUserPlaylistsQuery = ({
   enabled = true,

@@ -1,4 +1,4 @@
-import { UiRom } from "@/types/index"
+import { UiRom } from "~/types/index"
 import { useState } from "react"
 import clsx from "clsx"
 

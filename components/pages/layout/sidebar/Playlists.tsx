@@ -1,11 +1,11 @@
 import { useSession } from "next-auth/react"
-import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+import { useUserPlaylistsQuery } from "~/lib/queries/react/useUserPlaylistsQuery"
 import {
   HistoryIcon,
   PlaylistIcon,
   WatchLaterIcon,
-} from "@/components/ui/icons"
-import { TPlaylistType } from "@/types/index"
+} from "~/components/ui/icons"
+import { TPlaylistType } from "~/types/index"
 
 const getIconByType = (type: TPlaylistType) => {
   switch (type) {

@@ -1,5 +1,5 @@
 import { platforms } from "config/index"
-import { TPlatformSlug } from "@/types/index"
+import { TPlatformSlug } from "~/types/index"
 import { PlatformFilterItem } from "./PlatformFilterItem"
 
 type Props = {

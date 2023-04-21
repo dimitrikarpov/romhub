@@ -1,5 +1,5 @@
 import { Item } from "./Item"
-import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
+import { usePlaylistEntriesQuery } from "~/lib/queries/react/usePlaylistEntriesQuery"
 
 type Props = {
   entries: NonNullable<

@@ -1,5 +1,5 @@
 import { Playlist, User } from "@prisma/client"
-import { ConvertDatePropToString } from "@/types/utils"
+import { ConvertDatePropToString } from "~/types/utils"
 
 type PlaylistWithAuthor = ConvertDatePropToString<Playlist> & {
   author: ConvertDatePropToString<User>

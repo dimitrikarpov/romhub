@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import { dbQueries } from "~/lib/queries/dbQueries"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

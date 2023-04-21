@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
-import { apiQueries } from "@/lib/queries/apiQueries"
-import { convertEntity } from "@/lib/convertEntity"
+import { apiQueries } from "~/lib/queries/apiQueries"
+import { convertEntity } from "~/lib/convertEntity"
 
 type initialData = Awaited<ReturnType<typeof apiQueries.getPlaylistsEntries>>
 

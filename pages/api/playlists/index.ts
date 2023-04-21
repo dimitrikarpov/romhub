@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { unstable_getServerSession } from "next-auth"
-import { TCreatePlaylistFormData } from "@/types/index"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import { TCreatePlaylistFormData } from "~/types/index"
+import { dbQueries } from "~/lib/queries/dbQueries"
 import { authOptions } from "../auth/[...nextauth]"
 
 export default async function handler(

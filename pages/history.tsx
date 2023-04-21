@@ -1,11 +1,11 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { ReactElement } from "react"
 import { getSession } from "next-auth/react"
-import { Layout } from "@/components/pages/layout/Layout"
+import { Layout } from "~/components/pages/layout/Layout"
 import { NextPageWithLayout } from "./_app"
-import prisma from "@/lib/prismadb"
-import { List } from "@/components/pages/history/List"
-import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
+import prisma from "~/lib/prismadb"
+import { List } from "~/components/pages/history/List"
+import { usePlaylistEntriesQuery } from "~/lib/queries/react/usePlaylistEntriesQuery"
 
 const History: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>

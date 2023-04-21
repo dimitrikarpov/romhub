@@ -1,5 +1,5 @@
 import { Playlist } from "@prisma/client"
-import { TPlaylistType } from "@/types/index"
+import { TPlaylistType } from "~/types/index"
 
 export const createPlaylistEntry = ({
   playlistId,

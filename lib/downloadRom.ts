@@ -1,6 +1,6 @@
 import sanitize from "sanitize-filename"
 import { saveAs } from "file-saver"
-import { filename } from "@/lib/filename"
+import { filename } from "~/lib/filename"
 
 export const downloadRom = (url: string, name: string) => {
   const extension = filename.getExtension(url)

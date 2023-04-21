@@ -1,5 +1,5 @@
-import prisma from "@/lib/prismadb"
-import { TCreatePlaylistFormData } from "@/types/index"
+import prisma from "~/lib/prismadb"
+import { TCreatePlaylistFormData } from "~/types/index"
 
 export const createPlaylist = async (
   authorId: string,

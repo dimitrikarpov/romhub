@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client"
-import prisma from "@/lib/prismadb"
-import { convertEntity } from "@/lib/convertEntity"
+import prisma from "~/lib/prismadb"
+import { convertEntity } from "~/lib/convertEntity"
 
 export const getRoms = async ({
   skip = 0,

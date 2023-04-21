@@ -1,4 +1,4 @@
-import { ConvertDatePropToString } from "@/types/utils"
+import { ConvertDatePropToString } from "~/types/utils"
 import { Playlist, PlaylistEntry, Rom } from "@prisma/client"
 
 type PlaylistEntryWithRomAndPlaylist =

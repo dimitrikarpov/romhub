@@ -1,21 +1,21 @@
 import { ReactElement } from "react"
 import { NextPageWithLayout } from "./_app"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { Layout } from "@/components/pages/layout/Layout"
-import { dbQueries } from "@/lib/queries/dbQueries"
-import { Filters } from "@/components/pages/results/Filters"
+import { Layout } from "~/components/pages/layout/Layout"
+import { dbQueries } from "~/lib/queries/dbQueries"
+import { Filters } from "~/components/pages/results/Filters"
 import { useDispatch, useSelector } from "react-redux"
 import {
   selectSearch,
   selectPlatform,
   selectSkip,
   setSkip,
-} from "@/components/pages/results/searchSlice"
-import { Paginator } from "@/components/ui/paginator/Paginator"
-import { useRomsQuery } from "@/lib/queries/react/useRomsQuery"
-import { Item } from "@/components/pages/results/Item"
-import { NotFoundIcon } from "@/components/ui/icons"
-import { DBQueryResult } from "@/types/utils"
+} from "~/components/pages/results/searchSlice"
+import { Paginator } from "~/components/ui/paginator/Paginator"
+import { useRomsQuery } from "~/lib/queries/react/useRomsQuery"
+import { Item } from "~/components/pages/results/Item"
+import { NotFoundIcon } from "~/components/ui/icons"
+import { DBQueryResult } from "~/types/utils"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>

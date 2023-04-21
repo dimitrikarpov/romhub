@@ -4,8 +4,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
 import TwitchProvider from "next-auth/providers/twitch"
 import YandexProvider from "next-auth/providers/yandex"
-import prisma from "@/lib/prismadb"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import prisma from "~/lib/prismadb"
+import { dbQueries } from "~/lib/queries/dbQueries"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),

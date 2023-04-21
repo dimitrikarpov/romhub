@@ -1,4 +1,4 @@
-import { UiPlaylistEntry } from "@/types/index"
+import { UiPlaylistEntry } from "~/types/index"
 import { ItemMenu } from "./ItemMenu"
 import { platforms } from "config/index"
 

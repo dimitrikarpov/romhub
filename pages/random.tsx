@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react"
 import Head from "next/head"
-import { Layout } from "@/components/pages/layout/Layout"
-import { RandomGrid } from "@/components/pages/random/RandomGrid"
-import { useRandomRomsQuery } from "@/lib/queries/react/useRandomRoms"
+import { Layout } from "~/components/pages/layout/Layout"
+import { RandomGrid } from "~/components/pages/random/RandomGrid"
+import { useRandomRomsQuery } from "~/lib/queries/react/useRandomRoms"
 import { useQueryClient } from "react-query"
 
 const Random = () => {

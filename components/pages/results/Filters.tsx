@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button/Button'
-import { ThreeSlidersIcon } from '@/components/ui/icons'
-import { platforms } from 'config'
-import { TPlatformSlug } from '@/types/index'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectPlatform, setPlatform, setSkip } from './searchSlice'
-import clsx from 'clsx'
+import { useState } from "react"
+import { Button } from "~/components/ui/button/Button"
+import { ThreeSlidersIcon } from "~/components/ui/icons"
+import { platforms } from "config"
+import { TPlatformSlug } from "~/types/index"
+import { useDispatch, useSelector } from "react-redux"
+import { selectPlatform, setPlatform, setSkip } from "./searchSlice"
+import clsx from "clsx"
 
 export const Filters = () => {
   const dispatch = useDispatch()
@@ -27,8 +27,8 @@ export const Filters = () => {
     <div className="flex flex-col">
       <div
         className={clsx(
-          'border-0 border-b border-[rgba(255,255,255,0.2)]',
-          isVisible && 'border-b-0',
+          "border-0 border-b border-[rgba(255,255,255,0.2)]",
+          isVisible && "border-b-0",
         )}
       >
         <Button variant="transparent-transpared" onClick={toggle}>
@@ -47,8 +47,8 @@ export const Filters = () => {
             <p
               onClick={() => select(undefined)}
               className={clsx(
-                'cursor-pointer px-0 py-4 text-sm text-[#aaa]',
-                !platform && 'font-medium text-[#f1f1f1]',
+                "cursor-pointer px-0 py-4 text-sm text-[#aaa]",
+                !platform && "font-medium text-[#f1f1f1]",
               )}
             >
               All
@@ -58,8 +58,8 @@ export const Filters = () => {
                 key={shortName}
                 onClick={() => select(slug as TPlatformSlug)}
                 className={clsx(
-                  'cursor-pointer px-0 py-4 text-sm text-[#aaa]',
-                  platform === slug && 'font-medium text-[#f1f1f1]',
+                  "cursor-pointer px-0 py-4 text-sm text-[#aaa]",
+                  platform === slug && "font-medium text-[#f1f1f1]",
                 )}
               >
                 {name}

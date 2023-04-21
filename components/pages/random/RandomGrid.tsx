@@ -1,5 +1,5 @@
-import { UiRom } from '@/types/index'
-import { RandomGridItem } from './RandomGridItem'
+import { UiRom } from "~/types/index"
+import { RandomGridItem } from "./RandomGridItem"
 
 type Props = {
   roms: UiRom[]

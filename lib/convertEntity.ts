@@ -1,7 +1,7 @@
 import { Playlist, PlaylistEntry, Rom, User } from "@prisma/client"
 import { UiRom } from "../types"
 import { createUrl } from "./storage"
-import { ConvertDatePropToString } from "@/types/utils"
+import { ConvertDatePropToString } from "~/types/utils"
 
 export const convertEntity = {
   user: {

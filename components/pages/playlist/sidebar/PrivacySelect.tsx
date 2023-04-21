@@ -1,4 +1,4 @@
-import { usePlaylistMutation } from "@/lib/queries/react/usePlaylistMutation"
+import { usePlaylistMutation } from "~/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
 
 type Props = {

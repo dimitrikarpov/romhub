@@ -1,5 +1,5 @@
-import { convertEntity } from "@/lib/convertEntity"
-import prisma from "@/lib/prismadb"
+import { convertEntity } from "~/lib/convertEntity"
+import prisma from "~/lib/prismadb"
 
 export const getPlaylistsEntries = async ({
   playlistId,
