@@ -13,6 +13,8 @@ export type DBQueryResult<T extends (...args: any) => any> = NonNullable<
   Awaited<ReturnType<T>>
 >
 
+export type FetchedDBQueryResult<T> = Awaited<T> | undefined
+
 /**
  * search and convert prop with data value type in to string type
  *
