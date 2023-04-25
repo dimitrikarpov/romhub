@@ -1,16 +1,20 @@
-import Head from "next/head"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { useRouter } from "next/router"
-import { NextPageWithLayout } from "../_app"
 import { getSession } from "next-auth/react"
-import { PlaylistSidebar } from "~/components/pages/playlist/sidebar/PlaylistSidebar"
-import { UiPlaylistEntry } from "~/types/index"
-import { Item } from "~/components/pages/playlist/playlist/Item"
+import Head from "next/head"
+import { useRouter } from "next/router"
 import { Layout } from "~/components/pages/layout/Layout"
+import { Item } from "~/components/pages/playlist/playlist/Item"
+import { PlaylistSidebar } from "~/components/pages/playlist/sidebar/PlaylistSidebar"
+import { useFetch } from "~/lib/fetcher"
+import {
+  type TPlaylistsEntriesParams,
+  type TPlaylistsEntriesReturn,
+} from "~/lib/queries/db/getPlaylistsEntries"
 import { dbQueries } from "~/lib/queries/dbQueries"
 import { usePlaylistByIdQuery } from "~/lib/queries/react/usePlaylistByIdQuery"
-import { usePlaylistEntriesQuery } from "~/lib/queries/react/usePlaylistEntriesQuery"
-import { DBQueryResult } from "~/types/utils"
+import { UiPlaylistEntry } from "~/types/index"
+import { DBQueryResult, FetchedDBQueryResult } from "~/types/utils"
+import { NextPageWithLayout } from "../_app"
 
 const PlaylistPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -23,8 +27,12 @@ const PlaylistPage: NextPageWithLayout<
     initialData: initialData.playlist,
   })
 
-  const { data: entries } = usePlaylistEntriesQuery({
-    id: id as string,
+  const { data: entries } = useFetch<
+    FetchedDBQueryResult<TPlaylistsEntriesReturn>,
+    TPlaylistsEntriesParams
+  >({
+    url: "/api/playlists/entries",
+    search: { playlistId: id as string },
   })
 
   const thumbnail =

@@ -1,9 +1,8 @@
-import { usePlaylistEntriesQuery } from "~/lib/queries/react/usePlaylistEntriesQuery"
+import { Playlist, PlaylistEntry } from "@prisma/client"
+import { UiRom } from "~/types/index"
 
 type Props = {
-  entry: NonNullable<
-    ReturnType<typeof usePlaylistEntriesQuery>["data"]
-  >["data"][0]
+  entry: PlaylistEntry & { rom: UiRom; playlist: Playlist }
 }
 
 export const Item: React.FunctionComponent<Props> = ({ entry }) => {

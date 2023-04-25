@@ -1,6 +1,9 @@
 import { convertEntity } from "~/lib/convertEntity"
 import prisma from "~/lib/prismadb"
 
+export type TPlaylistsEntriesReturn = ReturnType<typeof getPlaylistsEntries>
+export type TPlaylistsEntriesParams = Parameters<typeof getPlaylistsEntries>[0]
+
 export const getPlaylistsEntries = async ({
   playlistId,
   skip = 0,
@@ -23,12 +26,9 @@ export const getPlaylistsEntries = async ({
 
   return {
     total,
-    data: data.map((entry) => {
-      return {
-        ...entry,
-        ...convertEntity.playlistEntry.serializeDates(entry),
-        playlist: convertEntity.playlist.serializeDates(entry.playlist),
-      }
-    }),
+    data: data.map((item) => ({
+      ...item,
+      rom: convertEntity.rom.toUiRom(item.rom),
+    })),
   }
 }

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { dbQueries } from "~/lib/queries/dbQueries"
+import superjson from "superjson"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -13,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!found) return res.status(404).send("Not found")
 
-    return res.status(200).json(found)
+    return res.status(200).json(superjson.stringify(found))
   }
 
   if (req.method === "DELETE") {
