@@ -1,5 +1,4 @@
 import { apiQueries } from "~/lib/queries/apiQueries"
-import { useUserPlaylistsQuery } from "~/lib/queries/react/useUserPlaylistsQuery"
 import { UiRom } from "~/types/index"
 import clsx from "clsx"
 import { Retroarch } from "holy-retroarch"
@@ -17,6 +16,12 @@ import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useRetroarch } from "./useRetroarch"
 import { useResizeObserver } from "./useSizeObserver"
+import { useFetch } from "~/lib/fetcher"
+import { FetchedDBQueryResult } from "~/types/utils"
+import {
+  type TGetUserPlaylistsParams,
+  type TGetUserPlaylistsReturn,
+} from "~/lib/queries/db/getUserPlaylists"
 
 type Props = {
   coreUrl: string
@@ -40,9 +45,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
     const containerRef = useResizeObserver(onContainerResize)
 
-    const playlistQuery = useUserPlaylistsQuery({
-      enabled: Boolean(session?.user.id),
-    })
+    const playlistQuery = useFetch<
+      FetchedDBQueryResult<TGetUserPlaylistsReturn>,
+      TGetUserPlaylistsParams
+    >(
+      { url: "/api/playlists" },
+      { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
+    )
 
     useEffect(() => {
       if (status === "inited") {

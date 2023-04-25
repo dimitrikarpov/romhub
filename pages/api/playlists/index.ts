@@ -3,6 +3,7 @@ import { unstable_getServerSession } from "next-auth"
 import { TCreatePlaylistFormData } from "~/types/index"
 import { dbQueries } from "~/lib/queries/dbQueries"
 import { authOptions } from "../auth/[...nextauth]"
+import superjson from "superjson"
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,11 +13,11 @@ export default async function handler(
     const session = await unstable_getServerSession(req, res, authOptions)
     if (!session) return res.status(404).send("Not Found")
 
-    const playlists = await dbQueries.getUserPlaylists(
-      session.user.id as string,
-    )
+    const playlists = await dbQueries.getUserPlaylists({
+      userId: session.user.id as string,
+    })
 
-    return res.status(200).json(playlists)
+    return res.status(200).json(superjson.stringify(playlists))
   }
 
   if (req.method === "POST") {

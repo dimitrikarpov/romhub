@@ -6,7 +6,12 @@ import { usePlaylistWithRomQuery } from "~/lib/queries/react/usePlaylistsWithRom
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
 import { useCreatePlaylistEntryMutation } from "~/lib/queries/react/useCreatePlaylistEntryMutation"
 import { useCreatePlaylistMutation } from "~/lib/queries/react/useCreatePlaylistMutation"
-import { useUserPlaylistsQuery } from "~/lib/queries/react/useUserPlaylistsQuery"
+import { FetchedDBQueryResult } from "~/types/utils"
+import {
+  type TGetUserPlaylistsParams,
+  type TGetUserPlaylistsReturn,
+} from "~/lib/queries/db/getUserPlaylists"
+import { useFetch } from "~/lib/fetcher"
 
 type Props = {
   romId: string
@@ -29,9 +34,14 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     setIsFormOpened(true)
   }
 
-  const playlistsQuery = useUserPlaylistsQuery({
-    enabled: Boolean(session?.user.id),
-  })
+  const playlistsQuery = useFetch<
+    FetchedDBQueryResult<TGetUserPlaylistsReturn>,
+    TGetUserPlaylistsParams
+  >(
+    { url: "/api/playlists" },
+    { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
+  )
+
   const playlistsWithRomQuery = usePlaylistWithRomQuery({
     romId,
     enabled: Boolean(session?.user.id),

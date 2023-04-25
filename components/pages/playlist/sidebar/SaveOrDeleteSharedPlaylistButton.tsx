@@ -5,9 +5,14 @@ import {
 } from "~/components/ui/icons"
 import { useAddSharedPlaylistToLibraryMutation } from "~/lib/queries/react/useAddSharedPlaylistToLibraryMutation"
 import { useDeleteSharedPlaylistFromLibraryMutation } from "~/lib/queries/react/useDeleteSharedPlaylistFromLibraryMutation"
-import { useUserPlaylistsQuery } from "~/lib/queries/react/useUserPlaylistsQuery"
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
+import { useFetch } from "~/lib/fetcher"
+import { FetchedDBQueryResult } from "~/types/utils"
+import {
+  type TGetUserPlaylistsParams,
+  type TGetUserPlaylistsReturn,
+} from "~/lib/queries/db/getUserPlaylists"
 
 type Props = {
   playlist: Playlist & { author: User }
@@ -17,7 +22,12 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
   Props
 > = ({ playlist }) => {
   const { data: session } = useSession()
-  const { data: playlists } = useUserPlaylistsQuery({})
+
+  const { data: playlists } = useFetch<
+    FetchedDBQueryResult<TGetUserPlaylistsReturn>,
+    TGetUserPlaylistsParams
+  >({ url: "/api/playlists" })
+
   const addMutation = useAddSharedPlaylistToLibraryMutation({
     onSuccess: () => {
       console.log("added")
