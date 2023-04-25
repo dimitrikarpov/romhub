@@ -2,6 +2,9 @@ import { Prisma } from "@prisma/client"
 import prisma from "~/lib/prismadb"
 import { convertEntity } from "~/lib/convertEntity"
 
+export type TGetRomsParams = Parameters<typeof getRoms>[0]
+export type TGetRomsReturn = ReturnType<typeof getRoms>
+
 export const getRoms = async ({
   skip = 0,
   take = 15,

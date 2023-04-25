@@ -5,11 +5,16 @@ import { NextPageWithLayout } from "./_app"
 import { Layout } from "~/components/pages/layout/Layout"
 import { Gallery } from "~/components/pages/gallery/Gallery"
 import { PlatformFilter } from "~/components/pages/gallery/PlatformFilter"
-import { useRomsQuery } from "~/lib/queries/react/useRomsQuery"
 import { dbQueries } from "~/lib/queries/dbQueries"
 import { Paginator } from "~/components/ui/paginator/Paginator"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { DBQueryResult } from "~/types/utils"
+import { FetchedDBQueryResult } from "~/types/utils"
+import superjson from "superjson"
+import { useFetch } from "~/lib/fetcher"
+import {
+  type TGetRomsParams,
+  type TGetRomsReturn,
+} from "~/lib/queries/db/getRoms"
 
 const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -17,12 +22,24 @@ const Home: NextPageWithLayout<
   const [platform, setPlatform] = useState<TPlatformSlug | undefined>()
   const [skip, setSkip] = useState(0)
 
-  const romsQuery = useRomsQuery({
-    skip,
-    take: 15,
-    platform,
-    initialData,
-  })
+  const romsQuery = useFetch<
+    FetchedDBQueryResult<TGetRomsReturn>,
+    TGetRomsParams
+  >(
+    {
+      url: "/api/roms",
+      search: {
+        skip,
+        take: 15,
+        where: {
+          AND: [{ platform: { in: platform ? [platform] : undefined } }],
+        },
+      },
+    },
+    {
+      initialData: superjson.parse(initialData),
+    },
+  )
 
   const { data } = romsQuery
   const roms = data?.data
@@ -66,13 +83,13 @@ Home.getLayout = function getLayout(page: ReactElement) {
 export default Home
 
 export const getServerSideProps: GetServerSideProps<{
-  initialData: DBQueryResult<typeof dbQueries.getRoms>
+  initialData: string
 }> = async () => {
   const initialData = await dbQueries.getRoms({ take: 15 })
 
   return {
     props: {
-      initialData,
+      initialData: superjson.stringify(initialData),
     },
   }
 }

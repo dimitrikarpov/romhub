@@ -12,10 +12,15 @@ import {
   setSkip,
 } from "~/components/pages/results/searchSlice"
 import { Paginator } from "~/components/ui/paginator/Paginator"
-import { useRomsQuery } from "~/lib/queries/react/useRomsQuery"
 import { Item } from "~/components/pages/results/Item"
 import { NotFoundIcon } from "~/components/ui/icons"
-import { DBQueryResult } from "~/types/utils"
+import { FetchedDBQueryResult } from "~/types/utils"
+import { useFetch } from "~/lib/fetcher"
+import {
+  type TGetRomsParams,
+  type TGetRomsReturn,
+} from "~/lib/queries/db/getRoms"
+import superjson from "superjson"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -25,13 +30,33 @@ const Results: NextPageWithLayout<
   const platform = useSelector(selectPlatform)
   const search = useSelector(selectSearch)
 
-  const romsQuery = useRomsQuery({
-    skip,
-    take: 5,
-    platform,
-    initialData,
-    titleContains: search || search_query,
-  })
+  const romsQuery = useFetch<
+    FetchedDBQueryResult<TGetRomsReturn>,
+    TGetRomsParams
+  >(
+    {
+      url: "/api/roms",
+      search: {
+        skip,
+        take: 5,
+        where: {
+          AND: [
+            {
+              platform: {
+                in: platform ? [platform] : undefined,
+              },
+            },
+            {
+              name: { contains: search || search_query },
+            },
+          ],
+        },
+      },
+    },
+    {
+      initialData: superjson.parse(initialData),
+    },
+  )
 
   const doSkip = (skip: number) => {
     dispatch(setSkip(skip))
@@ -81,7 +106,7 @@ Results.getLayout = function getLayout(page: ReactElement) {
 export default Results
 
 export const getServerSideProps: GetServerSideProps<{
-  initialData: DBQueryResult<typeof dbQueries.getRoms>
+  initialData: string
   search_query: string
 }> = async (context) => {
   const { search_query } = context.query
@@ -99,7 +124,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   return {
     props: {
-      initialData,
+      initialData: superjson.stringify(initialData),
       search_query,
     },
   }
