@@ -12,7 +12,6 @@ export const fetcher = async (url: string, options?: RequestInit) => {
 export const useFetch = <TData, TParams extends {} = {}>(
   fetch: {
     url: string
-    // search?: Record<string, string>
     search?: TSearchParams<TParams>
     options?: RequestInit
   },
@@ -28,32 +27,22 @@ export const useFetch = <TData, TParams extends {} = {}>(
   return context
 }
 
-const combineFetchUrl = (url: string, search?: {}) => {
-  return search ? [url, new URLSearchParams(search)].join("?") : url
-}
+const combineFetchUrl = (url: string, search?: { [key: string]: any }) => {
+  if (!search) return url
 
-// const createKey = (url: string, search?: Record<string, string>) => {
-//   return search ? [url, search] : url
-// }
+  for (const prop in search) {
+    if (typeof search[prop] === "object") {
+      search[prop] = JSON.stringify(search[prop])
+    }
+  }
+
+  return [url, new URLSearchParams(search)].join("?")
+}
 
 const createKey = (url: string, search?: {}) => {
   return search ? [url, search] : url
 }
 
-////////////////////////////////////////////////////////////////
-
-// type A = { a: string; b: TSearchParams<{ aa: string; bb?: number }> }
-
-// let a: A
-
-// a.b.aa = 7
-
-// type TSearchParams<T> = T extends { [key: string]: string }
-//   ? {
-//       [K in keyof T]?: T[K]
-//     }
-//   : T
-
 type TSearchParams<T extends {}> = {
   [K in keyof T]?: T[K]
-} & { [key: string]: string }
+} & { [key: string]: any }
