@@ -1,8 +1,8 @@
 import { convertEntity } from "~/lib/convertEntity"
 import prisma from "~/lib/prismadb"
 
-export type TPlaylistsEntriesReturn = ReturnType<typeof getPlaylistsEntries>
 export type TPlaylistsEntriesParams = Parameters<typeof getPlaylistsEntries>[0]
+export type TPlaylistsEntriesReturn = ReturnType<typeof getPlaylistsEntries>
 
 export const getPlaylistsEntries = async ({
   playlistId,

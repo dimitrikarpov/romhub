@@ -1,7 +1,9 @@
-import { convertEntity } from "~/lib/convertEntity"
 import prisma from "~/lib/prismadb"
 
-export const getPlaylistById = async (id: string) => {
+export type TGetPlaylistByIdParams = Parameters<typeof getPlaylistById>[0]
+export type TGetPlaylistByIdReturn = ReturnType<typeof getPlaylistById>
+
+export const getPlaylistById = async ({ id }: { id: string }) => {
   const playlist = await prisma.playlist.findFirst({
     where: { id },
     include: { author: true },
@@ -9,9 +11,5 @@ export const getPlaylistById = async (id: string) => {
 
   if (!playlist) throw new Error("aa")
 
-  return {
-    ...playlist,
-    ...convertEntity.playlist.serializeDates(playlist),
-    author: convertEntity.user.serializeDates(playlist.author),
-  }
+  return playlist
 }

@@ -2,18 +2,22 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { getSession } from "next-auth/react"
 import Head from "next/head"
 import { useRouter } from "next/router"
+import superjson from "superjson"
 import { Layout } from "~/components/pages/layout/Layout"
 import { Item } from "~/components/pages/playlist/playlist/Item"
 import { PlaylistSidebar } from "~/components/pages/playlist/sidebar/PlaylistSidebar"
 import { useFetch } from "~/lib/fetcher"
 import {
+  type TGetPlaylistByIdParams,
+  type TGetPlaylistByIdReturn,
+} from "~/lib/queries/db/getPlaylistById"
+import {
   type TPlaylistsEntriesParams,
   type TPlaylistsEntriesReturn,
 } from "~/lib/queries/db/getPlaylistsEntries"
 import { dbQueries } from "~/lib/queries/dbQueries"
-import { usePlaylistByIdQuery } from "~/lib/queries/react/usePlaylistByIdQuery"
 import { UiPlaylistEntry } from "~/types/index"
-import { DBQueryResult, FetchedDBQueryResult } from "~/types/utils"
+import { FetchedDBQueryResult } from "~/types/utils"
 import { NextPageWithLayout } from "../_app"
 
 const PlaylistPage: NextPageWithLayout<
@@ -22,10 +26,17 @@ const PlaylistPage: NextPageWithLayout<
   const router = useRouter()
   const { id } = router.query
 
-  const { data: playlist } = usePlaylistByIdQuery({
-    id: id as string,
-    initialData: initialData.playlist,
-  })
+  const { data: playlist } = useFetch<
+    FetchedDBQueryResult<TGetPlaylistByIdReturn>,
+    TGetPlaylistByIdParams
+  >(
+    {
+      url: `/api/playlists/${id}`,
+    },
+    {
+      initialData: superjson.parse(initialData.playlist),
+    },
+  )
 
   const { data: entries } = useFetch<
     FetchedDBQueryResult<TPlaylistsEntriesReturn>,
@@ -74,14 +85,14 @@ export default PlaylistPage
 
 export const getServerSideProps: GetServerSideProps<{
   initialData: {
-    playlist: DBQueryResult<typeof dbQueries.getPlaylistById>
+    playlist: string
   }
 }> = async (context) => {
   const session = await getSession({ req: context.req })
 
   const id = context.query.id as string
 
-  const playlist = await dbQueries.getPlaylistById(id)
+  const playlist = await dbQueries.getPlaylistById({ id })
 
   if (
     !playlist ||
@@ -94,7 +105,7 @@ export const getServerSideProps: GetServerSideProps<{
   return {
     props: {
       initialData: {
-        playlist,
+        playlist: superjson.stringify(playlist),
       },
     },
   }
