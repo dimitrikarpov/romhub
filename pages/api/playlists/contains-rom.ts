@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
 import { dbQueries } from "~/lib/queries/dbQueries"
+import superjson from "superjson"
 
 /**
  * Find user playlists that contains specific rom
@@ -24,14 +25,14 @@ export default async function handler(
 
     if (!session) return res.status(404).send("Not Found")
 
-    const playlists = await dbQueries.getUserPlaylistsContainsRom(
-      session.user.id as string,
-      romId as string,
-    )
+    const playlists = await dbQueries.getUserPlaylistsContainsRom({
+      userId: session.user.id as string,
+      romId: romId as string,
+    })
 
     if (!playlists) return res.status(404).send("Not found")
 
-    return res.status(200).json(playlists)
+    return res.status(200).json(superjson.stringify(playlists))
   }
 
   return res.status(405).end(`${req.method} Not Allowed`)

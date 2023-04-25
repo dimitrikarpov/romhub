@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { PlusIcon } from "~/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
-import { usePlaylistWithRomQuery } from "~/lib/queries/react/usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
 import { useCreatePlaylistEntryMutation } from "~/lib/queries/react/useCreatePlaylistEntryMutation"
 import { useCreatePlaylistMutation } from "~/lib/queries/react/useCreatePlaylistMutation"
@@ -12,6 +11,10 @@ import {
   type TGetUserPlaylistsReturn,
 } from "~/lib/queries/db/getUserPlaylists"
 import { useFetch } from "~/lib/fetcher"
+import {
+  type TGetUserPlaylistsContainsRomParams,
+  type TGetUserPlaylistsContainsRomReturn,
+} from "~/lib/queries/db/getUserPlaylistsContainsRom"
 
 type Props = {
   romId: string
@@ -42,10 +45,19 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
   )
 
-  const playlistsWithRomQuery = usePlaylistWithRomQuery({
-    romId,
-    enabled: Boolean(session?.user.id),
-  })
+  const playlistsWithRomQuery = useFetch<
+    FetchedDBQueryResult<TGetUserPlaylistsContainsRomReturn>,
+    TGetUserPlaylistsContainsRomParams
+  >(
+    {
+      url: "/api/playlists/contains-rom",
+      search: { romId: romId, userId: session?.user.id },
+    },
+    {
+      enabled: Boolean(session?.user.id),
+    },
+  )
+
   const createPlaylistEntryMutation = useCreatePlaylistEntryMutation({
     onSuccess: onDialogClose,
   })
