@@ -43,7 +43,6 @@ export const getServerSideProps: GetServerSideProps<{
     }
   }
 
-  // TODO: refactor with dbQueries + orderBy
   const historyPlaylist = await prisma.playlist.findFirst({
     where: {
       AND: [

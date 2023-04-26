@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { dbQueries } from "~/lib/queries/dbQueries"
 import superjson from "superjson"
+import { createPlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
+import { getPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -8,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!playlistId) return res.status(404).send("Not found")
 
-    const found = await dbQueries.getPlaylistsEntries({
+    const found = await getPlaylistsEntries({
       playlistId: playlistId as string,
     })
 
@@ -28,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!playlistId || !romId) return res.status(404).send("Not found")
 
-    const result = await dbQueries.createPlaylistEntry({
+    const result = await createPlaylistEntry({
       playlistId: playlistId as string,
       romId: romId as string,
     })

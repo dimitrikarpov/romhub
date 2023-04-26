@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { dbQueries } from "~/lib/queries/dbQueries"
 import superjson from "superjson"
+import { getRandomRoms } from "~/lib/queries/db/getRandomRoms"
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   const { take } = req.query
 
-  const roms = await dbQueries.getRandomRoms({
+  const roms = await getRandomRoms({
     take: take ? Number(take) : undefined,
   })
 

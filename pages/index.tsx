@@ -5,13 +5,13 @@ import { NextPageWithLayout } from "./_app"
 import { Layout } from "~/components/pages/layout/Layout"
 import { Gallery } from "~/components/pages/gallery/Gallery"
 import { PlatformFilter } from "~/components/pages/gallery/PlatformFilter"
-import { dbQueries } from "~/lib/queries/dbQueries"
 import { Paginator } from "~/components/ui/paginator/Paginator"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { FetchedDBQueryResult } from "~/types/utils"
 import superjson from "superjson"
 import { useFetch } from "~/lib/fetcher"
 import {
+  getRoms,
   type TGetRomsParams,
   type TGetRomsReturn,
 } from "~/lib/queries/db/getRoms"
@@ -85,7 +85,7 @@ export default Home
 export const getServerSideProps: GetServerSideProps<{
   initialData: string
 }> = async () => {
-  const initialData = await dbQueries.getRoms({ take: 15 })
+  const initialData = await getRoms({ take: 15 })
 
   return {
     props: {

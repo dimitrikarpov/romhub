@@ -8,6 +8,7 @@ import { Item } from "~/components/pages/playlist/playlist/Item"
 import { PlaylistSidebar } from "~/components/pages/playlist/sidebar/PlaylistSidebar"
 import { useFetch } from "~/lib/fetcher"
 import {
+  getPlaylistById,
   type TGetPlaylistByIdParams,
   type TGetPlaylistByIdReturn,
 } from "~/lib/queries/db/getPlaylistById"
@@ -15,7 +16,6 @@ import {
   type TPlaylistsEntriesParams,
   type TPlaylistsEntriesReturn,
 } from "~/lib/queries/db/getPlaylistsEntries"
-import { dbQueries } from "~/lib/queries/dbQueries"
 import { UiPlaylistEntry } from "~/types/index"
 import { FetchedDBQueryResult } from "~/types/utils"
 import { NextPageWithLayout } from "../_app"
@@ -92,7 +92,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   const id = context.query.id as string
 
-  const playlist = await dbQueries.getPlaylistById({ id })
+  const playlist = await getPlaylistById({ id })
 
   if (
     !playlist ||

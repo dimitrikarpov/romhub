@@ -14,7 +14,6 @@ import { DialogBox } from "~/components/ui/modal/DialogBox"
 import { Modal } from "~/components/ui/modal/Modal"
 import { useModal } from "~/components/ui/modal/useModal"
 import { downloadRom } from "~/lib/downloadRom"
-import { useAddToWatchLaterMutation } from "~/lib/queries/react/useAddToWatchLaterMutation"
 import { UiPlaylistEntry } from "~/types/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
@@ -25,6 +24,7 @@ import {
   type TDeletePlaylistEntryByRomParams,
   type TDeletePlaylistEntryByRomReturn,
 } from "~/lib/queries/db/deletePlaylistEntryByRom"
+import { useAddToWatchLaterMutation } from "./useAddToWatchLaterMutation"
 
 type Props = {
   entry: UiPlaylistEntry

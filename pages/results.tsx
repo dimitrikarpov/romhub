@@ -2,7 +2,6 @@ import { ReactElement } from "react"
 import { NextPageWithLayout } from "./_app"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { Layout } from "~/components/pages/layout/Layout"
-import { dbQueries } from "~/lib/queries/dbQueries"
 import { Filters } from "~/components/pages/results/Filters"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -17,6 +16,7 @@ import { NotFoundIcon } from "~/components/ui/icons"
 import { FetchedDBQueryResult } from "~/types/utils"
 import { useFetch } from "~/lib/fetcher"
 import {
+  getRoms,
   type TGetRomsParams,
   type TGetRomsReturn,
 } from "~/lib/queries/db/getRoms"
@@ -117,7 +117,7 @@ export const getServerSideProps: GetServerSideProps<{
     }
   }
 
-  const initialData = await dbQueries.getRoms({
+  const initialData = await getRoms({
     where: { name: { contains: search_query } },
     take: 5,
   })

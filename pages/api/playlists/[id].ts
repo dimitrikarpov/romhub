@@ -2,8 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { z } from "zod"
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
-import { dbQueries } from "~/lib/queries/dbQueries"
 import superjson from "superjson"
+import { getPlaylistById } from "~/lib/queries/db/getPlaylistById"
+import { patchPlaylist } from "~/lib/queries/db/patchPlaylist"
+import { deletePlaylist } from "~/lib/queries/db/deletePlaylist"
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +15,7 @@ export default async function handler(
   if (!id) return res.status(404).send("Not found")
 
   if (req.method === "GET") {
-    const playlist = await dbQueries.getPlaylistById({ id })
+    const playlist = await getPlaylistById({ id })
 
     if (!playlist) return res.status(404).send("Not found")
 
@@ -31,7 +33,7 @@ export default async function handler(
     try {
       const { title, description, isPublic } = schema.parse(req.body)
 
-      const playlist = await dbQueries.patchPlaylist({
+      const playlist = await patchPlaylist({
         id,
         title,
         description,
@@ -49,7 +51,7 @@ export default async function handler(
 
     if (!session) return res.status(404).send("Not Found")
 
-    const result = await dbQueries.deletePlaylist(id, session)
+    const result = await deletePlaylist(id, session)
 
     if (!result) return res.status(404).send("Not Found")
 

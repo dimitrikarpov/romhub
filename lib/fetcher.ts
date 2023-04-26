@@ -7,7 +7,7 @@ import {
 } from "react-query"
 import superjson from "superjson"
 
-export const fetcher = async (url: string, options?: RequestInit) => {
+const fetcher = async (url: string, options?: RequestInit) => {
   const result = await fetch(url, options)
 
   try {
@@ -18,6 +18,13 @@ export const fetcher = async (url: string, options?: RequestInit) => {
   } catch (e) {
     console.log("not a JSON", result.body)
   }
+}
+
+const defaultFetchOptions = {
+  staleTime: 5 * 60 * 1000,
+  refetchOnWindowFocus: false,
+  retry: false,
+  refetchOnMount: false,
 }
 
 export const useFetch = <TData, TParams extends {} = {}>(
@@ -32,6 +39,7 @@ export const useFetch = <TData, TParams extends {} = {}>(
     queryKey: createKey(fetch.url, fetch.search),
     queryFn: () =>
       fetcher(combineFetchUrl(fetch.url, fetch.search), fetch.options),
+    ...defaultFetchOptions,
     ...options,
   })
 
@@ -95,74 +103,3 @@ const createKey = (url: string, search?: {}) => {
 type TSearchParams<T extends {}> = {
   [K in keyof T]?: T[K]
 } & { [key: string]: any }
-
-/**
- 
-const useGenericMutation = <T, S>(
- func: (data: S) => Promise<AxiosResponse<S>>,
- url: string,
- params?: object,
- updater?: ((oldData: T, newData: S) => T) | undefined
-) => {
- const queryClient = useQueryClient();
-
- return useMutation<AxiosResponse, AxiosError, S>(func, {
-   onMutate: async (data) => {
-     await queryClient.cancelQueries([url!, params]);
-
-     const previousData = queryClient.getQueryData([url!, params]);
-
-    queryClient.setQueryData<T>([url!, params], (oldData) => {
-    return updater ? (oldData!, data) : data;
-    });
-
-     return previousData;
-   },
-   // Если мутация провалилась, использовать контекст, возвращенный `onMutate` для восстановления предыдущего состояния (отката - rollback)
-   onError: (err, _, context) => {
-     queryClient.setQueryData([url!, params], context);
-   },
-
-   onSettled: () => {
-     queryClient.invalidateQueries([url!, params]);
-   },
- });
-};
-
- */
-
-/*
-export const useGenericMutation = <TData, TParams extends {} = {}>(
-  fetch: {
-    url: string
-    search?: TSearchParams<TParams>
-    options?: RequestInit
-  },
-  options?: {
-    invalidateQueries?: Parameters<QueryClient["invalidateQueries"]>
-    onSuccess?: (data: TData) => void
-  },
-) => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (mutate: {
-      url?: string
-      search?: TSearchParams<TParams>
-      options?: RequestInit
-    }) =>
-      fetcher(
-        combineFetchUrl(mutate.url || fetch.url, mutate.search || fetch.search),
-        mutate.options || fetch.options,
-      ),
-    onSuccess: (data: TData) => {
-      options &&
-        options.invalidateQueries &&
-        queryClient.invalidateQueries(options.invalidateQueries)
-
-      options?.onSuccess?.(data)
-    },
-  })
-}
-
-*/

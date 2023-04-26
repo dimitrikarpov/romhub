@@ -1,4 +1,3 @@
-import { apiQueries } from "~/lib/queries/apiQueries"
 import { UiRom } from "~/types/index"
 import clsx from "clsx"
 import { Retroarch } from "holy-retroarch"
@@ -16,12 +15,16 @@ import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useRetroarch } from "./useRetroarch"
 import { useResizeObserver } from "./useSizeObserver"
-import { useFetch } from "~/lib/fetcher"
+import { useFetch, useGenericMutation } from "~/lib/fetcher"
 import { FetchedDBQueryResult } from "~/types/utils"
 import {
   type TGetUserPlaylistsParams,
   type TGetUserPlaylistsReturn,
 } from "~/lib/queries/db/getUserPlaylists"
+import {
+  type TCreatePlaylistEntryReturn,
+  type TCreatePlaylistEntryParams,
+} from "~/lib/queries/db/createPlaylistEntry"
 
 type Props = {
   coreUrl: string
@@ -53,6 +56,16 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
     )
 
+    const addMutation = useGenericMutation<
+      FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
+      TCreatePlaylistEntryParams
+    >(
+      { url: "/api/playlists/entries" },
+      {
+        invalidateQueries: ["/api/playlists/contains-rom"],
+      },
+    )
+
     useEffect(() => {
       if (status === "inited") {
         retroarch?.current?.copyConfig()
@@ -67,11 +80,16 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
         ({ type }) => type === "history",
       )
 
-      // TODO: replace with mutation
-      await apiQueries.createPlaylistEntry({
-        playlistId: historyPlaylist!.id,
-        romId: rom.id,
+      addMutation.mutate({
+        search: { playlistId: historyPlaylist!.id, romId: rom.id },
+        options: { method: "POST" },
       })
+
+      // TODO: replace with mutation
+      // await apiQueries.createPlaylistEntry({
+      //   playlistId: historyPlaylist!.id,
+      //   romId: rom.id,
+      // })
     }
 
     const onStartClick = () => {
