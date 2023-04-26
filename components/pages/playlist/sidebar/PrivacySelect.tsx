@@ -1,19 +1,36 @@
-import { usePlaylistMutation } from "~/lib/queries/react/usePlaylistMutation"
 import { useRouter } from "next/router"
+import { useGenericMutation } from "~/lib/fetcher"
+import {
+  type TPatchPlaylistParams,
+  type TPatchPlaylistReturn,
+} from "~/lib/queries/db/patchPlaylist"
+import { FetchedDBQueryResult } from "~/types/utils"
 
 type Props = {
   isPublic: boolean
 }
 
 export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
-  const playlistMutation = usePlaylistMutation({})
-
   const router = useRouter()
   const { id } = router.query
 
+  const playlistMutation = useGenericMutation<
+    FetchedDBQueryResult<TPatchPlaylistReturn>,
+    TPatchPlaylistParams
+  >(
+    { url: `/api/playlists/${id}` },
+    { invalidateQueries: [`/api/playlists/${id}`] },
+  )
+
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const isPublic = e.target.value === "public" ? true : false
-    playlistMutation.mutate({ id: id as string, data: { isPublic } })
+    playlistMutation.mutate({
+      options: {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isPublic }),
+      },
+    })
   }
 
   const defaultValue = isPublic ? "public" : "private"

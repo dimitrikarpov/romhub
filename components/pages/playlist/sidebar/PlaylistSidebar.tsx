@@ -10,8 +10,8 @@ import { PrivacySelect } from "./PrivacySelect"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { ShareIconButton } from "./ShareIconButton"
-import { useDeletePlaylistMutation } from "~/lib/queries/react/useDeletePlaylistMutation"
 import { SaveOrDeleteSharedPlaylistButton } from "./SaveOrDeleteSharedPlaylistButton"
+import { useGenericMutation } from "~/lib/fetcher"
 
 // TODO: make a singleton to prevent
 //  [javascript-time-ago] `TimeAgo.addDefaultLocale()` can only be called once. To add other locales, use `TimeAgo.addLocale()`.
@@ -33,7 +33,6 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   lastUpdated,
 }) => {
   const router = useRouter()
-
   const { data: session } = useSession()
 
   const isTitleEditable = canEditPlaylistTitle(session, playlist)
@@ -42,14 +41,21 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   const isShareVisible = canSharePlaylist(playlist)
   const isDeleteOwnPlaylistVisible = canDeleteOwnPlaylist(session, playlist)
 
-  const deleteOwnPlaylistMutation = useDeletePlaylistMutation({
-    onSuccess: () => {
-      router.push("/")
+  const deleteOwnPlaylistMutation2 = useGenericMutation(
+    {
+      url: `/api/playlists/${playlist.id}`,
+      options: { method: "DELETE" },
     },
-  })
+    {
+      invalidateQueries: ["/api/playlists"],
+      onSuccess: () => {
+        router.push("/")
+      },
+    },
+  )
 
   const onDeleteOwnPlaylistClick = () => {
-    deleteOwnPlaylistMutation.mutate({ playlistId: playlist.id })
+    deleteOwnPlaylistMutation2.mutate({})
   }
 
   return (

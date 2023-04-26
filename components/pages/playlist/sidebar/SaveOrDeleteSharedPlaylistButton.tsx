@@ -3,11 +3,9 @@ import {
   PlaylistWithDoneMarkIcon,
   AddToPlaylistIcon,
 } from "~/components/ui/icons"
-import { useAddSharedPlaylistToLibraryMutation } from "~/lib/queries/react/useAddSharedPlaylistToLibraryMutation"
-import { useDeleteSharedPlaylistFromLibraryMutation } from "~/lib/queries/react/useDeleteSharedPlaylistFromLibraryMutation"
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
-import { useFetch } from "~/lib/fetcher"
+import { useFetch, useGenericMutation } from "~/lib/fetcher"
 import { FetchedDBQueryResult } from "~/types/utils"
 import {
   type TGetUserPlaylistsParams,
@@ -28,16 +26,21 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
     TGetUserPlaylistsParams
   >({ url: "/api/playlists" })
 
-  const addMutation = useAddSharedPlaylistToLibraryMutation({
-    onSuccess: () => {
-      console.log("added")
+  const addMutation = useGenericMutation(
+    {
+      url: `/api/playlists/library/${playlist.id}`,
+      options: { method: "POST" },
     },
-  })
-  const deleteMutation = useDeleteSharedPlaylistFromLibraryMutation({
-    onSuccess: () => {
-      console.log("deleted")
+    { invalidateQueries: ["/api/playlists"] },
+  )
+
+  const deleteMutation = useGenericMutation(
+    {
+      url: `/api/playlists/library/${playlist.id}`,
+      options: { method: "DELETE" },
     },
-  })
+    { invalidateQueries: ["/api/playlists"] },
+  )
 
   const isUserAlreadySavedThisPlaylist = playlists?.some(
     ({ id }) => playlist.id === id,
@@ -48,15 +51,11 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
     canRemoveSharedPlaylistFromLibrary() && isUserAlreadySavedThisPlaylist
 
   const addToLibrary = () => {
-    addMutation.mutate({
-      playlistId: playlist.id,
-    })
+    addMutation.mutate({})
   }
 
   const deleteFromLibrary = () => {
-    deleteMutation.mutate({
-      playlistId: playlist.id,
-    })
+    deleteMutation.mutate({})
   }
 
   if (!session || playlist.authorId === session.user.id) return null

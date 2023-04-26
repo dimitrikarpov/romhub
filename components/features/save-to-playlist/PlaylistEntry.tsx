@@ -4,9 +4,17 @@ import {
   GlobeIcon,
   LockIcon,
 } from "~/components/ui/icons"
-import { useCreatePlaylistEntryMutation } from "~/lib/queries/react/useCreatePlaylistEntryMutation"
-import { useDeletePlaylistEntryByRomMutation } from "~/lib/queries/react/useDeletePlaylistEntryByRomMutation"
 import clsx from "clsx"
+import {
+  type TCreatePlaylistEntryReturn,
+  type TCreatePlaylistEntryParams,
+} from "~/lib/queries/db/createPlaylistEntry"
+import { FetchedDBQueryResult } from "~/types/utils"
+import { useGenericMutation } from "~/lib/fetcher"
+import {
+  type TDeletePlaylistEntryByRomParams,
+  type TDeletePlaylistEntryByRomReturn,
+} from "~/lib/queries/db/deletePlaylistEntryByRom"
 
 type Props = {
   title: string
@@ -23,16 +31,41 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   playlistId,
   romId,
 }) => {
-  const addMutation = useCreatePlaylistEntryMutation({})
-  const deleteMutation = useDeletePlaylistEntryByRomMutation({})
+  const addMutation = useGenericMutation<
+    FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
+    TCreatePlaylistEntryParams
+  >(
+    { url: "/api/playlists/entries" },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
+    },
+  )
+
+  const deleteMutation = useGenericMutation<
+    FetchedDBQueryResult<TDeletePlaylistEntryByRomReturn>,
+    TDeletePlaylistEntryByRomParams
+  >(
+    {
+      url: "/api/playlists/entries/delete-by-rom-id",
+    },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
+    },
+  )
 
   const onClick = () => {
     if (isChecked) {
-      deleteMutation.mutate({ playlistId, romId })
+      deleteMutation.mutate({
+        search: { playlistId, romId },
+        options: { method: "DELETE" },
+      })
     }
 
     if (!isChecked) {
-      addMutation.mutate({ playlistId, romId })
+      addMutation.mutate({
+        search: { playlistId, romId },
+        options: { method: "POST" },
+      })
     }
   }
 

@@ -3,18 +3,24 @@ import { useSession } from "next-auth/react"
 import { PlusIcon } from "~/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
-import { useCreatePlaylistEntryMutation } from "~/lib/queries/react/useCreatePlaylistEntryMutation"
-import { useCreatePlaylistMutation } from "~/lib/queries/react/useCreatePlaylistMutation"
 import { FetchedDBQueryResult } from "~/types/utils"
 import {
   type TGetUserPlaylistsParams,
   type TGetUserPlaylistsReturn,
 } from "~/lib/queries/db/getUserPlaylists"
-import { useFetch } from "~/lib/fetcher"
+import { useFetch, useGenericMutation } from "~/lib/fetcher"
 import {
   type TGetUserPlaylistsContainsRomParams,
   type TGetUserPlaylistsContainsRomReturn,
 } from "~/lib/queries/db/getUserPlaylistsContainsRom"
+import {
+  type TCreatePlaylistEntryReturn,
+  type TCreatePlaylistEntryParams,
+} from "~/lib/queries/db/createPlaylistEntry"
+import {
+  type TCreatePlaylistParams,
+  type TCreatePlaylistReturn,
+} from "~/lib/queries/db/createPlaylist"
 
 type Props = {
   romId: string
@@ -58,21 +64,51 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     },
   )
 
-  const createPlaylistEntryMutation = useCreatePlaylistEntryMutation({
-    onSuccess: onDialogClose,
-  })
-  const createPlaylistMutation = useCreatePlaylistMutation({
-    onSuccess: (data) => {
-      createPlaylistEntryMutation.mutate({ playlistId: data.id, romId })
+  const createPlaylistEntryMutation = useGenericMutation<
+    FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
+    TCreatePlaylistEntryParams
+  >(
+    { url: "/api/playlists/entries" },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
+      onSuccess: () => {
+        console.log("success!!")
+        onDialogClose()
+      },
     },
-  })
+  )
+
+  const createPlaylistMutation = useGenericMutation<
+    FetchedDBQueryResult<TCreatePlaylistReturn>,
+    TCreatePlaylistParams
+  >(
+    {
+      url: "/api/playlists",
+    },
+    {
+      invalidateQueries: ["/api/playlists"],
+      onSuccess: (data) => {
+        console.log("playlist created", data)
+        createPlaylistEntryMutation.mutate({
+          search: { playlistId: data?.id, romId },
+          options: { method: "POST" },
+        })
+      },
+    },
+  )
 
   const onFormSubmit = async (data: IFormInput) => {
     createPlaylistMutation.mutate({
-      data: {
-        type: "custom",
-        isPublic: data.privacy === "public",
-        title: data.title,
+      options: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.title,
+          type: "custom",
+          isPublic: data.privacy === "public",
+        }),
       },
     })
   }

@@ -1,10 +1,16 @@
 import prisma from "~/lib/prismadb"
 import { TCreatePlaylistFormData } from "~/types/index"
 
-export const createPlaylist = async (
-  authorId: string,
-  data: TCreatePlaylistFormData,
-) => {
+export type TCreatePlaylistParams = Parameters<typeof createPlaylist>[0]
+export type TCreatePlaylistReturn = ReturnType<typeof createPlaylist>
+
+export const createPlaylist = async ({
+  authorId,
+  data,
+}: {
+  authorId: string
+  data: TCreatePlaylistFormData
+}) => {
   const playlist = await prisma.playlist.create({
     data: {
       type: String(data.type),

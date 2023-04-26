@@ -12,15 +12,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (!session || !playlistId || !romId)
       return res.status(404).send("Not found")
 
-    const result = await dbQueries.deletePlaylistEntryByRom(
-      playlistId as string,
-      romId as string,
+    const result = await dbQueries.deletePlaylistEntryByRom({
+      playlistId: playlistId as string,
+      romId: romId as string,
       session,
-    )
+    })
 
     if (!result) return res.status(404).send("Not found")
 
-    return res.status(200).send("Entry deleted")
+    return res.status(200).json({ result: "Entry deleted" })
   }
 
   return res.status(405).end(`${req.method} Not Allowed`)

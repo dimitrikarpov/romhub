@@ -13,11 +13,14 @@ export default async function handler(
   if (!session) return res.status(404).send("Not Found")
 
   if (req.method === "POST") {
-    const result = await dbQueries.saveSharedPlaylistToLibrary(session, id)
+    const result = await dbQueries.saveSharedPlaylistToLibrary({
+      session,
+      playlistId: id,
+    })
 
     if (!result) return res.status(404).send("Not found")
 
-    return res.status(200).send("playlist added")
+    return res.status(200).json({ result: "playlist added" })
   }
 
   if (req.method === "DELETE") {
@@ -25,7 +28,7 @@ export default async function handler(
 
     if (!result) return res.status(404).send("Not found")
 
-    return res.status(200).send("playlist removed")
+    return res.status(200).json({ result: "playlist removed" })
   }
 
   return res.status(405).end(`${req.method} Not Allowed`)

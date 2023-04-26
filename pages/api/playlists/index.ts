@@ -27,12 +27,12 @@ export default async function handler(
 
     const body = req.body as TCreatePlaylistFormData
 
-    const playlist = await dbQueries.createPlaylist(
-      session.user.id as string,
-      body,
-    )
+    const playlist = await dbQueries.createPlaylist({
+      authorId: session.user.id as string,
+      data: body,
+    })
 
-    return res.status(200).json(playlist)
+    return res.status(200).json(superjson.stringify(playlist))
   }
 
   return res.status(405).end(`${req.method} Not Allowed`)

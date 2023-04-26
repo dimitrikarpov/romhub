@@ -2,11 +2,22 @@ import { Session } from "next-auth"
 import { Playlist } from "@prisma/client"
 import prisma from "~/lib/prismadb"
 
-export const deletePlaylistEntryByRom = async (
-  playlistId: string,
-  romId: string,
-  session: Session,
-) => {
+export type TDeletePlaylistEntryByRomParams = Parameters<
+  typeof deletePlaylistEntryByRom
+>[0]
+export type TDeletePlaylistEntryByRomReturn = ReturnType<
+  typeof deletePlaylistEntryByRom
+>
+
+export const deletePlaylistEntryByRom = async ({
+  playlistId,
+  romId,
+  session,
+}: {
+  playlistId: string
+  romId: string
+  session: Session
+}) => {
   const playlist = await prisma.playlist.findUnique({
     where: { id: playlistId },
   })

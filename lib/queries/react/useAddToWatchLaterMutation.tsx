@@ -1,16 +1,17 @@
-import { useMutation, useQueryClient } from "react-query"
 import { useSession } from "next-auth/react"
-import { apiQueries } from "../apiQueries"
-import { useFetch } from "~/lib/fetcher"
+import { useFetch, useGenericMutation } from "~/lib/fetcher"
 import { FetchedDBQueryResult } from "~/types/utils"
 import {
   type TGetUserPlaylistsParams,
   type TGetUserPlaylistsReturn,
 } from "~/lib/queries/db/getUserPlaylists"
+import {
+  type TCreatePlaylistEntryReturn,
+  type TCreatePlaylistEntryParams,
+} from "~/lib/queries/db/createPlaylistEntry"
 
 export const useAddToWatchLaterMutation = (romId: string) => {
   const { data: session } = useSession()
-  const queryClient = useQueryClient()
 
   const playlistsQuery = useFetch<
     FetchedDBQueryResult<TGetUserPlaylistsReturn>,
@@ -24,12 +25,22 @@ export const useAddToWatchLaterMutation = (romId: string) => {
     playlistsQuery?.data?.find(({ type }) => type === "watch_later")?.id ||
     "broken_id"
 
-  const addToWatchLaterMutation = useMutation({
-    mutationFn: () => apiQueries.createPlaylistEntry({ playlistId, romId }),
-    onSuccess: () => {
-      queryClient.invalidateQueries("playlists-contains-rom")
+  // const addToWatchLaterMutation = useMutation({
+  //   mutationFn: () => apiQueries.createPlaylistEntry({ playlistId, romId }),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("playlists-contains-rom")
+  //   },
+  // })
+
+  const addToWatchLaterMutation = useGenericMutation<
+    FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
+    TCreatePlaylistEntryParams
+  >(
+    { url: "/api/playlists/entries", options: { method: "POST" } },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
     },
-  })
+  )
 
   return addToWatchLaterMutation
 }
