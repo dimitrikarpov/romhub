@@ -1,7 +1,9 @@
 import prisma from "~/lib/prismadb"
 
-export type TPatchPlaylistParams = Parameters<typeof patchPlaylist>[0]
-export type TPatchPlaylistReturn = ReturnType<typeof patchPlaylist>
+export type PatchPlaylist = {
+  params: Parameters<typeof patchPlaylist>[0]
+  data: Awaited<ReturnType<typeof patchPlaylist>>
+}
 
 export const patchPlaylist = async ({
   id,

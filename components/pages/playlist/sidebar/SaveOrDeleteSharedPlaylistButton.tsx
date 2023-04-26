@@ -6,11 +6,7 @@ import {
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
 import { useFetch, useGenericMutation } from "~/lib/fetcher"
-import { FetchedDBQueryResult } from "~/types/utils"
-import {
-  type TGetUserPlaylistsParams,
-  type TGetUserPlaylistsReturn,
-} from "~/lib/queries/db/getUserPlaylists"
+import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
 
 type Props = {
   playlist: Playlist & { author: User }
@@ -21,10 +17,9 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
 > = ({ playlist }) => {
   const { data: session } = useSession()
 
-  const { data: playlists } = useFetch<
-    FetchedDBQueryResult<TGetUserPlaylistsReturn>,
-    TGetUserPlaylistsParams
-  >({ url: "/api/playlists" })
+  const { data: playlists } = useFetch<GetUserPlaylists>({
+    url: "/api/playlists",
+  })
 
   const addMutation = useGenericMutation(
     {

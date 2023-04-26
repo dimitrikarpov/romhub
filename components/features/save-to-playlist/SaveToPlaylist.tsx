@@ -3,24 +3,11 @@ import { useSession } from "next-auth/react"
 import { PlusIcon } from "~/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
-import { FetchedDBQueryResult } from "~/types/utils"
-import {
-  type TGetUserPlaylistsParams,
-  type TGetUserPlaylistsReturn,
-} from "~/lib/queries/db/getUserPlaylists"
+import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
 import { useFetch, useGenericMutation } from "~/lib/fetcher"
-import {
-  type TGetUserPlaylistsContainsRomParams,
-  type TGetUserPlaylistsContainsRomReturn,
-} from "~/lib/queries/db/getUserPlaylistsContainsRom"
-import {
-  type TCreatePlaylistEntryReturn,
-  type TCreatePlaylistEntryParams,
-} from "~/lib/queries/db/createPlaylistEntry"
-import {
-  type TCreatePlaylistParams,
-  type TCreatePlaylistReturn,
-} from "~/lib/queries/db/createPlaylist"
+import { type GetUserPlaylistsContainsRom } from "~/lib/queries/db/getUserPlaylistsContainsRom"
+import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
+import { type CreatePlaylist } from "~/lib/queries/db/createPlaylist"
 
 type Props = {
   romId: string
@@ -43,18 +30,12 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     setIsFormOpened(true)
   }
 
-  const playlistsQuery = useFetch<
-    FetchedDBQueryResult<TGetUserPlaylistsReturn>,
-    TGetUserPlaylistsParams
-  >(
+  const playlistsQuery = useFetch<GetUserPlaylists>(
     { url: "/api/playlists" },
     { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
   )
 
-  const playlistsWithRomQuery = useFetch<
-    FetchedDBQueryResult<TGetUserPlaylistsContainsRomReturn>,
-    TGetUserPlaylistsContainsRomParams
-  >(
+  const playlistsWithRomQuery = useFetch<GetUserPlaylistsContainsRom>(
     {
       url: "/api/playlists/contains-rom",
       search: { romId: romId, userId: session?.user.id },
@@ -64,24 +45,15 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     },
   )
 
-  const createPlaylistEntryMutation = useGenericMutation<
-    FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
-    TCreatePlaylistEntryParams
-  >(
+  const createPlaylistEntryMutation = useGenericMutation<CreatePlaylistEntry>(
     { url: "/api/playlists/entries" },
     {
       invalidateQueries: ["/api/playlists/contains-rom"],
-      onSuccess: () => {
-        console.log("success!!")
-        onDialogClose()
-      },
+      onSuccess: onDialogClose,
     },
   )
 
-  const createPlaylistMutation = useGenericMutation<
-    FetchedDBQueryResult<TCreatePlaylistReturn>,
-    TCreatePlaylistParams
-  >(
+  const createPlaylistMutation = useGenericMutation<CreatePlaylist>(
     {
       url: "/api/playlists",
     },

@@ -18,12 +18,8 @@ import { UiPlaylistEntry } from "~/types/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useQueryClient } from "react-query"
-import { FetchedDBQueryResult } from "~/types/utils"
 import { useGenericMutation } from "~/lib/fetcher"
-import {
-  type TDeletePlaylistEntryByRomParams,
-  type TDeletePlaylistEntryByRomReturn,
-} from "~/lib/queries/db/deletePlaylistEntryByRom"
+import { type DeletePlaylistEntryByRom } from "~/lib/queries/db/deletePlaylistEntryByRom"
 import { useAddToWatchLaterMutation } from "./useAddToWatchLaterMutation"
 
 type Props = {
@@ -50,10 +46,7 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
 
   const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
 
-  const deleteEntryMutation = useGenericMutation<
-    FetchedDBQueryResult<TDeletePlaylistEntryByRomReturn>,
-    TDeletePlaylistEntryByRomParams
-  >(
+  const deleteEntryMutation = useGenericMutation<DeletePlaylistEntryByRom>(
     {
       url: "/api/playlists/entries/delete-by-rom-id",
       options: { method: "DELETE" },

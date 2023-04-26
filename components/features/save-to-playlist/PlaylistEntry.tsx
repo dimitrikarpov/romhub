@@ -5,16 +5,9 @@ import {
   LockIcon,
 } from "~/components/ui/icons"
 import clsx from "clsx"
-import {
-  type TCreatePlaylistEntryReturn,
-  type TCreatePlaylistEntryParams,
-} from "~/lib/queries/db/createPlaylistEntry"
-import { FetchedDBQueryResult } from "~/types/utils"
+import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
 import { useGenericMutation } from "~/lib/fetcher"
-import {
-  type TDeletePlaylistEntryByRomParams,
-  type TDeletePlaylistEntryByRomReturn,
-} from "~/lib/queries/db/deletePlaylistEntryByRom"
+import { type DeletePlaylistEntryByRom } from "~/lib/queries/db/deletePlaylistEntryByRom"
 
 type Props = {
   title: string
@@ -31,20 +24,14 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   playlistId,
   romId,
 }) => {
-  const addMutation = useGenericMutation<
-    FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
-    TCreatePlaylistEntryParams
-  >(
+  const addMutation = useGenericMutation<CreatePlaylistEntry>(
     { url: "/api/playlists/entries" },
     {
       invalidateQueries: ["/api/playlists/contains-rom"],
     },
   )
 
-  const deleteMutation = useGenericMutation<
-    FetchedDBQueryResult<TDeletePlaylistEntryByRomReturn>,
-    TDeletePlaylistEntryByRomParams
-  >(
+  const deleteMutation = useGenericMutation<DeletePlaylistEntryByRom>(
     {
       url: "/api/playlists/entries/delete-by-rom-id",
     },

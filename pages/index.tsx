@@ -7,14 +7,9 @@ import { Gallery } from "~/components/pages/gallery/Gallery"
 import { PlatformFilter } from "~/components/pages/gallery/PlatformFilter"
 import { Paginator } from "~/components/ui/paginator/Paginator"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { FetchedDBQueryResult } from "~/types/utils"
 import superjson from "superjson"
 import { useFetch } from "~/lib/fetcher"
-import {
-  getRoms,
-  type TGetRomsParams,
-  type TGetRomsReturn,
-} from "~/lib/queries/db/getRoms"
+import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
 
 const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -22,10 +17,7 @@ const Home: NextPageWithLayout<
   const [platform, setPlatform] = useState<TPlatformSlug | undefined>()
   const [skip, setSkip] = useState(0)
 
-  const romsQuery = useFetch<
-    FetchedDBQueryResult<TGetRomsReturn>,
-    TGetRomsParams
-  >(
+  const romsQuery = useFetch<GetRoms>(
     {
       url: "/api/roms",
       search: {

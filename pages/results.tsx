@@ -13,13 +13,8 @@ import {
 import { Paginator } from "~/components/ui/paginator/Paginator"
 import { Item } from "~/components/pages/results/Item"
 import { NotFoundIcon } from "~/components/ui/icons"
-import { FetchedDBQueryResult } from "~/types/utils"
 import { useFetch } from "~/lib/fetcher"
-import {
-  getRoms,
-  type TGetRomsParams,
-  type TGetRomsReturn,
-} from "~/lib/queries/db/getRoms"
+import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
 import superjson from "superjson"
 
 const Results: NextPageWithLayout<
@@ -30,10 +25,7 @@ const Results: NextPageWithLayout<
   const platform = useSelector(selectPlatform)
   const search = useSelector(selectSearch)
 
-  const romsQuery = useFetch<
-    FetchedDBQueryResult<TGetRomsReturn>,
-    TGetRomsParams
-  >(
+  const romsQuery = useFetch<GetRoms>(
     {
       url: "/api/roms",
       search: {

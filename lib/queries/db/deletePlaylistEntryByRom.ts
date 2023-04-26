@@ -2,12 +2,10 @@ import { Session } from "next-auth"
 import { Playlist } from "@prisma/client"
 import prisma from "~/lib/prismadb"
 
-export type TDeletePlaylistEntryByRomParams = Parameters<
-  typeof deletePlaylistEntryByRom
->[0]
-export type TDeletePlaylistEntryByRomReturn = ReturnType<
-  typeof deletePlaylistEntryByRom
->
+export type DeletePlaylistEntryByRom = {
+  params: Parameters<typeof deletePlaylistEntryByRom>[0]
+  data: Awaited<ReturnType<typeof deletePlaylistEntryByRom>>
+}
 
 export const deletePlaylistEntryByRom = async ({
   playlistId,

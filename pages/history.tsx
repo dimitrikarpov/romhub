@@ -6,19 +6,12 @@ import { Layout } from "~/components/pages/layout/Layout"
 import { useFetch } from "~/lib/fetcher"
 import prisma from "~/lib/prismadb"
 import { NextPageWithLayout } from "./_app"
-import {
-  type TPlaylistsEntriesParams,
-  type TPlaylistsEntriesReturn,
-} from "~/lib/queries/db/getPlaylistsEntries"
-import { FetchedDBQueryResult } from "~/types/utils"
+import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 
 const History: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ id }) => {
-  const { data } = useFetch<
-    FetchedDBQueryResult<TPlaylistsEntriesReturn>,
-    TPlaylistsEntriesParams
-  >({
+  const { data } = useFetch<GetPlaylistsEntries>({
     url: "/api/playlists/entries",
     search: { playlistId: id },
   })

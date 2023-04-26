@@ -4,11 +4,7 @@ import { TitleView } from "./TitleView"
 import { IFormInput, TitleForm } from "./TitleForm"
 import { useRouter } from "next/router"
 import { useGenericMutation } from "~/lib/fetcher"
-import {
-  type TPatchPlaylistParams,
-  type TPatchPlaylistReturn,
-} from "~/lib/queries/db/patchPlaylist"
-import { FetchedDBQueryResult } from "~/types/utils"
+import { type PatchPlaylist } from "~/lib/queries/db/patchPlaylist"
 
 type Props = {
   text: string
@@ -20,10 +16,7 @@ export const Title: React.FunctionComponent<Props> = ({ text, editable }) => {
   const { id } = router.query
   const [inEditMode, setInEditMode] = useState(false)
 
-  const playlistMutation = useGenericMutation<
-    FetchedDBQueryResult<TPatchPlaylistReturn>,
-    TPatchPlaylistParams
-  >(
+  const playlistMutation = useGenericMutation<PatchPlaylist>(
     { url: `/api/playlists/${id}` },
     {
       invalidateQueries: [`/api/playlists/${id}`],

@@ -27,34 +27,49 @@ const defaultFetchOptions = {
   refetchOnMount: false,
 }
 
-export const useFetch = <TData, TParams extends {} = {}>(
+// export const useFetch = <TData, TParams extends {} = {}>(
+//   fetch: {
+//     url: string
+//     search?: TSearchParams<TParams>
+//     options?: RequestInit
+//   },
+//   options?: UseQueryOptions<TData>,
+// ) => {
+//   return useQuery<TData>({
+//     queryKey: createKey(fetch.url, fetch.search),
+//     queryFn: () =>
+//       fetcher(combineFetchUrl(fetch.url, fetch.search), fetch.options),
+//     ...defaultFetchOptions,
+//     ...options,
+//   })
+// }
+
+export const useFetch = <TFetcher extends { params: {}; data: any }>(
   fetch: {
     url: string
-    search?: TSearchParams<TParams>
+    search?: TSearchParams<TFetcher["params"]>
     options?: RequestInit
   },
-  options?: UseQueryOptions<TData>,
+  options?: UseQueryOptions<TFetcher["data"]>,
 ) => {
-  const context = useQuery<TData>({
+  return useQuery<TFetcher["data"]>({
     queryKey: createKey(fetch.url, fetch.search),
     queryFn: () =>
       fetcher(combineFetchUrl(fetch.url, fetch.search), fetch.options),
     ...defaultFetchOptions,
     ...options,
   })
-
-  return context
 }
 
-export const useGenericMutation = <TData, TParams extends {} = {}>(
+export const useGenericMutation = <TFetcher extends { params: {}; data: any }>(
   fetch: {
     url: string
-    search?: TSearchParams<TParams>
+    search?: TSearchParams<TFetcher["params"]>
     options?: RequestInit
   },
   options?: {
     invalidateQueries?: Parameters<QueryClient["invalidateQueries"]>
-    onSuccess?: (data: TData) => void
+    onSuccess?: (data: TFetcher["data"]) => void
   },
 ) => {
   const queryClient = useQueryClient()
@@ -62,7 +77,7 @@ export const useGenericMutation = <TData, TParams extends {} = {}>(
   return useMutation({
     mutationFn: (mutate: {
       url?: string
-      search?: TSearchParams<TParams>
+      search?: TSearchParams<TFetcher["params"]>
       options?: RequestInit
     }) =>
       fetcher(
@@ -72,7 +87,7 @@ export const useGenericMutation = <TData, TParams extends {} = {}>(
         }),
         { ...fetch.options, ...mutate.options },
       ),
-    onSuccess: (data: TData) => {
+    onSuccess: (data: TFetcher["data"]) => {
       options &&
         options.invalidateQueries &&
         queryClient.invalidateQueries(options.invalidateQueries)
@@ -83,6 +98,44 @@ export const useGenericMutation = <TData, TParams extends {} = {}>(
     },
   })
 }
+
+// export const useGenericMutation = <TData, TParams extends {} = {}>(
+//   fetch: {
+//     url: string
+//     search?: TSearchParams<TParams>
+//     options?: RequestInit
+//   },
+//   options?: {
+//     invalidateQueries?: Parameters<QueryClient["invalidateQueries"]>
+//     onSuccess?: (data: TData) => void
+//   },
+// ) => {
+//   const queryClient = useQueryClient()
+
+//   return useMutation({
+//     mutationFn: (mutate: {
+//       url?: string
+//       search?: TSearchParams<TParams>
+//       options?: RequestInit
+//     }) =>
+//       fetcher(
+//         combineFetchUrl(mutate.url || fetch.url, {
+//           ...fetch.search,
+//           ...mutate.search,
+//         }),
+//         { ...fetch.options, ...mutate.options },
+//       ),
+//     onSuccess: (data: TData) => {
+//       options &&
+//         options.invalidateQueries &&
+//         queryClient.invalidateQueries(options.invalidateQueries)
+
+//       // queryClient.invalidateQueries({ predicate: (query) => true })
+
+//       options?.onSuccess?.(data)
+//     },
+//   })
+// }
 
 const combineFetchUrl = (url: string, search?: { [key: string]: any }) => {
   if (!search) return url

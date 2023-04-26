@@ -3,19 +3,12 @@ import Head from "next/head"
 import { Layout } from "~/components/pages/layout/Layout"
 import { RandomGrid } from "~/components/pages/random/RandomGrid"
 import { useQueryClient } from "react-query"
-import {
-  type TGetRandomRomsParams,
-  type TGetRandomRomsReturn,
-} from "~/lib/queries/db/getRandomRoms"
+import { type GetRandomRoms } from "~/lib/queries/db/getRandomRoms"
 import { useFetch } from "~/lib/fetcher"
-import { FetchedDBQueryResult } from "~/types/utils"
 const Random = () => {
   const queryClient = useQueryClient()
 
-  const { data: roms } = useFetch<
-    FetchedDBQueryResult<TGetRandomRomsReturn>,
-    TGetRandomRomsParams
-  >({
+  const { data: roms } = useFetch<GetRandomRoms>({
     url: "/api/roms/random",
   })
 

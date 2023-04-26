@@ -2,12 +2,10 @@ import { Playlist } from "@prisma/client"
 import { Session } from "next-auth"
 import prisma from "~/lib/prismadb"
 
-export type TSaveSharedPlaylistToLibraryParams = Parameters<
-  typeof saveSharedPlaylistToLibrary
->[0]
-export type TSaveSharedPlaylistToLibraryReturn = ReturnType<
-  typeof saveSharedPlaylistToLibrary
->
+export type SaveSharedPlaylistToLibrary = {
+  params: Parameters<typeof saveSharedPlaylistToLibrary>[0]
+  data: Awaited<ReturnType<typeof saveSharedPlaylistToLibrary>>
+}
 
 export const saveSharedPlaylistToLibrary = async ({
   session,

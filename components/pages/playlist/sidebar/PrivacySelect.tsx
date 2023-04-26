@@ -1,10 +1,6 @@
 import { useRouter } from "next/router"
 import { useGenericMutation } from "~/lib/fetcher"
-import {
-  type TPatchPlaylistParams,
-  type TPatchPlaylistReturn,
-} from "~/lib/queries/db/patchPlaylist"
-import { FetchedDBQueryResult } from "~/types/utils"
+import { type PatchPlaylist } from "~/lib/queries/db/patchPlaylist"
 
 type Props = {
   isPublic: boolean
@@ -14,10 +10,7 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
   const router = useRouter()
   const { id } = router.query
 
-  const playlistMutation = useGenericMutation<
-    FetchedDBQueryResult<TPatchPlaylistReturn>,
-    TPatchPlaylistParams
-  >(
+  const playlistMutation = useGenericMutation<PatchPlaylist>(
     { url: `/api/playlists/${id}` },
     { invalidateQueries: [`/api/playlists/${id}`] },
   )

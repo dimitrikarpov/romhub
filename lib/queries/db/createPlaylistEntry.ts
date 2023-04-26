@@ -1,9 +1,9 @@
 import prisma from "~/lib/prismadb"
 
-export type TCreatePlaylistEntryParams = Parameters<
-  typeof createPlaylistEntry
->[0]
-export type TCreatePlaylistEntryReturn = ReturnType<typeof createPlaylistEntry>
+export type CreatePlaylistEntry = {
+  params: Parameters<typeof createPlaylistEntry>[0]
+  data: Awaited<ReturnType<typeof createPlaylistEntry>>
+}
 
 export const createPlaylistEntry = async ({
   playlistId,

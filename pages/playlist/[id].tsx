@@ -9,15 +9,10 @@ import { PlaylistSidebar } from "~/components/pages/playlist/sidebar/PlaylistSid
 import { useFetch } from "~/lib/fetcher"
 import {
   getPlaylistById,
-  type TGetPlaylistByIdParams,
-  type TGetPlaylistByIdReturn,
+  type GetPlaylistById,
 } from "~/lib/queries/db/getPlaylistById"
-import {
-  type TPlaylistsEntriesParams,
-  type TPlaylistsEntriesReturn,
-} from "~/lib/queries/db/getPlaylistsEntries"
+import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 import { UiPlaylistEntry } from "~/types/index"
-import { FetchedDBQueryResult } from "~/types/utils"
 import { NextPageWithLayout } from "../_app"
 
 const PlaylistPage: NextPageWithLayout<
@@ -26,10 +21,7 @@ const PlaylistPage: NextPageWithLayout<
   const router = useRouter()
   const { id } = router.query
 
-  const { data: playlist } = useFetch<
-    FetchedDBQueryResult<TGetPlaylistByIdReturn>,
-    TGetPlaylistByIdParams
-  >(
+  const { data: playlist } = useFetch<GetPlaylistById>(
     {
       url: `/api/playlists/${id}`,
     },
@@ -38,10 +30,7 @@ const PlaylistPage: NextPageWithLayout<
     },
   )
 
-  const { data: entries } = useFetch<
-    FetchedDBQueryResult<TPlaylistsEntriesReturn>,
-    TPlaylistsEntriesParams
-  >({
+  const { data: entries } = useFetch<GetPlaylistsEntries>({
     url: "/api/playlists/entries",
     search: { playlistId: id as string },
   })

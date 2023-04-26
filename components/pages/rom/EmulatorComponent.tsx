@@ -16,15 +16,8 @@ import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useRetroarch } from "./useRetroarch"
 import { useResizeObserver } from "./useSizeObserver"
 import { useFetch, useGenericMutation } from "~/lib/fetcher"
-import { FetchedDBQueryResult } from "~/types/utils"
-import {
-  type TGetUserPlaylistsParams,
-  type TGetUserPlaylistsReturn,
-} from "~/lib/queries/db/getUserPlaylists"
-import {
-  type TCreatePlaylistEntryReturn,
-  type TCreatePlaylistEntryParams,
-} from "~/lib/queries/db/createPlaylistEntry"
+import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
+import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
 
 type Props = {
   coreUrl: string
@@ -48,18 +41,12 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
     const containerRef = useResizeObserver(onContainerResize)
 
-    const playlistQuery = useFetch<
-      FetchedDBQueryResult<TGetUserPlaylistsReturn>,
-      TGetUserPlaylistsParams
-    >(
+    const playlistQuery = useFetch<GetUserPlaylists>(
       { url: "/api/playlists" },
       { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
     )
 
-    const addMutation = useGenericMutation<
-      FetchedDBQueryResult<TCreatePlaylistEntryReturn>,
-      TCreatePlaylistEntryParams
-    >(
+    const addMutation = useGenericMutation<CreatePlaylistEntry>(
       { url: "/api/playlists/entries" },
       {
         invalidateQueries: ["/api/playlists/contains-rom"],

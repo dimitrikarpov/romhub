@@ -1,11 +1,9 @@
 import prisma from "~/lib/prismadb"
 
-export type TGetUserPlaylistsContainsRomParams = Parameters<
-  typeof getUserPlaylistsContainsRom
->[0]
-export type TGetUserPlaylistsContainsRomReturn = ReturnType<
-  typeof getUserPlaylistsContainsRom
->
+export type GetUserPlaylistsContainsRom = {
+  params: Parameters<typeof getUserPlaylistsContainsRom>[0]
+  data: Awaited<ReturnType<typeof getUserPlaylistsContainsRom>>
+}
 
 export const getUserPlaylistsContainsRom = async ({
   userId,
