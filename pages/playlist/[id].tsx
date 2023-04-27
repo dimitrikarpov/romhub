@@ -14,25 +14,24 @@ import {
 import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 import { UiPlaylistEntry } from "~/types/index"
 import { NextPageWithLayout } from "../_app"
+import { useState } from "react"
+import { Paginator } from "~/components/ui/paginator/Paginator"
 
 const PlaylistPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
   const router = useRouter()
   const { id } = router.query
+  const [skip, setSkip] = useState(0)
 
   const { data: playlist } = useFetch<GetPlaylistById>(
-    {
-      url: `/api/playlists/${id}`,
-    },
-    {
-      initialData: superjson.parse(initialData.playlist),
-    },
+    { url: `/api/playlists/${id}` },
+    { initialData: superjson.parse(initialData.playlist) },
   )
 
   const { data: entries } = useFetch<GetPlaylistsEntries>({
     url: "/api/playlists/entries",
-    search: { playlistId: id as string },
+    search: { playlistId: id as string, skip, take: 10 },
   })
 
   const thumbnail =
@@ -60,6 +59,14 @@ const PlaylistPage: NextPageWithLayout<
           {entries?.data?.map((entry) => (
             <Item entry={entry} key={entry.romId} />
           ))}
+          <div className="px-0 py-12">
+            <Paginator
+              skip={skip}
+              setSkip={setSkip}
+              total={entries?.total}
+              pageSize={10}
+            />
+          </div>
         </div>
       </div>
     </>
