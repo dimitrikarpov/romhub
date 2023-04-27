@@ -17,11 +17,16 @@ export const Description: React.FunctionComponent<Props> = ({
 }) => {
   const router = useRouter()
   const { id } = router.query
-
   const [inEditMode, setInEditMode] = useState(false)
 
   const playlistMutation = useGenericMutation<PatchPlaylist>(
-    { url: `/api/playlists/${id}` },
+    {
+      url: `/api/playlists/${id}`,
+      options: {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+      },
+    },
     {
       invalidateQueries: [`/api/playlists/${id}`],
       onSuccess: () => {
@@ -32,11 +37,7 @@ export const Description: React.FunctionComponent<Props> = ({
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     playlistMutation.mutate({
-      options: {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      },
+      options: { body: JSON.stringify(data) },
     })
   }
 

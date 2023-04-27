@@ -41,7 +41,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   const isShareVisible = canSharePlaylist(playlist)
   const isDeleteOwnPlaylistVisible = canDeleteOwnPlaylist(session, playlist)
 
-  const deleteOwnPlaylistMutation2 = useGenericMutation(
+  const deleteOwnPlaylistMutation = useGenericMutation(
     {
       url: `/api/playlists/${playlist.id}`,
       options: { method: "DELETE" },
@@ -55,7 +55,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   )
 
   const onDeleteOwnPlaylistClick = () => {
-    deleteOwnPlaylistMutation2.mutate({})
+    deleteOwnPlaylistMutation.mutate({})
   }
 
   return (

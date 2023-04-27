@@ -25,7 +25,7 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   romId,
 }) => {
   const addMutation = useGenericMutation<CreatePlaylistEntry>(
-    { url: "/api/playlists/entries" },
+    { url: "/api/playlists/entries", options: { method: "POST" } },
     {
       invalidateQueries: ["/api/playlists/contains-rom"],
     },
@@ -34,6 +34,7 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   const deleteMutation = useGenericMutation<DeletePlaylistEntryByRom>(
     {
       url: "/api/playlists/entries/delete-by-rom-id",
+      options: { method: "DELETE" },
     },
     {
       invalidateQueries: ["/api/playlists/contains-rom"],
@@ -42,17 +43,11 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
 
   const onClick = () => {
     if (isChecked) {
-      deleteMutation.mutate({
-        search: { playlistId, romId },
-        options: { method: "DELETE" },
-      })
+      deleteMutation.mutate({ search: { playlistId, romId } })
     }
 
     if (!isChecked) {
-      addMutation.mutate({
-        search: { playlistId, romId },
-        options: { method: "POST" },
-      })
+      addMutation.mutate({ search: { playlistId, romId } })
     }
   }
 

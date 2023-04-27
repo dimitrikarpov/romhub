@@ -46,7 +46,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
   )
 
   const createPlaylistEntryMutation = useGenericMutation<CreatePlaylistEntry>(
-    { url: "/api/playlists/entries" },
+    { url: "/api/playlists/entries", options: { method: "POST" } },
     {
       invalidateQueries: ["/api/playlists/contains-rom"],
       onSuccess: onDialogClose,
@@ -56,14 +56,18 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
   const createPlaylistMutation = useGenericMutation<CreatePlaylist>(
     {
       url: "/api/playlists",
+      options: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
     },
     {
       invalidateQueries: ["/api/playlists"],
       onSuccess: (data) => {
-        console.log("playlist created", data)
         createPlaylistEntryMutation.mutate({
           search: { playlistId: data?.id, romId },
-          options: { method: "POST" },
         })
       },
     },
@@ -72,10 +76,6 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
   const onFormSubmit = async (data: IFormInput) => {
     createPlaylistMutation.mutate({
       options: {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           title: data.title,
           type: "custom",

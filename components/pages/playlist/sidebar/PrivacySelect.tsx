@@ -11,7 +11,13 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
   const { id } = router.query
 
   const playlistMutation = useGenericMutation<PatchPlaylist>(
-    { url: `/api/playlists/${id}` },
+    {
+      url: `/api/playlists/${id}`,
+      options: {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+      },
+    },
     { invalidateQueries: [`/api/playlists/${id}`] },
   )
 
@@ -19,8 +25,6 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
     const isPublic = e.target.value === "public" ? true : false
     playlistMutation.mutate({
       options: {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isPublic }),
       },
     })

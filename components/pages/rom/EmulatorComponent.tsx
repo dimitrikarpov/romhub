@@ -47,7 +47,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     )
 
     const addMutation = useGenericMutation<CreatePlaylistEntry>(
-      { url: "/api/playlists/entries" },
+      { url: "/api/playlists/entries", options: { method: "POST" } },
       {
         invalidateQueries: ["/api/playlists/contains-rom"],
       },
@@ -69,7 +69,6 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
       addMutation.mutate({
         search: { playlistId: historyPlaylist!.id, romId: rom.id },
-        options: { method: "POST" },
       })
 
       // TODO: replace with mutation

@@ -27,23 +27,6 @@ const defaultFetchOptions = {
   refetchOnMount: false,
 }
 
-// export const useFetch = <TData, TParams extends {} = {}>(
-//   fetch: {
-//     url: string
-//     search?: TSearchParams<TParams>
-//     options?: RequestInit
-//   },
-//   options?: UseQueryOptions<TData>,
-// ) => {
-//   return useQuery<TData>({
-//     queryKey: createKey(fetch.url, fetch.search),
-//     queryFn: () =>
-//       fetcher(combineFetchUrl(fetch.url, fetch.search), fetch.options),
-//     ...defaultFetchOptions,
-//     ...options,
-//   })
-// }
-
 export const useFetch = <TFetcher extends { params: {}; data: any }>(
   fetch: {
     url: string
@@ -92,50 +75,10 @@ export const useGenericMutation = <TFetcher extends { params: {}; data: any }>(
         options.invalidateQueries &&
         queryClient.invalidateQueries(options.invalidateQueries)
 
-      // queryClient.invalidateQueries({ predicate: (query) => true })
-
       options?.onSuccess?.(data)
     },
   })
 }
-
-// export const useGenericMutation = <TData, TParams extends {} = {}>(
-//   fetch: {
-//     url: string
-//     search?: TSearchParams<TParams>
-//     options?: RequestInit
-//   },
-//   options?: {
-//     invalidateQueries?: Parameters<QueryClient["invalidateQueries"]>
-//     onSuccess?: (data: TData) => void
-//   },
-// ) => {
-//   const queryClient = useQueryClient()
-
-//   return useMutation({
-//     mutationFn: (mutate: {
-//       url?: string
-//       search?: TSearchParams<TParams>
-//       options?: RequestInit
-//     }) =>
-//       fetcher(
-//         combineFetchUrl(mutate.url || fetch.url, {
-//           ...fetch.search,
-//           ...mutate.search,
-//         }),
-//         { ...fetch.options, ...mutate.options },
-//       ),
-//     onSuccess: (data: TData) => {
-//       options &&
-//         options.invalidateQueries &&
-//         queryClient.invalidateQueries(options.invalidateQueries)
-
-//       // queryClient.invalidateQueries({ predicate: (query) => true })
-
-//       options?.onSuccess?.(data)
-//     },
-//   })
-// }
 
 const combineFetchUrl = (url: string, search?: { [key: string]: any }) => {
   if (!search) return url
