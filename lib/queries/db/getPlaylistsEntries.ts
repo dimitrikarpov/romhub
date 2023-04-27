@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client"
 import { convertEntity } from "~/lib/convertEntity"
 import prisma from "~/lib/prismadb"
 
@@ -10,10 +11,12 @@ export const getPlaylistsEntries = async ({
   playlistId,
   skip = 0,
   take = 15,
+  orderBy,
 }: {
   playlistId: string
   skip?: number
   take?: number
+  orderBy?: Prisma.PlaylistEntryOrderByWithAggregationInput | undefined
 }) => {
   let total = 0
   let data = []
@@ -22,6 +25,7 @@ export const getPlaylistsEntries = async ({
   data = await prisma.playlistEntry.findMany({
     ...(skip && { skip: Number(skip) }),
     ...(take && { take: Number(take) }),
+    ...(orderBy && { orderBy }),
     where: { playlistId: playlistId },
     include: { rom: true, playlist: true },
   })

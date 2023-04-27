@@ -19,7 +19,6 @@ const fetcher = async (url: string, options?: RequestInit) => {
 }
 
 const defaultFetchOptions = {
-  staleTime: 5 * 60 * 1000,
   refetchOnWindowFocus: false,
   retry: false,
   refetchOnMount: false,

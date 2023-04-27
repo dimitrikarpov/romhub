@@ -30,6 +30,7 @@ const Home: NextPageWithLayout<
     },
     {
       initialData: superjson.parse(initialData),
+      keepPreviousData: true,
     },
   )
 
