@@ -15,9 +15,7 @@ const fetcher = async (url: string, options?: RequestInit) => {
     const parsedSuperjson = superjson.parse(json)
 
     return parsedSuperjson ? parsedSuperjson : json
-  } catch (e) {
-    console.log("not a JSON", result.body)
-  }
+  } catch (e) {}
 }
 
 const defaultFetchOptions = {

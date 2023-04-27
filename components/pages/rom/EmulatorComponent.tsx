@@ -1,7 +1,6 @@
 import { UiRom } from "~/types/index"
 import clsx from "clsx"
 import { Retroarch } from "holy-retroarch"
-import { useSession } from "next-auth/react"
 import {
   memo,
   MutableRefObject,
@@ -15,9 +14,7 @@ import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useRetroarch } from "./useRetroarch"
 import { useResizeObserver } from "./useSizeObserver"
-import { useFetch, useGenericMutation } from "~/lib/fetcher"
-import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
-import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
+import { useSaveToHistory } from "./useSaveToHistory"
 
 type Props = {
   coreUrl: string
@@ -33,25 +30,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const [showBackdrop, setShowBackdrop] = useState(true)
     const [isInTheaterMod, setIsInTheaterMod] = useState(false)
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
-    const { data: session } = useSession()
+    const saveRomToHistory = useSaveToHistory()
 
     const onContainerResize = useCallback((target: HTMLDivElement) => {
       resizeCanvas(retroarch?.current, isRunningRef, canvasBoxRef)
     }, [])
 
     const containerRef = useResizeObserver(onContainerResize)
-
-    const playlistQuery = useFetch<GetUserPlaylists>(
-      { url: "/api/playlists" },
-      { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
-    )
-
-    const addMutation = useGenericMutation<CreatePlaylistEntry>(
-      { url: "/api/playlists/entries", options: { method: "POST" } },
-      {
-        invalidateQueries: ["/api/playlists/contains-rom"],
-      },
-    )
 
     useEffect(() => {
       if (status === "inited") {
@@ -60,31 +45,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       }
     }, [status])
 
-    const saveRomToHistory = async () => {
-      if (!session?.user?.id || !playlistQuery.data) return
-
-      const historyPlaylist = playlistQuery.data.find(
-        ({ type }) => type === "history",
-      )
-
-      addMutation.mutate({
-        search: { playlistId: historyPlaylist!.id, romId: rom.id },
-      })
-
-      // TODO: replace with mutation
-      // await apiQueries.createPlaylistEntry({
-      //   playlistId: historyPlaylist!.id,
-      //   romId: rom.id,
-      // })
-    }
-
     const onStartClick = () => {
       retroarch?.current?.start()
       setShowBackdrop(false)
 
       isRunningRef.current = true
 
-      saveRomToHistory()
+      saveRomToHistory(rom.id)
       resizeCanvas(retroarch?.current, isRunningRef, canvasBoxRef)
     }
 
