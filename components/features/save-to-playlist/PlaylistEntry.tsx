@@ -3,10 +3,11 @@ import {
   CheckboxCheckedIcon,
   GlobeIcon,
   LockIcon,
-} from "@/components/ui/icons"
-import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
-import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
+} from "~/components/ui/icons"
 import clsx from "clsx"
+import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
+import { useGenericMutation } from "~/lib/fetcher"
+import { type DeletePlaylistEntryByRom } from "~/lib/queries/db/deletePlaylistEntryByRom"
 
 type Props = {
   title: string
@@ -23,16 +24,30 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
   playlistId,
   romId,
 }) => {
-  const addMutation = useCreatePlaylistEntryMutation({})
-  const deleteMutation = useDeletePlaylistEntryByRomMutation({})
+  const addMutation = useGenericMutation<CreatePlaylistEntry>(
+    { url: "/api/playlists/entries", options: { method: "POST" } },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
+    },
+  )
+
+  const deleteMutation = useGenericMutation<DeletePlaylistEntryByRom>(
+    {
+      url: "/api/playlists/entries/delete-by-rom-id",
+      options: { method: "DELETE" },
+    },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
+    },
+  )
 
   const onClick = () => {
     if (isChecked) {
-      deleteMutation.mutate({ playlistId, romId })
+      deleteMutation.mutate({ search: { playlistId, romId } })
     }
 
     if (!isChecked) {
-      addMutation.mutate({ playlistId, romId })
+      addMutation.mutate({ search: { playlistId, romId } })
     }
   }
 

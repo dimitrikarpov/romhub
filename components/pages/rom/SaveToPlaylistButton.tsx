@@ -1,9 +1,9 @@
-import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPlaylist"
-import { Button } from "@/components/ui/button/Button"
-import { AddToPlaylistIcon } from "@/components/ui/icons"
-import { DialogBox } from "@/components/ui/modal/DialogBox"
-import { Modal } from "@/components/ui/modal/Modal"
-import { useModal } from "@/components/ui/modal/useModal"
+import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
+import { Button } from "~/components/ui/button/Button"
+import { AddToPlaylistIcon } from "~/components/ui/icons"
+import { DialogBox } from "~/components/ui/modal/DialogBox"
+import { Modal } from "~/components/ui/modal/Modal"
+import { useModal } from "~/components/ui/modal/useModal"
 
 type Props = {
   romId: string

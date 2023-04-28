@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { useSession } from "next-auth/react"
-import { PlusIcon } from "@/components/ui/icons"
+import { PlusIcon } from "~/components/ui/icons"
 import { PlaylistEntry } from "./PlaylistEntry"
-import { usePlaylistWithRomQuery } from "@/lib/queries/react/usePlaylistsWithRomQuery"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
-import { useCreatePlaylistEntryMutation } from "@/lib/queries/react/useCreatePlaylistEntryMutation"
-import { useCreatePlaylistMutation } from "@/lib/queries/react/useCreatePlaylistMutation"
-import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
+import { useFetch, useGenericMutation } from "~/lib/fetcher"
+import { type GetUserPlaylistsContainsRom } from "~/lib/queries/db/getUserPlaylistsContainsRom"
+import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
+import { type CreatePlaylist } from "~/lib/queries/db/createPlaylist"
 
 type Props = {
   romId: string
@@ -29,28 +30,57 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
     setIsFormOpened(true)
   }
 
-  const playlistsQuery = useUserPlaylistsQuery({
-    enabled: Boolean(session?.user.id),
-  })
-  const playlistsWithRomQuery = usePlaylistWithRomQuery({
-    romId,
-    enabled: Boolean(session?.user.id),
-  })
-  const createPlaylistEntryMutation = useCreatePlaylistEntryMutation({
-    onSuccess: onDialogClose,
-  })
-  const createPlaylistMutation = useCreatePlaylistMutation({
-    onSuccess: (data) => {
-      createPlaylistEntryMutation.mutate({ playlistId: data.id, romId })
+  const playlistsQuery = useFetch<GetUserPlaylists>(
+    { url: "/api/playlists" },
+    { staleTime: 5 * 60 * 1000, enabled: Boolean(session?.user.id) },
+  )
+
+  const playlistsWithRomQuery = useFetch<GetUserPlaylistsContainsRom>(
+    {
+      url: "/api/playlists/contains-rom",
+      search: { romId: romId, userId: session?.user.id },
     },
-  })
+    {
+      enabled: Boolean(session?.user.id),
+    },
+  )
+
+  const createPlaylistEntryMutation = useGenericMutation<CreatePlaylistEntry>(
+    { url: "/api/playlists/entries", options: { method: "POST" } },
+    {
+      invalidateQueries: ["/api/playlists/contains-rom"],
+      onSuccess: onDialogClose,
+    },
+  )
+
+  const createPlaylistMutation = useGenericMutation<CreatePlaylist>(
+    {
+      url: "/api/playlists",
+      options: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    },
+    {
+      invalidateQueries: ["/api/playlists"],
+      onSuccess: (data) => {
+        createPlaylistEntryMutation.mutate({
+          search: { playlistId: data?.id, romId },
+        })
+      },
+    },
+  )
 
   const onFormSubmit = async (data: IFormInput) => {
     createPlaylistMutation.mutate({
-      data: {
-        type: "custom",
-        isPublic: data.privacy === "public",
-        title: data.title,
+      options: {
+        body: JSON.stringify({
+          title: data.title,
+          type: "custom",
+          isPublic: data.privacy === "public",
+        }),
       },
     })
   }

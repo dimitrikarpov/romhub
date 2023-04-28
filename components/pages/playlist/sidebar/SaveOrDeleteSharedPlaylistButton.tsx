@@ -1,13 +1,12 @@
-import { IconButton } from "@/components/ui/icon-button/IconButton"
+import { IconButton } from "~/components/ui/icon-button/IconButton"
 import {
   PlaylistWithDoneMarkIcon,
   AddToPlaylistIcon,
-} from "@/components/ui/icons"
-import { useAddSharedPlaylistToLibraryMutation } from "@/lib/queries/react/useAddSharedPlaylistToLibraryMutation"
-import { useDeleteSharedPlaylistFromLibraryMutation } from "@/lib/queries/react/useDeleteSharedPlaylistFromLibraryMutation"
-import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
+} from "~/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
+import { useFetch, useGenericMutation } from "~/lib/fetcher"
+import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
 
 type Props = {
   playlist: Playlist & { author: User }
@@ -17,17 +16,26 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
   Props
 > = ({ playlist }) => {
   const { data: session } = useSession()
-  const { data: playlists } = useUserPlaylistsQuery({})
-  const addMutation = useAddSharedPlaylistToLibraryMutation({
-    onSuccess: () => {
-      console.log("added")
-    },
+
+  const { data: playlists } = useFetch<GetUserPlaylists>({
+    url: "/api/playlists",
   })
-  const deleteMutation = useDeleteSharedPlaylistFromLibraryMutation({
-    onSuccess: () => {
-      console.log("deleted")
+
+  const addMutation = useGenericMutation(
+    {
+      url: `/api/playlists/library/${playlist.id}`,
+      options: { method: "POST" },
     },
-  })
+    { invalidateQueries: ["/api/playlists"] },
+  )
+
+  const deleteMutation = useGenericMutation(
+    {
+      url: `/api/playlists/library/${playlist.id}`,
+      options: { method: "DELETE" },
+    },
+    { invalidateQueries: ["/api/playlists"] },
+  )
 
   const isUserAlreadySavedThisPlaylist = playlists?.some(
     ({ id }) => playlist.id === id,
@@ -38,15 +46,11 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
     canRemoveSharedPlaylistFromLibrary() && isUserAlreadySavedThisPlaylist
 
   const addToLibrary = () => {
-    addMutation.mutate({
-      playlistId: playlist.id,
-    })
+    addMutation.mutate({})
   }
 
   const deleteFromLibrary = () => {
-    deleteMutation.mutate({
-      playlistId: playlist.id,
-    })
+    deleteMutation.mutate({})
   }
 
   if (!session || playlist.authorId === session.user.id) return null

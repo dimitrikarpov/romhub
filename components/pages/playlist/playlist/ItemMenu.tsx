@@ -1,6 +1,6 @@
-import { SaveToPlaylist } from "@/components/features/save-to-playlist/SaveToPlaylist"
-import { Share } from "@/components/features/share/Share"
-import { IconButton } from "@/components/ui/icon-button/IconButton"
+import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
+import { Share } from "~/components/features/share/Share"
+import { IconButton } from "~/components/ui/icon-button/IconButton"
 import {
   ThreeDotsMenu,
   WatchLaterIcon,
@@ -8,18 +8,19 @@ import {
   DownloadIcon,
   ShareIcon,
   RubbishBinIcon,
-} from "@/components/ui/icons"
-import { Menu } from "@/components/ui/menu/Menu"
-import { DialogBox } from "@/components/ui/modal/DialogBox"
-import { Modal } from "@/components/ui/modal/Modal"
-import { useModal } from "@/components/ui/modal/useModal"
-import { downloadRom } from "@/lib/downloadRom"
-import { useAddToWatchLaterMutation } from "@/lib/queries/react/useAddToWatchLaterMutation"
-import { useDeletePlaylistEntryByRomMutation } from "@/lib/queries/react/useDeletePlaylistEntryByRomMutation"
-import { UiPlaylistEntry } from "@/types/index"
+} from "~/components/ui/icons"
+import { Menu } from "~/components/ui/menu/Menu"
+import { DialogBox } from "~/components/ui/modal/DialogBox"
+import { Modal } from "~/components/ui/modal/Modal"
+import { useModal } from "~/components/ui/modal/useModal"
+import { downloadRom } from "~/lib/downloadRom"
+import { UiPlaylistEntry } from "~/types/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useQueryClient } from "react-query"
+import { useGenericMutation } from "~/lib/fetcher"
+import { type DeletePlaylistEntryByRom } from "~/lib/queries/db/deletePlaylistEntryByRom"
+import { useAddToWatchLaterMutation } from "./useAddToWatchLaterMutation"
 
 type Props = {
   entry: UiPlaylistEntry
@@ -44,22 +45,30 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   } = useModal()
 
   const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
-  const deleteEntryMutation = useDeletePlaylistEntryByRomMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["playlist-entries", { id: entry.playlistId }],
-      })
+
+  const deleteEntryMutation = useGenericMutation<DeletePlaylistEntryByRom>(
+    {
+      url: "/api/playlists/entries/delete-by-rom-id",
+      options: { method: "DELETE" },
     },
-  })
+    {
+      invalidateQueries: ["/api/playlists/entries"],
+      onSuccess: () => {
+        queryClient.invalidateQueries(["/api/playlists/contains-rom"])
+      },
+    },
+    //     ["/api/playlists/entries", new URLSearchParams({ playlistId })].join("?"),
+  )
 
   const onSaveToWatchLaterClick = () => {
-    addToWatchLaterMutation.mutate()
+    addToWatchLaterMutation.mutate({
+      search: { playlistId: entry.playlistId, romId: entry.romId }, // TODO: instead of entry.playlistId use watch later
+    })
   }
 
   const onDeleteClick = () => {
     deleteEntryMutation.mutate({
-      playlistId: entry.playlistId,
-      romId: entry.romId,
+      search: { playlistId: entry.playlistId, romId: entry.romId },
     })
   }
 

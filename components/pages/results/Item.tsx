@@ -1,11 +1,11 @@
-import { UiRom } from '@/types/index'
+import { UiRom } from "~/types/index"
 
 type Props = {
   rom: UiRom
 }
 
 export const Item: React.FunctionComponent<Props> = ({ rom }) => {
-  const image = rom.images[0] || '/assets/placeholder.png'
+  const image = rom.images[0] || "/assets/placeholder.png"
 
   return (
     <div className="flex gap-8">

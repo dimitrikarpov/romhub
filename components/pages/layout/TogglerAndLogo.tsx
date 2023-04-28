@@ -1,6 +1,6 @@
-import { MenuIcon } from "@/components/ui/icons"
+import { MenuIcon } from "~/components/ui/icons"
 import { useDispatch } from "react-redux"
-import { toggle } from "@/components/pages/layout/sidebar/sideBarSlice"
+import { toggle } from "~/components/pages/layout/sidebar/sideBarSlice"
 import { useWindowSizeForSidebar } from "./sidebar/useWindowSizeForSidebar"
 
 const TogglerAndLogo = () => {

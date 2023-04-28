@@ -1,6 +1,9 @@
-import prisma from "@/lib/prismadb"
+import prisma from "~/lib/prismadb"
 
-// TODO: refactor input params to {id, data}
+export type PatchPlaylist = {
+  params: Parameters<typeof patchPlaylist>[0]
+  data: Awaited<ReturnType<typeof patchPlaylist>>
+}
 
 export const patchPlaylist = async ({
   id,

@@ -4,8 +4,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
 import TwitchProvider from "next-auth/providers/twitch"
 import YandexProvider from "next-auth/providers/yandex"
-import prisma from "@/lib/prismadb"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import prisma from "~/lib/prismadb"
+import { createPlaylist } from "~/lib/queries/db/createPlaylist"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -31,22 +31,31 @@ export const authOptions: NextAuthOptions = {
       // TODO: do not create playlists if user already exists (with email account linking)
 
       /* creates default playlists for new user */
-      await dbQueries.createPlaylist(message.user.id, {
-        type: "history",
-        title: "History",
-        isPublic: false,
+      await createPlaylist({
+        authorId: message.user.id,
+        data: {
+          type: "history",
+          title: "History",
+          isPublic: false,
+        },
       })
 
-      await dbQueries.createPlaylist(message.user.id, {
-        type: "watch_later",
-        title: "Watch Later",
-        isPublic: false,
+      await createPlaylist({
+        authorId: message.user.id,
+        data: {
+          type: "watch_later",
+          title: "Watch Later",
+          isPublic: false,
+        },
       })
 
-      await dbQueries.createPlaylist(message.user.id, {
-        type: "custom",
-        title: "Favorites",
-        isPublic: false,
+      await createPlaylist({
+        authorId: message.user.id,
+        data: {
+          type: "custom",
+          title: "Favorites",
+          isPublic: false,
+        },
       })
     },
   },

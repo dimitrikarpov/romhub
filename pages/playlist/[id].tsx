@@ -1,30 +1,37 @@
-import Head from "next/head"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { useRouter } from "next/router"
-import { NextPageWithLayout } from "../_app"
 import { getSession } from "next-auth/react"
-import { PlaylistSidebar } from "@/components/pages/playlist/sidebar/PlaylistSidebar"
-import { UiPlaylistEntry } from "@/types/index"
-import { Item } from "@/components/pages/playlist/playlist/Item"
-import { Layout } from "@/components/pages/layout/Layout"
-import { dbQueries } from "@/lib/queries/dbQueries"
-import { usePlaylistByIdQuery } from "@/lib/queries/react/usePlaylistByIdQuery"
-import { usePlaylistEntriesQuery } from "@/lib/queries/react/usePlaylistEntriesQuery"
-import { DBQueryResult } from "@/types/utils"
+import Head from "next/head"
+import { useRouter } from "next/router"
+import superjson from "superjson"
+import { Layout } from "~/components/pages/layout/Layout"
+import { Item } from "~/components/pages/playlist/playlist/Item"
+import { PlaylistSidebar } from "~/components/pages/playlist/sidebar/PlaylistSidebar"
+import { useFetch } from "~/lib/fetcher"
+import {
+  getPlaylistById,
+  type GetPlaylistById,
+} from "~/lib/queries/db/getPlaylistById"
+import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
+import { UiPlaylistEntry } from "~/types/index"
+import { NextPageWithLayout } from "../_app"
+import { useState } from "react"
+import { Paginator } from "~/components/ui/paginator/Paginator"
 
 const PlaylistPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
   const router = useRouter()
   const { id } = router.query
+  const [skip, setSkip] = useState(0)
 
-  const { data: playlist } = usePlaylistByIdQuery({
-    id: id as string,
-    initialData: initialData.playlist,
-  })
+  const { data: playlist } = useFetch<GetPlaylistById>(
+    { url: `/api/playlists/${id}` },
+    { initialData: superjson.parse(initialData.playlist) },
+  )
 
-  const { data: entries } = usePlaylistEntriesQuery({
-    id: id as string,
+  const { data: entries } = useFetch<GetPlaylistsEntries>({
+    url: "/api/playlists/entries",
+    search: { playlistId: id as string, skip, take: 10 },
   })
 
   const thumbnail =
@@ -52,6 +59,14 @@ const PlaylistPage: NextPageWithLayout<
           {entries?.data?.map((entry) => (
             <Item entry={entry} key={entry.romId} />
           ))}
+          <div className="px-0 py-12">
+            <Paginator
+              skip={skip}
+              setSkip={setSkip}
+              total={entries?.total}
+              pageSize={10}
+            />
+          </div>
         </div>
       </div>
     </>
@@ -66,14 +81,14 @@ export default PlaylistPage
 
 export const getServerSideProps: GetServerSideProps<{
   initialData: {
-    playlist: DBQueryResult<typeof dbQueries.getPlaylistById>
+    playlist: string
   }
 }> = async (context) => {
   const session = await getSession({ req: context.req })
 
   const id = context.query.id as string
 
-  const playlist = await dbQueries.getPlaylistById(id)
+  const playlist = await getPlaylistById({ id })
 
   if (
     !playlist ||
@@ -86,7 +101,7 @@ export const getServerSideProps: GetServerSideProps<{
   return {
     props: {
       initialData: {
-        playlist,
+        playlist: superjson.stringify(playlist),
       },
     },
   }

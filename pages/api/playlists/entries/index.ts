@@ -1,19 +1,24 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { dbQueries } from "@/lib/queries/dbQueries"
+import superjson from "superjson"
+import { createPlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
+import { getPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    const { playlistId, skip, take } = req.query
+    const { playlistId, skip, take, orderBy } = req.query
 
     if (!playlistId) return res.status(404).send("Not found")
 
-    const found = await dbQueries.getPlaylistsEntries({
+    const found = await getPlaylistsEntries({
       playlistId: playlistId as string,
+      ...(skip && { skip: Number(skip) }),
+      ...(take && { take: Number(take) }),
+      ...(orderBy && { orderBy: JSON.parse(orderBy as string) }),
     })
 
     if (!found) return res.status(404).send("Not found")
 
-    return res.status(200).json(found)
+    return res.status(200).json(superjson.stringify(found))
   }
 
   if (req.method === "DELETE") {
@@ -23,15 +28,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { playlistId, romId } = req.query
 
+    console.log("on backend!!", playlistId, romId)
+
     if (!playlistId || !romId) return res.status(404).send("Not found")
 
-    const result = await dbQueries.createPlaylistEntry(
-      playlistId as string,
-      romId as string,
-    )
+    const result = await createPlaylistEntry({
+      playlistId: playlistId as string,
+      romId: romId as string,
+    })
 
     if (!result) return res.status(404).send("Not found")
 
-    return res.status(200).send("Entry has been added")
+    return res.status(200).json({ result: "Entry has been added" })
   }
 }

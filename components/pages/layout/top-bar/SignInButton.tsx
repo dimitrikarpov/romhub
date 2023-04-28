@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react"
-import { SignInIcon } from "@/components/ui/icons"
+import { SignInIcon } from "~/components/ui/icons"
 
 export const SignInButton = () => (
   <div

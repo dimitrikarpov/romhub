@@ -1,6 +1,6 @@
 import { Session } from "next-auth"
 import { Playlist } from "@prisma/client"
-import prisma from "@/lib/prismadb"
+import prisma from "~/lib/prismadb"
 
 export const deletePlaylist = async (playlistId: string, session: Session) => {
   const playlist = await prisma.playlist.findUnique({

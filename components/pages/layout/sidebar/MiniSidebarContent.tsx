@@ -1,4 +1,4 @@
-import { DiceIcon, HomeIcon } from "@/components/ui/icons"
+import { DiceIcon, HomeIcon } from "~/components/ui/icons"
 
 export const MiniSidebarContent = () => {
   return (

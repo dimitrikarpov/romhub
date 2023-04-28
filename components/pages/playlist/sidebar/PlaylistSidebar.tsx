@@ -1,17 +1,17 @@
 import { useRouter } from "next/router"
-import { RubbishBinIcon } from "@/components/ui/icons"
+import { RubbishBinIcon } from "~/components/ui/icons"
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en"
-import { IconButton } from "@/components/ui/icon-button/IconButton"
+import { IconButton } from "~/components/ui/icon-button/IconButton"
 import { Title } from "./title/Title"
 import { Description } from "./description/Description"
 import { PrivacySelect } from "./PrivacySelect"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { ShareIconButton } from "./ShareIconButton"
-import { useDeletePlaylistMutation } from "@/lib/queries/react/useDeletePlaylistMutation"
 import { SaveOrDeleteSharedPlaylistButton } from "./SaveOrDeleteSharedPlaylistButton"
+import { useGenericMutation } from "~/lib/fetcher"
 
 // TODO: make a singleton to prevent
 //  [javascript-time-ago] `TimeAgo.addDefaultLocale()` can only be called once. To add other locales, use `TimeAgo.addLocale()`.
@@ -33,7 +33,6 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   lastUpdated,
 }) => {
   const router = useRouter()
-
   const { data: session } = useSession()
 
   const isTitleEditable = canEditPlaylistTitle(session, playlist)
@@ -42,14 +41,21 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   const isShareVisible = canSharePlaylist(playlist)
   const isDeleteOwnPlaylistVisible = canDeleteOwnPlaylist(session, playlist)
 
-  const deleteOwnPlaylistMutation = useDeletePlaylistMutation({
-    onSuccess: () => {
-      router.push("/")
+  const deleteOwnPlaylistMutation = useGenericMutation(
+    {
+      url: `/api/playlists/${playlist.id}`,
+      options: { method: "DELETE" },
     },
-  })
+    {
+      invalidateQueries: ["/api/playlists"],
+      onSuccess: () => {
+        router.push("/")
+      },
+    },
+  )
 
   const onDeleteOwnPlaylistClick = () => {
-    deleteOwnPlaylistMutation.mutate({ playlistId: playlist.id })
+    deleteOwnPlaylistMutation.mutate({})
   }
 
   return (

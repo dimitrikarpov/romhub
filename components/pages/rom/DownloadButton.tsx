@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button/Button"
-import { DownloadIcon } from "@/components/ui/icons"
-import { downloadRom } from "@/lib/downloadRom"
+import { Button } from "~/components/ui/button/Button"
+import { DownloadIcon } from "~/components/ui/icons"
+import { downloadRom } from "~/lib/downloadRom"
 
 type Props = {
   name: string

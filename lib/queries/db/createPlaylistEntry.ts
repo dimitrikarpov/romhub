@@ -1,14 +1,22 @@
-import prisma from "@/lib/prismadb"
+import prisma from "~/lib/prismadb"
 
-export const createPlaylistEntry = async (
-  playlistId: string,
-  romId: string,
-) => {
+export type CreatePlaylistEntry = {
+  params: Parameters<typeof createPlaylistEntry>[0]
+  data: Awaited<ReturnType<typeof createPlaylistEntry>>
+}
+
+export const createPlaylistEntry = async ({
+  playlistId,
+  romId,
+}: {
+  playlistId: string
+  romId: string
+}) => {
   const playlist = await prisma.playlist.findUnique({
     where: { id: String(playlistId) },
   })
 
-  if (!playlist) return
+  if (!playlist) return // TODO: [error handling] should we throw error?
 
   const rom = await prisma.rom.findFirst({ where: { id: String(romId) } })
 

@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import { useRouter } from "next/router"
-import { Button } from "@/components/ui/button/Button"
+import { Button } from "~/components/ui/button/Button"
 
 type Props = {
   type?: "playlist" | "rom"

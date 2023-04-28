@@ -1,5 +1,5 @@
-import { IconButton } from "@/components/ui/icon-button/IconButton"
-import { PencilIcon } from "@/components/ui/icons"
+import { IconButton } from "~/components/ui/icon-button/IconButton"
+import { PencilIcon } from "~/components/ui/icons"
 
 type Props = {
   text: string

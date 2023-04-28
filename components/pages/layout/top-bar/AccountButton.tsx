@@ -1,6 +1,6 @@
 import { useSession, signOut } from "next-auth/react"
-import { SignOutIcon } from "@/components/ui/icons"
-import { Menu } from "@/components/ui/menu/Menu"
+import { SignOutIcon } from "~/components/ui/icons"
+import { Menu } from "~/components/ui/menu/Menu"
 
 export const AccountButton = () => {
   const { data: session } = useSession()

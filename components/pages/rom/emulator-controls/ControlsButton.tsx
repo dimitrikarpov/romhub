@@ -1,4 +1,4 @@
-import { GamepadIcon } from "@/components/ui/icons"
+import { GamepadIcon } from "~/components/ui/icons"
 
 type Props = {
   show: () => void

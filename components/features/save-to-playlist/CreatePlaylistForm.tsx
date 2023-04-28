@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Button } from "@/components/ui/button/Button"
+import { Button } from "~/components/ui/button/Button"
 
 enum PrivacyEnum {
   public = "public",

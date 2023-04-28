@@ -1,4 +1,4 @@
-import { UiRom } from "@/types/index"
+import { UiRom } from "~/types/index"
 import { platforms } from "config/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"

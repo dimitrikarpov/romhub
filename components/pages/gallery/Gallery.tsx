@@ -1,4 +1,4 @@
-import { UiRom } from "@/types/index"
+import { UiRom } from "~/types/index"
 import { GalleryItem } from "./GalleryItem"
 
 type Props = {

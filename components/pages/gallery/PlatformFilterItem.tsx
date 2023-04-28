@@ -1,4 +1,4 @@
-import { TPlatformSlug } from "@/types/index"
+import { TPlatformSlug } from "~/types/index"
 import clsx from "clsx"
 
 type Props = {

@@ -1,11 +1,19 @@
 import { Playlist } from "@prisma/client"
 import { Session } from "next-auth"
-import prisma from "@/lib/prismadb"
+import prisma from "~/lib/prismadb"
 
-export const saveSharedPlaylistToLibrary = async (
-  session: Session,
-  playlistId: string,
-) => {
+export type SaveSharedPlaylistToLibrary = {
+  params: Parameters<typeof saveSharedPlaylistToLibrary>[0]
+  data: Awaited<ReturnType<typeof saveSharedPlaylistToLibrary>>
+}
+
+export const saveSharedPlaylistToLibrary = async ({
+  session,
+  playlistId,
+}: {
+  session: Session
+  playlistId: string
+}) => {
   const playlist = await prisma.playlist.findUnique({
     where: { id: playlistId },
   })

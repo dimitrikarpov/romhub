@@ -1,9 +1,6 @@
-import { apiQueries } from "@/lib/queries/apiQueries"
-import { useUserPlaylistsQuery } from "@/lib/queries/react/useUserPlaylistsQuery"
-import { UiRom } from "@/types/index"
+import { UiRom } from "~/types/index"
 import clsx from "clsx"
 import { Retroarch } from "holy-retroarch"
-import { useSession } from "next-auth/react"
 import {
   memo,
   MutableRefObject,
@@ -17,6 +14,7 @@ import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
 import { useRetroarch } from "./useRetroarch"
 import { useResizeObserver } from "./useSizeObserver"
+import { useSaveToHistory } from "./useSaveToHistory"
 
 type Props = {
   coreUrl: string
@@ -32,17 +30,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const [showBackdrop, setShowBackdrop] = useState(true)
     const [isInTheaterMod, setIsInTheaterMod] = useState(false)
     const { status, retroarch } = useRetroarch(coreUrl, canvasRef)
-    const { data: session } = useSession()
+    const saveRomToHistory = useSaveToHistory()
 
     const onContainerResize = useCallback((target: HTMLDivElement) => {
       resizeCanvas(retroarch?.current, isRunningRef, canvasBoxRef)
     }, [])
 
     const containerRef = useResizeObserver(onContainerResize)
-
-    const playlistQuery = useUserPlaylistsQuery({
-      enabled: Boolean(session?.user.id),
-    })
 
     useEffect(() => {
       if (status === "inited") {
@@ -51,27 +45,13 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
       }
     }, [status])
 
-    const saveRomToHistory = async () => {
-      if (!session?.user?.id || !playlistQuery.data) return
-
-      const historyPlaylist = playlistQuery.data.find(
-        ({ type }) => type === "history",
-      )
-
-      // TODO: replace with mutation
-      await apiQueries.createPlaylistEntry({
-        playlistId: historyPlaylist!.id,
-        romId: rom.id,
-      })
-    }
-
     const onStartClick = () => {
       retroarch?.current?.start()
       setShowBackdrop(false)
 
       isRunningRef.current = true
 
-      saveRomToHistory()
+      saveRomToHistory(rom.id)
       resizeCanvas(retroarch?.current, isRunningRef, canvasBoxRef)
     }
 

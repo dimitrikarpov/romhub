@@ -1,18 +1,20 @@
 import React, { ReactElement } from "react"
 import Head from "next/head"
-import { Layout } from "@/components/pages/layout/Layout"
-import { RandomGrid } from "@/components/pages/random/RandomGrid"
-import { useRandomRomsQuery } from "@/lib/queries/react/useRandomRoms"
+import { Layout } from "~/components/pages/layout/Layout"
+import { RandomGrid } from "~/components/pages/random/RandomGrid"
 import { useQueryClient } from "react-query"
-
+import { type GetRandomRoms } from "~/lib/queries/db/getRandomRoms"
+import { useFetch } from "~/lib/fetcher"
 const Random = () => {
   const queryClient = useQueryClient()
 
-  const { data: roms } = useRandomRomsQuery({})
+  const { data: roms } = useFetch<GetRandomRoms>({
+    url: "/api/roms/random",
+  })
 
   const onRoll = () => {
     queryClient.invalidateQueries({
-      queryKey: "random",
+      queryKey: "/api/roms/random",
     })
   }
 
