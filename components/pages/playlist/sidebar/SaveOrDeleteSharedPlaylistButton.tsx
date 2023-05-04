@@ -1,8 +1,5 @@
 import { IconButton } from "~/components/ui/icon-button/IconButton"
-import {
-  PlaylistWithDoneMarkIcon,
-  AddToPlaylistIcon,
-} from "~/components/ui/icons"
+import { ListPlusIcon, ListXIcon } from "lucide-react"
 import { Playlist, User } from "@prisma/client"
 import { useSession } from "next-auth/react"
 import { useFetch, useGenericMutation } from "~/lib/fetcher"
@@ -58,18 +55,14 @@ export const SaveOrDeleteSharedPlaylistButton: React.FunctionComponent<
   return (
     <>
       {isSaveButtonVisible && (
-        <IconButton
-          icon={AddToPlaylistIcon}
-          tip="Save playlist"
-          onClick={addToLibrary}
-        />
+        <IconButton tip="Save playlist" onClick={addToLibrary}>
+          <ListPlusIcon />
+        </IconButton>
       )}
       {isRemoveButtonVisible && (
-        <IconButton
-          icon={PlaylistWithDoneMarkIcon}
-          tip="Remove from Library"
-          onClick={deleteFromLibrary}
-        />
+        <IconButton tip="Remove from Library" onClick={deleteFromLibrary}>
+          <ListXIcon />
+        </IconButton>
       )}
     </>
   )

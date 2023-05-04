@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { PauseIcon, PlayIcon } from "~/components/ui/icons"
+import { PauseIcon, PlayIcon } from "./Icons"
 
 export const PlayPauseButton = () => {
   const [isPaused, setIsPaused] = useState(false)

@@ -1,6 +1,6 @@
 import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
 import { Button } from "~/components/ui/button/Button"
-import { AddToPlaylistIcon } from "~/components/ui/icons"
+import { ListPlusIcon } from "lucide-react"
 import { DialogBox } from "~/components/ui/modal/DialogBox"
 import { Modal } from "~/components/ui/modal/Modal"
 import { useModal } from "~/components/ui/modal/useModal"
@@ -17,7 +17,7 @@ export const SaveToPlaylistButton: React.FunctionComponent<Props> = ({
   return (
     <>
       <Button onClick={show}>
-        <AddToPlaylistIcon />
+        <ListPlusIcon />
         Save
       </Button>
 

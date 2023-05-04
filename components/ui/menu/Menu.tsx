@@ -121,9 +121,9 @@ export const IconAndText: React.FunctionComponent<IconAndTextProps> = ({
   return (
     <div
       onClick={handleClick}
-      className="c-svg-w c-svg-24 flex min-h-[36px] cursor-pointer items-center gap-4 py-0 pl-3 pr-4 hover:bg-[#ffffff1a]"
+      className="flex min-h-[36px] cursor-pointer items-center gap-4 py-0 pl-3 pr-4 hover:bg-[#ffffff1a]"
     >
-      <Icon />
+      <Icon className="shrink-0" />
       <div>{text}</div>
     </div>
   )

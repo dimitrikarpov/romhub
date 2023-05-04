@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button } from "../button/Button"
-import { LeftChevronIcon, RightChevronIcon } from "../icons"
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 
 type Props = {
   skip: number
@@ -67,7 +67,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
   return (
     <div className="flex items-center justify-center text-base/5 font-medium [&>*:not(:last-child)]:mr-3">
       <Button disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>
-        <LeftChevronIcon />
+        <ArrowLeftIcon />
       </Button>
 
       <div>
@@ -85,7 +85,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
         disabled={!canFetchNext(pageSize, skip, total)}
         onClick={nextPage}
       >
-        <RightChevronIcon />
+        <ArrowRightIcon />
       </Button>
     </div>
   )

@@ -1,5 +1,5 @@
 import { IconButton } from "~/components/ui/icon-button/IconButton"
-import { PencilIcon } from "~/components/ui/icons"
+import { PencilIcon } from "lucide-react"
 
 type Props = {
   text: string
@@ -13,9 +13,13 @@ export const DescriptionView: React.FunctionComponent<Props> = ({
   toggleToEdit,
 }) => {
   return (
-    <div className="flex h-10 items-center justify-between">
+    <div className="flex items-center justify-between">
       <div className="text-sm font-bold leading-[2.375rem] ">{text}</div>
-      {editable && <IconButton icon={PencilIcon} onClick={toggleToEdit} />}
+      {editable && (
+        <IconButton onClick={toggleToEdit}>
+          <PencilIcon width={16} height={16} />
+        </IconButton>
+      )}
     </div>
   )
 }

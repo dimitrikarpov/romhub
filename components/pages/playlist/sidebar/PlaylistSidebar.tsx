@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { RubbishBinIcon } from "~/components/ui/icons"
+import { Trash2Icon } from "lucide-react"
 import { Playlist, User } from "@prisma/client"
 import TimeAgo from "javascript-time-ago"
 import en from "javascript-time-ago/locale/en"
@@ -88,11 +88,9 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
         <SaveOrDeleteSharedPlaylistButton playlist={playlist} />
 
         {isDeleteOwnPlaylistVisible && (
-          <IconButton
-            icon={RubbishBinIcon}
-            tip="Delete Playlist"
-            onClick={onDeleteOwnPlaylistClick}
-          />
+          <IconButton tip="Delete Playlist" onClick={onDeleteOwnPlaylistClick}>
+            <Trash2Icon />
+          </IconButton>
         )}
       </div>
 

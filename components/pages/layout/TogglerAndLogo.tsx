@@ -1,4 +1,4 @@
-import { MenuIcon } from "~/components/ui/icons"
+import { MenuIcon } from "lucide-react"
 import { useDispatch } from "react-redux"
 import { toggle } from "~/components/pages/layout/sidebar/sideBarSlice"
 import { useWindowSizeForSidebar } from "./sidebar/useWindowSizeForSidebar"
@@ -10,10 +10,10 @@ const TogglerAndLogo = () => {
   return (
     <div className="flex cursor-pointer select-none items-center gap-[10px]">
       <div
-        className="c-svg-32 c-svg-w p-2 hover:rounded-full hover:bg-[#ffffff1a]"
+        className="p-2 hover:rounded-full hover:bg-[#ffffff1a]"
         onClick={() => dispatch(toggle(variation))}
       >
-        <MenuIcon />
+        <MenuIcon strokeWidth={2} />
       </div>
       <a href="/">
         <div className="flex h-5 items-center gap-[5px] text-[21px] font-black text-white">

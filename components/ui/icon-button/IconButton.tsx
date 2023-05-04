@@ -1,18 +1,18 @@
 type Props = {
-  icon: React.ElementType
+  children?: React.ReactNode
   tip?: string
   onClick?: () => void
 }
 
 export const IconButton: React.FunctionComponent<Props> = ({
-  icon: Icon,
+  children,
   tip = "",
   onClick,
 }) => {
   return (
     <div onClick={onClick} title={tip} className="inline-flex cursor-pointer">
-      <div className="c-svg-w c-svg-24 w-fit self-baseline rounded-full bg-transparent p-2 transition-colors duration-300 hover:bg-[#ffffff33]">
-        <Icon />
+      <div className="w-fit shrink-0 self-baseline rounded-full bg-transparent p-2 transition-colors duration-300 hover:bg-[#ffffff33]">
+        {children}
       </div>
     </div>
   )

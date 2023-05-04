@@ -1,5 +1,5 @@
 import { setSearch } from "~/components/pages/results/searchSlice"
-import { ClearIcon, SearchIcon } from "~/components/ui/icons"
+import { SearchIcon, X as ClearIcon } from "lucide-react"
 import clsx from "clsx"
 import { useRouter } from "next/router"
 import React, { KeyboardEventHandler, useState } from "react"
@@ -49,20 +49,19 @@ export const SearchInput = () => {
         className="ml-8 h-10 rounded-bl-full rounded-tl-full border border-[#878787bf] bg-[hsl(0,0%,7%)] py-0 pl-4 pr-1 text-base leading-6 text-[#ffffffe0] focus:border-[#1c62b9] focus:outline-[#1c62b9] focus-visible:outline-none"
       />
       <button
+        onClick={onClear}
         className={clsx(
-          "c-svg-24 c-svg-w absolute right-[62px] top-[7px] block cursor-pointer border-none bg-[#121212] hover:rounded-full hover:bg-[#ffffff1a]",
+          "absolute right-[62px] top-[7px] block cursor-pointer border-none bg-[#121212] hover:rounded-full hover:bg-[#ffffff1a]",
           value === "" && "hidden",
         )}
       >
-        <span onClick={onClear}>
-          <ClearIcon />
-        </span>
+        <ClearIcon strokeWidth={1} />
       </button>
       <button
         onClick={onSubmit}
-        className="c-svg-24 c-svg-w cursor-pointer rounded-br-full rounded-tr-full border border-l-0 border-[#878787bf] bg-[#ffffff1f] py-[7px] pl-4 pr-5"
+        className="cursor-pointer rounded-br-full rounded-tr-full border border-l-0 border-[#878787bf] bg-[#ffffff1f] py-[7px] pl-4 pr-5"
       >
-        <SearchIcon />
+        <SearchIcon strokeWidth={1} />
       </button>
     </div>
   )

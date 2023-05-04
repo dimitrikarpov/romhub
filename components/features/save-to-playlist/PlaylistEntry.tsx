@@ -1,9 +1,9 @@
 import {
-  CheckboxBlankIcon,
-  CheckboxCheckedIcon,
-  GlobeIcon,
+  SquareIcon,
+  ChevronDownSquareIcon,
+  Globe2Icon,
   LockIcon,
-} from "~/components/ui/icons"
+} from "lucide-react"
 import clsx from "clsx"
 import { type CreatePlaylistEntry } from "~/lib/queries/db/createPlaylistEntry"
 import { useGenericMutation } from "~/lib/fetcher"
@@ -56,17 +56,14 @@ export const PlaylistEntry: React.FunctionComponent<Props> = ({
       onClick={onClick}
       className="flex cursor-pointer items-center justify-between"
     >
-      <div
-        className={clsx(
-          "c-svg-24 c-svg-w",
-          isChecked && "[&_svg]:fill-[#3ea6ff]",
-        )}
-      >
-        {isChecked ? <CheckboxCheckedIcon /> : <CheckboxBlankIcon />}
+      <div>
+        {!!isChecked && <ChevronDownSquareIcon fill="#3ea6ff" />}
+        {!isChecked && <SquareIcon />}
       </div>
       <div>{title}</div>
-      <div className="c-svg-18 c-svg-w">
-        {isPublic ? <GlobeIcon /> : <LockIcon />}
+      <div>
+        {!!isPublic && <Globe2Icon width={18} height={18} />}
+        {!isPublic && <LockIcon width={18} height={18} />}
       </div>
     </div>
   )

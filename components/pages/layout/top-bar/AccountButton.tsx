@@ -1,5 +1,5 @@
 import { useSession, signOut } from "next-auth/react"
-import { SignOutIcon } from "~/components/ui/icons"
+import { LogOutIcon } from "lucide-react"
 import { Menu } from "~/components/ui/menu/Menu"
 
 export const AccountButton = () => {
@@ -29,7 +29,7 @@ export const AccountButton = () => {
         </Menu.Item>
         <Menu.Item.Divider />
         <div onClick={() => signOut()}>
-          <Menu.Item.IconAndText icon={SignOutIcon} text="Sign out" />
+          <Menu.Item.IconAndText icon={LogOutIcon} text="Sign out" />
         </div>
       </Menu.List>
     </Menu>

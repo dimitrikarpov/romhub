@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
-import { DefaultViewIcon, TheaterModIcon } from "~/components/ui/icons"
+import { DefaultViewIcon, TheaterModIcon } from "./Icons"
 
 type Props = {
   isInTheaterMod: boolean

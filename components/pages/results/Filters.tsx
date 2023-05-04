@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "~/components/ui/button/Button"
-import { ThreeSlidersIcon } from "~/components/ui/icons"
+import { SlidersHorizontalIcon } from "lucide-react"
 import { platforms } from "config"
 import { TPlatformSlug } from "~/types/index"
 import { useDispatch, useSelector } from "react-redux"
@@ -32,7 +32,7 @@ export const Filters = () => {
         )}
       >
         <Button variant="transparent-transpared" onClick={toggle}>
-          <ThreeSlidersIcon />
+          <SlidersHorizontalIcon width={16} height={16} />
           Filters
         </Button>
       </div>

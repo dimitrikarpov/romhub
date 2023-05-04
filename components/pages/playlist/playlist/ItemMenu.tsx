@@ -2,13 +2,13 @@ import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPla
 import { Share } from "~/components/features/share/Share"
 import { IconButton } from "~/components/ui/icon-button/IconButton"
 import {
-  ThreeDotsMenu,
-  WatchLaterIcon,
-  AddToPlaylistIcon,
+  MoreVerticalIcon,
+  ClockIcon,
+  ListPlusIcon,
   DownloadIcon,
-  ShareIcon,
-  RubbishBinIcon,
-} from "~/components/ui/icons"
+  Share2Icon,
+  Trash2Icon,
+} from "lucide-react"
 import { Menu } from "~/components/ui/menu/Menu"
 import { DialogBox } from "~/components/ui/modal/DialogBox"
 import { Modal } from "~/components/ui/modal/Modal"
@@ -79,13 +79,15 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   return (
     <Menu>
       <Menu.Handler>
-        <IconButton icon={ThreeDotsMenu} />
+        <IconButton>
+          <MoreVerticalIcon />
+        </IconButton>
       </Menu.Handler>
       <Menu.List position="left">
         {session && (
           <div onClick={onSaveToWatchLaterClick}>
             <Menu.Item.IconAndText
-              icon={WatchLaterIcon}
+              icon={ClockIcon}
               text="Save to Watch Later"
             />
           </div>
@@ -94,7 +96,7 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         {displaySaveToDialog && (
           <div onClick={showSaveTo}>
             <Menu.Item.IconAndText
-              icon={AddToPlaylistIcon}
+              icon={ListPlusIcon}
               text="Save to playlist"
             />
           </div>
@@ -105,13 +107,13 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         </div>
 
         <div onClick={showShare}>
-          <Menu.Item.IconAndText icon={ShareIcon} text="Share" />
+          <Menu.Item.IconAndText icon={Share2Icon} text="Share" />
         </div>
 
         {displayDeleteEntryItem && (
           <div onClick={onDeleteClick}>
             <Menu.Item.IconAndText
-              icon={RubbishBinIcon}
+              icon={Trash2Icon}
               text={`Remove from ${entry.playlist.title}`}
             />
           </div>

@@ -1,4 +1,4 @@
-import { DiceIcon, HomeIcon } from "~/components/ui/icons"
+import { DicesIcon, HomeIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { Playlists } from "../sidebar/Playlists"
 import { SignInButton } from "../top-bar/SignInButton"
@@ -17,7 +17,7 @@ export const FullSidebarContent = () => {
 
       <a href="/random">
         <div className="sidebarItem">
-          <DiceIcon />
+          <DicesIcon />
           <p>Random Roms</p>
         </div>
       </a>

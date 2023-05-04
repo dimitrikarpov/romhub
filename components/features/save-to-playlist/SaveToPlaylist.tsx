@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useSession } from "next-auth/react"
-import { PlusIcon } from "~/components/ui/icons"
+import { PlusIcon } from "lucide-react"
 import { PlaylistEntry } from "./PlaylistEntry"
 import { CreatePlaylistForm, IFormInput } from "./CreatePlaylistForm"
 import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
@@ -108,7 +108,7 @@ export const SaveToPlaylist: React.FunctionComponent<Props> = ({
       {!isFormOpened && (
         <div
           onClick={onFormOpen}
-          className="c-svg-24 c-svg-w flex cursor-pointer items-center justify-center gap-2"
+          className="flex cursor-pointer items-center justify-center gap-2"
         >
           <PlusIcon />
           <div>Create new playlist</div>

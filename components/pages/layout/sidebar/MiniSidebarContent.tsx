@@ -1,4 +1,4 @@
-import { DiceIcon, HomeIcon } from "~/components/ui/icons"
+import { DicesIcon, HomeIcon } from "lucide-react"
 
 export const MiniSidebarContent = () => {
   return (
@@ -12,7 +12,7 @@ export const MiniSidebarContent = () => {
 
       <a href="/random">
         <div className="sidebarItem">
-          <DiceIcon />
+          <DicesIcon />
           <p>Random</p>
         </div>
       </a>

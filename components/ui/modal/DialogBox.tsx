@@ -1,4 +1,4 @@
-import { CrossIcon } from "../icons"
+import { XIcon } from "lucide-react"
 
 type Props = {
   children: React.ReactNode
@@ -15,8 +15,8 @@ export const DialogBox: React.FunctionComponent<Props> = ({
     <div className="flex flex-col text-sm font-normal [&>*]:px-2 [&>*]:py-2">
       <header className="flex items-center justify-between text-base/6">
         <div>{title}</div>
-        <div onClick={close} className="c-svg-24 c-svg-w cursor-pointer">
-          <CrossIcon />
+        <div onClick={close} className="cursor-pointer">
+          <XIcon />
         </div>
       </header>
 

@@ -27,7 +27,7 @@ export const Button: React.FunctionComponent<Props> = ({
       type={type}
       onClick={onClick}
       className={clsx(
-        "c-svg-24 c-svg-w flex cursor-pointer items-center gap-2 rounded-3xl border-none px-3 py-0 text-sm/9 transition-colors duration-300 disabled:pointer-events-none disabled:opacity-75",
+        "flex cursor-pointer items-center gap-2 rounded-3xl border-none px-3 py-0 text-sm/9 transition-colors duration-300 disabled:pointer-events-none disabled:opacity-75",
         maxWidth ? "w-full" : "w-fit",
         variant === "default" && "bg-[#ffffff14] text-white hover:bg-[#717171]",
         variant === "transparent-blue" &&

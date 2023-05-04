@@ -1,6 +1,6 @@
+import { Share2Icon } from "lucide-react"
 import { Share } from "~/components/features/share/Share"
 import { Button } from "~/components/ui/button/Button"
-import { ShareIcon } from "~/components/ui/icons"
 import { DialogBox } from "~/components/ui/modal/DialogBox"
 import { Modal } from "~/components/ui/modal/Modal"
 import { useModal } from "~/components/ui/modal/useModal"
@@ -11,7 +11,7 @@ export const ShareButton = () => {
   return (
     <>
       <Button onClick={show}>
-        <ShareIcon />
+        <Share2Icon />
         Share
       </Button>
 

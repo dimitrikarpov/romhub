@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState } from "react"
-import { FullscreenExitIcon, FullscreenIcon } from "~/components/ui/icons"
+import { FullscreenExitIcon, FullscreenIcon } from "./Icons"
 
 type Props = {
   canvasBoxRef: RefObject<HTMLDivElement>

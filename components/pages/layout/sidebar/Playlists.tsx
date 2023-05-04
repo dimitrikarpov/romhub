@@ -1,12 +1,12 @@
-import { useSession } from "next-auth/react"
 import {
   HistoryIcon,
-  PlaylistIcon,
-  WatchLaterIcon,
-} from "~/components/ui/icons"
-import { TPlaylistType } from "~/types/index"
+  ListVideo as PlaylistIcon,
+  Clock as WatchLaterIcon,
+} from "lucide-react"
+import { useSession } from "next-auth/react"
 import { useFetch } from "~/lib/fetcher"
 import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
+import { TPlaylistType } from "~/types/index"
 
 const getIconByType = (type: TPlaylistType) => {
   switch (type) {

@@ -12,10 +12,10 @@ import {
 } from "~/components/pages/results/searchSlice"
 import { Paginator } from "~/components/ui/paginator/Paginator"
 import { Item } from "~/components/pages/results/Item"
-import { NotFoundIcon } from "~/components/ui/icons"
 import { useFetch } from "~/lib/fetcher"
 import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
 import superjson from "superjson"
+import { NotFoundIcon } from "~/components/pages/results/NotFoundIcon"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
