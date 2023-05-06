@@ -1,6 +1,13 @@
 import { useRouter } from "next/router"
 import { useGenericMutation } from "~/lib/fetcher"
 import { type PatchPlaylist } from "~/lib/queries/db/patchPlaylist"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select/select"
 
 type Props = {
   isPublic: boolean
@@ -21,8 +28,8 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
     { invalidateQueries: [`/api/playlists/${id}`] },
   )
 
-  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const isPublic = e.target.value === "public" ? true : false
+  const onChange = (value: string): void => {
+    const isPublic = value === "public" ? true : false
     playlistMutation.mutate({
       options: {
         body: JSON.stringify({ isPublic }),
@@ -34,18 +41,19 @@ export const PrivacySelect: React.FunctionComponent<Props> = ({ isPublic }) => {
 
   return (
     <div className="ml-[-4px]">
-      <select
-        onChange={onChange}
+      <Select
+        value={isPublic ? "public" : "private"}
         defaultValue={defaultValue}
-        className="border-none bg-transparent text-sm tracking-wide text-white outline-none"
+        onValueChange={onChange}
       >
-        <option value="private" className="bg-black text-white">
-          Private
-        </option>
-        <option value="public" className="bg-black text-white">
-          Public
-        </option>
-      </select>
+        <SelectTrigger className="w-[100px]">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="private">Private</SelectItem>
+          <SelectItem value="public">Public</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   )
 }
