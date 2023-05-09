@@ -1,6 +1,6 @@
-import { Button } from "~/components/ui/button/Button"
 import { downloadRom } from "~/lib/downloadRom"
 import { DownloadIcon } from "lucide-react"
+import { YTButton } from "~/components/ui/button/YTButton"
 
 type Props = {
   name: string
@@ -12,9 +12,9 @@ export const DonwloadButton: React.FunctionComponent<Props> = ({
   file,
 }) => {
   return (
-    <Button onClick={() => downloadRom(file, name)}>
+    <YTButton onClick={() => downloadRom(file, name)}>
       <DownloadIcon />
       <span>Download</span>
-    </Button>
+    </YTButton>
   )
 }

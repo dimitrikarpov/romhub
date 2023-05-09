@@ -1,11 +1,11 @@
-import { useState } from "react"
-import { Button } from "~/components/ui/button/Button"
-import { SlidersHorizontalIcon } from "lucide-react"
-import { platforms } from "config"
-import { TPlatformSlug } from "~/types/index"
-import { useDispatch, useSelector } from "react-redux"
-import { selectPlatform, setPlatform, setSkip } from "./searchSlice"
 import clsx from "clsx"
+import { platforms } from "config"
+import { SlidersHorizontalIcon } from "lucide-react"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { YTButton } from "~/components/ui/button/YTButton"
+import { TPlatformSlug } from "~/types/index"
+import { selectPlatform, setPlatform, setSkip } from "./searchSlice"
 
 export const Filters = () => {
   const dispatch = useDispatch()
@@ -31,10 +31,10 @@ export const Filters = () => {
           isVisible && "border-b-0",
         )}
       >
-        <Button variant="transparent-transpared" onClick={toggle}>
+        <YTButton variant="transparent-transpared" onClick={toggle}>
           <SlidersHorizontalIcon width={16} height={16} />
           Filters
-        </Button>
+        </YTButton>
       </div>
 
       {isVisible && (

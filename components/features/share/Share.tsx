@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import { useRouter } from "next/router"
-import { Button } from "~/components/ui/button/Button"
+import { YTButton } from "~/components/ui/button/YTButton"
 
 type Props = {
   type?: "playlist" | "rom"
@@ -32,9 +32,9 @@ export const Share: React.FunctionComponent<Props> = (props) => {
         readOnly
         className="w-[380px] overflow-hidden whitespace-nowrap border-none bg-black text-sm text-[#f1f1f1]"
       />
-      <Button variant="blue-blue" onClick={onCopy}>
+      <YTButton variant="blue-blue" onClick={onCopy}>
         COPY
-      </Button>
+      </YTButton>
     </div>
   )
 }

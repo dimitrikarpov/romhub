@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { Button } from "../button/Button"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
+import { YTButton } from "../button/YTButton"
 
 type Props = {
   skip: number
@@ -66,9 +66,9 @@ export const Paginator: React.FunctionComponent<Props> = ({
 
   return (
     <div className="flex items-center justify-center text-base/5 font-medium [&>*:not(:last-child)]:mr-3">
-      <Button disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>
+      <YTButton disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>
         <ArrowLeftIcon />
-      </Button>
+      </YTButton>
 
       <div>
         <input
@@ -81,12 +81,12 @@ export const Paginator: React.FunctionComponent<Props> = ({
         / {totalPages}
       </div>
 
-      <Button
+      <YTButton
         disabled={!canFetchNext(pageSize, skip, total)}
         onClick={nextPage}
       >
         <ArrowRightIcon />
-      </Button>
+      </YTButton>
     </div>
   )
 }

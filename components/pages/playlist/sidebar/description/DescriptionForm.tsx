@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form"
-import { Button } from "~/components/ui/button/Button"
+import { YTButton } from "~/components/ui/button/YTButton"
 
 export interface IFormInput {
   description: string
@@ -29,12 +29,12 @@ export const DescriptionForm: React.FunctionComponent<Props> = ({
       </div>
 
       <div className="flex justify-end gap-4">
-        <Button variant="transparent-transpared" onClick={toggleToView}>
+        <YTButton variant="transparent-transpared" onClick={toggleToView}>
           Cancel
-        </Button>
-        <Button type="submit" variant="transparent-transpared">
+        </YTButton>
+        <YTButton type="submit" variant="transparent-transpared">
           Submit
-        </Button>
+        </YTButton>
       </div>
     </form>
   )

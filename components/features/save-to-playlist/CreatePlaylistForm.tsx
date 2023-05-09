@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Button } from "~/components/ui/button/Button"
+import { YTButton } from "~/components/ui/button/YTButton"
 
 enum PrivacyEnum {
   public = "public",
@@ -51,9 +51,9 @@ export const CreatePlaylistForm: React.FunctionComponent<Props> = ({
       </div>
 
       <div className="flex justify-end">
-        <Button variant="transparent-blue" type="submit">
+        <YTButton variant="transparent-blue" type="submit">
           Create
-        </Button>
+        </YTButton>
       </div>
     </form>
   )

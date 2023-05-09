@@ -1,9 +1,9 @@
 import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
-import { Button } from "~/components/ui/button/Button"
 import { ListPlusIcon } from "lucide-react"
 import { DialogBox } from "~/components/ui/modal/DialogBox"
 import { Modal } from "~/components/ui/modal/Modal"
 import { useModal } from "~/components/ui/modal/useModal"
+import { YTButton } from "~/components/ui/button/YTButton"
 
 type Props = {
   romId: string
@@ -16,10 +16,10 @@ export const SaveToPlaylistButton: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Button onClick={show}>
+      <YTButton onClick={show}>
         <ListPlusIcon />
         Save
-      </Button>
+      </YTButton>
 
       {visible && (
         <Modal>
