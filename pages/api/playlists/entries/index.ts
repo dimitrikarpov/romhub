@@ -28,8 +28,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { playlistId, romId } = req.query
 
-    console.log("on backend!!", playlistId, romId)
-
     if (!playlistId || !romId) return res.status(404).send("Not found")
 
     const result = await createPlaylistEntry({

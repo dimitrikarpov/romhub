@@ -1,25 +1,29 @@
-import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
-import { Share } from "~/components/features/share/Share"
-import { IconButton } from "~/components/ui/icon-button/IconButton"
 import {
-  MoreVerticalIcon,
   ClockIcon,
-  ListPlusIcon,
   DownloadIcon,
+  ListPlusIcon,
+  MoreVerticalIcon,
   Share2Icon,
   Trash2Icon,
 } from "lucide-react"
-import { Menu } from "~/components/ui/menu/Menu"
-import { DialogBox } from "~/components/ui/modal/DialogBox"
-import { Modal } from "~/components/ui/modal/Modal"
-import { useModal } from "~/components/ui/modal/useModal"
-import { downloadRom } from "~/lib/downloadRom"
-import { UiPlaylistEntry } from "~/types/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
+import { useState } from "react"
 import { useQueryClient } from "react-query"
+import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
+import { Share } from "~/components/features/share/Share"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog/dialog"
+import { IconButton } from "~/components/ui/icon-button/IconButton"
+import { Menu } from "~/components/ui/menu/Menu"
+import { downloadRom } from "~/lib/downloadRom"
 import { useGenericMutation } from "~/lib/fetcher"
 import { type DeletePlaylistEntryByRom } from "~/lib/queries/db/deletePlaylistEntryByRom"
+import { UiPlaylistEntry } from "~/types/index"
 import { useAddToWatchLaterMutation } from "./useAddToWatchLaterMutation"
 
 type Props = {
@@ -33,16 +37,8 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
   const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
   const displayDeleteEntryItem = canDeletePlaylistEntryById(session, entry)
 
-  const {
-    visible: isSaveToVisible,
-    show: showSaveTo,
-    close: closeSaveTo,
-  } = useModal()
-  const {
-    visible: isShareVisible,
-    show: showShare,
-    close: closeShare,
-  } = useModal()
+  const [visibleShare, setVisibleShare] = useState(false)
+  const [visibleSaveTo, setVisibleSaveTo] = useState(false)
 
   const addToWatchLaterMutation = useAddToWatchLaterMutation(entry.romId)
 
@@ -94,7 +90,11 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         )}
 
         {displaySaveToDialog && (
-          <div onClick={showSaveTo}>
+          <div
+            onClick={() => {
+              setVisibleSaveTo(true)
+            }}
+          >
             <Menu.Item.IconAndText
               icon={ListPlusIcon}
               text="Save to playlist"
@@ -106,7 +106,11 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
           <Menu.Item.IconAndText icon={DownloadIcon} text="Download" />
         </div>
 
-        <div onClick={showShare}>
+        <div
+          onClick={() => {
+            setVisibleShare(true)
+          }}
+        >
           <Menu.Item.IconAndText icon={Share2Icon} text="Share" />
         </div>
 
@@ -120,21 +124,29 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
         )}
       </Menu.List>
 
-      {isSaveToVisible && (
-        <Modal>
-          <DialogBox title="Save to..." close={closeSaveTo}>
-            <SaveToPlaylist romId={entry.romId} onClose={closeSaveTo} />
-          </DialogBox>
-        </Modal>
-      )}
+      <Dialog open={visibleSaveTo} onOpenChange={setVisibleSaveTo}>
+        <DialogContent className="w-fit max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Save to...</DialogTitle>
+          </DialogHeader>
 
-      {isShareVisible && (
-        <Modal>
-          <DialogBox title="Share" close={closeShare}>
-            <Share type="rom" id={entry.romId} />
-          </DialogBox>
-        </Modal>
-      )}
+          <SaveToPlaylist
+            romId={entry.romId}
+            onClose={() => {
+              setVisibleSaveTo(false)
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={visibleShare} onOpenChange={setVisibleShare}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Share</DialogTitle>
+          </DialogHeader>
+          <Share type="rom" id={entry.romId} />
+        </DialogContent>
+      </Dialog>
     </Menu>
   )
 }

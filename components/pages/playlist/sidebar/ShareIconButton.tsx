@@ -1,26 +1,29 @@
 import { Share2Icon } from "lucide-react"
 import { Share } from "~/components/features/share/Share"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog/dialog"
 import { IconButton } from "~/components/ui/icon-button/IconButton"
-import { DialogBox } from "~/components/ui/modal/DialogBox"
-import { Modal } from "~/components/ui/modal/Modal"
-import { useModal } from "~/components/ui/modal/useModal"
 
 export const ShareIconButton = () => {
-  const { visible, show, close } = useModal()
-
   return (
-    <>
-      <IconButton onClick={show}>
-        <Share2Icon />
-      </IconButton>
+    <Dialog>
+      <DialogTrigger>
+        <IconButton>
+          <Share2Icon />
+        </IconButton>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Share</DialogTitle>
+        </DialogHeader>
 
-      {visible && (
-        <Modal>
-          <DialogBox title="Share" close={close}>
-            <Share />
-          </DialogBox>
-        </Modal>
-      )}
-    </>
+        <Share />
+      </DialogContent>
+    </Dialog>
   )
 }

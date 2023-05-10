@@ -1,12 +1,11 @@
-import { useModal } from "~/components/ui/modal/useModal"
-import { UiRom } from "~/types/index"
 import clsx from "clsx"
 import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react"
-import { ControlsButton } from "./ControlsButton"
-import { ControlsModal } from "./ControlsModal"
+
+import { UiRom } from "~/types/index"
 import { FullscreenButton } from "./FullscreenButton"
 import { PlayPauseButton } from "./PlayPauseButton"
 import { TheaterModButton } from "./TheaterModButton"
+import { ControlsButton } from "./ControlsButton"
 
 type Props = {
   canvasBoxRef: RefObject<HTMLDivElement>
@@ -23,11 +22,6 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
 }) => {
   const timerRef = useRef<NodeJS.Timeout>()
   const [visible, setVisible] = useState(false)
-  const {
-    visible: controlsModalVisible,
-    show: showControlsModal,
-    close: closeControlsModal,
-  } = useModal()
 
   const onMouseMove = () => {
     !visible && setVisible(true)
@@ -60,7 +54,7 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
             <PlayPauseButton />
           </div>
           <div>
-            <ControlsButton show={showControlsModal} />
+            <ControlsButton platform={rom.platform} />
           </div>
           <div className="flex">
             <TheaterModButton
@@ -71,9 +65,6 @@ export const ControlsOverlay: React.FunctionComponent<Props> = ({
           </div>
         </div>
       </div>
-      {controlsModalVisible && (
-        <ControlsModal platform={rom.platform} close={closeControlsModal} />
-      )}
     </>
   )
 }
