@@ -3,11 +3,11 @@ import { getSession } from "next-auth/react"
 import { ReactElement, useState } from "react"
 import { List } from "~/components/pages/history/List"
 import { Layout } from "~/components/pages/layout/Layout"
+import { Paginator } from "~/components/ui/paginator/Paginator"
 import { useFetch } from "~/lib/fetcher"
 import prisma from "~/lib/prismadb"
-import { NextPageWithLayout } from "./_app"
 import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
-import { Paginator } from "~/components/ui/paginator/Paginator"
+import { NextPageWithLayout } from "./_app"
 
 const History: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>

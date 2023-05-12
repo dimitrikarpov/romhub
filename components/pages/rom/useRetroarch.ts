@@ -1,34 +1,38 @@
-import { RefObject, useEffect, useRef, useState } from "react"
+import { RefObject, useEffect, useRef } from "react"
 import { Retroarch } from "holy-retroarch"
-
-export type RAStatuses = "not-inited" | "in-init-progress" | "inited" | "error"
 
 export const useRetroarch = (
   coreUrl: string | undefined,
   canvas: RefObject<HTMLCanvasElement>,
 ) => {
   let retroarch = useRef<Retroarch>()
-  const [status, setStatus] = useState<RAStatuses>("not-inited")
 
   useEffect(() => {
-    if (!coreUrl || canvas.current === null || status !== "not-inited") return
+    console.log("RRRRRRRRRRrrr", retroarch.current?.status)
+
+    if (
+      !coreUrl ||
+      canvas.current === null ||
+      retroarch.current?.status !== undefined
+    )
+      return
 
     const init = async () => {
+      console.log("in init")
+
       try {
-        setStatus("in-init-progress")
         retroarch.current = new Retroarch(
           coreUrl,
           canvas.current as HTMLCanvasElement,
         )
-        await retroarch.current.init()
-        setStatus("inited")
-      } catch (e) {
-        setStatus("error")
-      }
+
+        retroarch.current.init()
+        console.log("in iiiiiiiiiiiiinit")
+      } catch (e) {}
     }
 
     init()
   }, [coreUrl, canvas])
 
-  return { status, retroarch }
+  return { retroarch }
 }

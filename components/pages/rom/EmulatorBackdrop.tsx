@@ -1,7 +1,7 @@
-import { RAStatuses } from "./useRetroarch"
+import { type RetroarchStatus } from "holy-retroarch"
 
 type Props = {
-  status: RAStatuses
+  status: RetroarchStatus
   image: string | undefined
   onStartClick: () => void
 }

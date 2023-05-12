@@ -32,7 +32,7 @@
     "express": "^4.18.2",
     "file-saver": "^2.0.5",
     "formidable": "^2.0.1",
-    "holy-retroarch": "^0.0.15",
+    "holy-retroarch": "^0.0.16",
     "javascript-time-ago": "^2.5.9",
     "lucide-react": "^0.194.0",
     "mime": "^3.0.0",
