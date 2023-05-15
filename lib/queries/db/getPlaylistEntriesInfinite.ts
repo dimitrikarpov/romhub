@@ -8,7 +8,7 @@ export type GetPlaylistEntriesInfinite = {
 
 export const getPlaylistEntriesInfinite = async ({
   playlistId,
-  take = 15,
+  take = 10,
   cursor = "",
 }: {
   playlistId: string

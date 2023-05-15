@@ -1,40 +1,26 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { getSession } from "next-auth/react"
-import React, { ReactElement } from "react"
-import { useInfiniteQuery } from "react-query"
-import superjson from "superjson"
+import React, { ReactElement, useEffect } from "react"
+import { useInView } from "react-intersection-observer"
 import { Item } from "~/components/pages/history/Item"
+import { useHistoryEntriesInfiniteQuery } from "~/components/pages/history/useHistoryEntriesInfiniteQuery"
 import { Layout } from "~/components/pages/layout/Layout"
-import { Button } from "~/components/ui/button/button"
 import prisma from "~/lib/prismadb"
-import type { GetPlaylistEntriesInfinite } from "~/lib/queries/db/getPlaylistEntriesInfinite"
 import { NextPageWithLayout } from "./_app"
 
 const History: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ id }) => {
-  const {
-    isLoading,
-    isError,
-    data,
-    error,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery<GetPlaylistEntriesInfinite["data"]>({
-    queryKey: ["history"],
-    queryFn: async ({ pageParam = "" }) => {
-      const response = await fetch(
-        `/api/playlists/entries/infinite?${new URLSearchParams({
-          cursor: pageParam,
-          playlistId: id,
-        })}`,
-      )
-      const data = await response.json()
-      return superjson.parse(data)
-    },
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? false,
-  })
+  const { ref, inView } = useInView()
+
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useHistoryEntriesInfiniteQuery(id)
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [inView])
 
   return (
     <div className="mx-auto my-0 max-w-[628px] pt-12 [&>*:not(:last-child)]:mb-8">
@@ -50,7 +36,11 @@ const History: NextPageWithLayout<
           </React.Fragment>
         ))}
 
-      {hasNextPage && <Button onClick={() => fetchNextPage()}>MOAR!!</Button>}
+      {isFetchingNextPage ? <div>Loading...</div> : null}
+
+      <span style={{ visibility: "hidden" }} ref={ref}>
+        intersection observer marker
+      </span>
     </div>
   )
 }
