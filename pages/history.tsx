@@ -1,27 +1,14 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { getSession } from "next-auth/react"
-import React, { ReactElement, useState } from "react"
-import { List } from "~/components/pages/history/List"
-import { Layout } from "~/components/pages/layout/Layout"
-import { Paginator } from "~/components/ui/paginator/Paginator"
-import { useFetch } from "~/lib/fetcher"
-import prisma from "~/lib/prismadb"
-import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
-import { NextPageWithLayout } from "./_app"
+import React, { ReactElement } from "react"
 import { useInfiniteQuery } from "react-query"
-import { Playlist } from "@prisma/client"
-import { UiRom } from "../types"
+import superjson from "superjson"
 import { Item } from "~/components/pages/history/Item"
+import { Layout } from "~/components/pages/layout/Layout"
 import { Button } from "~/components/ui/button/button"
-
-type HistoryData = {
-  rom: UiRom
-  id: string
-  romId: string
-  playlistId: string
-  assignedAt: Date
-  playlist: Playlist
-}
+import prisma from "~/lib/prismadb"
+import type { GetPlaylistEntriesInfinite } from "~/lib/queries/db/getPlaylistEntriesInfinite"
+import { NextPageWithLayout } from "./_app"
 
 const History: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -34,23 +21,21 @@ const History: NextPageWithLayout<
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<GetPlaylistEntriesInfinite["data"]>({
     queryKey: ["history"],
     queryFn: async ({ pageParam = "" }) => {
       const response = await fetch(
-        [
-          "/api/playlists/entries/infinite",
-          new URLSearchParams({ cursor: pageParam, playlistId: id }),
-        ].join("?"),
+        `/api/playlists/entries/infinite?${new URLSearchParams({
+          cursor: pageParam,
+          playlistId: id,
+        })}`,
       )
       const data = await response.json()
-
-      return data
+      return superjson.parse(data)
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? false,
   })
 
-  console.log({ data })
   return (
     <div className="mx-auto my-0 max-w-[628px] pt-12 [&>*:not(:last-child)]:mb-8">
       <h2 className="mb-2 mt-6 text-base font-light text-[#f1f1f1]">
@@ -59,7 +44,7 @@ const History: NextPageWithLayout<
       {data &&
         data.pages.map((group, i) => (
           <React.Fragment key={i}>
-            {group.data.map((entry: HistoryData) => {
+            {group.data.map((entry) => {
               return <Item entry={entry} key={entry.id} />
             })}
           </React.Fragment>

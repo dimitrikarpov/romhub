@@ -22,7 +22,7 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
           <p className="text-xl font-normal text-[#f1f1f1]">{entry.rom.name}</p>
         </a>
         <p className="text-xs font-normal text-[#aaaaaa]">
-          {/* {entry.assignedAt.toLocaleDateString()} */}
+          {entry.assignedAt.toLocaleDateString()}
         </p>
       </div>
     </div>
