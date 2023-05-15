@@ -11,10 +11,12 @@ export const getRoms = async ({
   skip = 0,
   take = 15,
   where,
+  orderBy,
 }: {
   skip?: number
   take?: number
   where?: Prisma.RomWhereInput | undefined
+  orderBy?: Prisma.RomOrderByWithAggregationInput[] | undefined
 }) => {
   let total = 0
   let data = []
@@ -25,6 +27,7 @@ export const getRoms = async ({
       ...(skip && { skip: Number(skip) }),
       ...(take && { take: Number(take) }),
       ...(where && { where }),
+      ...(orderBy && { orderBy }),
     })
   } catch (e) {
     throw new Error("Bad request")

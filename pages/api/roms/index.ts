@@ -7,13 +7,14 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
-    const { skip, take, where } = req.query
+    const { skip, take, where, orderBy } = req.query
 
     try {
       const { total, data } = await getRoms({
         ...(skip && { skip: Number(skip) }),
         ...(take && { take: Number(take) }),
         ...(where && { where: JSON.parse(where as string) }),
+        ...(orderBy && { orderBy: JSON.parse(orderBy as string) }),
       })
 
       return res

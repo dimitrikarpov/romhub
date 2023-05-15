@@ -10,12 +10,14 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import superjson from "superjson"
 import { useFetch } from "~/lib/fetcher"
 import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
+import { AlphabetPaginator } from "~/components/pages/gallery/AplhabetPaginator"
 
 const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
   const [platform, setPlatform] = useState<TPlatformSlug | undefined>()
   const [skip, setSkip] = useState(0)
+  const [startsWithLetter, setStartsWithLetter] = useState("a")
 
   const romsQuery = useFetch<GetRoms>(
     {
@@ -24,8 +26,12 @@ const Home: NextPageWithLayout<
         skip,
         take: 15,
         where: {
-          AND: [{ platform: { in: platform ? [platform] : undefined } }],
+          AND: [
+            { platform: { in: platform ? [platform] : undefined } },
+            { name: { startsWith: startsWithLetter } },
+          ],
         },
+        orderBy: [{ name: "asc" }],
       },
     },
     {
@@ -43,6 +49,11 @@ const Home: NextPageWithLayout<
     setPlatform(slug)
   }
 
+  const selectLetter = (letter: string) => {
+    setSkip(0)
+    setStartsWithLetter(letter)
+  }
+
   return (
     <>
       <Head>
@@ -53,6 +64,8 @@ const Home: NextPageWithLayout<
 
       <main className="mx-auto my-0 bg-[#0f0f0f] pt-8">
         <PlatformFilter value={platform} onChange={selectPlatform} />
+
+        <AlphabetPaginator value={startsWithLetter} onChange={selectLetter} />
 
         <Gallery roms={roms} />
 
@@ -78,7 +91,11 @@ export default Home
 export const getServerSideProps: GetServerSideProps<{
   initialData: string
 }> = async () => {
-  const initialData = await getRoms({ take: 15 })
+  const initialData = await getRoms({
+    take: 15,
+    orderBy: [{ name: "asc" }],
+    where: { AND: [{ name: { startsWith: "a" } }] },
+  })
 
   return {
     props: {
