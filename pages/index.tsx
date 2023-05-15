@@ -1,19 +1,16 @@
-import React, { ReactElement, useState } from "react"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
-import { TPlatformSlug } from "../types"
-import { NextPageWithLayout } from "./_app"
-import { Layout } from "~/components/pages/layout/Layout"
+import React, { ReactElement, useState } from "react"
+import superjson from "superjson"
+import { AlphabetPaginator } from "~/components/pages/gallery/AplhabetPaginator"
 import { Gallery } from "~/components/pages/gallery/Gallery"
 import { PlatformFilter } from "~/components/pages/gallery/PlatformFilter"
+import { useRomsQuery } from "~/components/pages/gallery/useRomsQuery"
+import { Layout } from "~/components/pages/layout/Layout"
 import { Paginator } from "~/components/ui/paginator/Paginator"
-import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import superjson from "superjson"
-import { useFetch } from "~/lib/fetcher"
-import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
-import {
-  AlphabetPaginator,
-  alphabet,
-} from "~/components/pages/gallery/AplhabetPaginator"
+import { getRoms } from "~/lib/queries/db/getRoms"
+import { TPlatformSlug } from "../types"
+import { NextPageWithLayout } from "./_app"
 
 const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -22,37 +19,12 @@ const Home: NextPageWithLayout<
   const [skip, setSkip] = useState(0)
   const [startsWithLetter, setStartsWithLetter] = useState("a")
 
-  const romsQuery = useFetch<GetRoms>(
-    {
-      url: "/api/roms",
-      search: {
-        skip,
-        take: 15,
-        where: {
-          AND: [
-            { platform: { in: platform ? [platform] : undefined } },
-            startsWithLetter !== "#"
-              ? {
-                  name: { startsWith: startsWithLetter },
-                }
-              : {},
-          ],
-          ...(startsWithLetter === "#" && {
-            NOT: alphabet.map((letter) => ({ name: { startsWith: letter } })),
-          }),
-        },
-        orderBy: [{ name: "asc" }],
-      },
-    },
-    {
-      initialData: superjson.parse(initialData),
-      keepPreviousData: true,
-    },
-  )
-
-  const { data } = romsQuery
-  const roms = data?.data
-  const total = data?.total
+  const { data: romsQueryData } = useRomsQuery({
+    skip,
+    platform,
+    startsWithLetter,
+    initialData,
+  })
 
   const selectPlatform = (slug: TPlatformSlug | undefined) => {
     setSkip(0)
@@ -77,13 +49,13 @@ const Home: NextPageWithLayout<
 
         <AlphabetPaginator value={startsWithLetter} onChange={selectLetter} />
 
-        <Gallery roms={roms} />
+        <Gallery roms={romsQueryData?.data} />
 
         <div className="px-0 py-12">
           <Paginator
             skip={skip}
             setSkip={setSkip}
-            total={total}
+            total={romsQueryData?.total}
             pageSize={15}
           />
         </div>
