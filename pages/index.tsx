@@ -10,7 +10,10 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import superjson from "superjson"
 import { useFetch } from "~/lib/fetcher"
 import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
-import { AlphabetPaginator } from "~/components/pages/gallery/AplhabetPaginator"
+import {
+  AlphabetPaginator,
+  alphabet,
+} from "~/components/pages/gallery/AplhabetPaginator"
 
 const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -28,8 +31,15 @@ const Home: NextPageWithLayout<
         where: {
           AND: [
             { platform: { in: platform ? [platform] : undefined } },
-            { name: { startsWith: startsWithLetter } },
+            startsWithLetter !== "#"
+              ? {
+                  name: { startsWith: startsWithLetter },
+                }
+              : {},
           ],
+          ...(startsWithLetter === "#" && {
+            NOT: alphabet.map((letter) => ({ name: { startsWith: letter } })),
+          }),
         },
         orderBy: [{ name: "asc" }],
       },

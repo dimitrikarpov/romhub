@@ -13,7 +13,7 @@ export const AlphabetPaginator: React.FunctionComponent<Props> = ({
 }) => {
   return (
     <div className="flex h-14 items-center gap-3 bg-[#0f0f0f] px-2 py-0">
-      {alphabet.map((letter) => (
+      {["#", ...alphabet].map((letter) => (
         <span
           key={letter}
           onClick={() => onChange(letter)}
