@@ -12,26 +12,42 @@ export const getRoms = async ({
   take = 15,
   where,
   orderBy,
+  cursor,
 }: {
   skip?: number
   take?: number
   where?: Prisma.RomWhereInput | undefined
   orderBy?: Prisma.RomOrderByWithAggregationInput[] | undefined
+  cursor?: string
 }) => {
-  let total = 0
-  let data = []
+  let total: number | undefined = undefined
+  let cursorObj: { id: string } | undefined = undefined
 
-  try {
+  const paginationType = typeof cursor === "string" ? "cursor" : "offset"
+
+  console.log({ paginationType, cursor })
+
+  if (paginationType === "offset") {
     total = await prisma.rom.count(where ? { where } : undefined)
-    data = await prisma.rom.findMany({
-      ...(skip && { skip: Number(skip) }),
-      ...(take && { take: Number(take) }),
-      ...(where && { where }),
-      ...(orderBy && { orderBy }),
-    })
-  } catch (e) {
-    throw new Error("Bad request")
   }
 
-  return { total, data: data.map(convertEntity.rom.toUiRom) }
+  if (paginationType === "cursor") {
+    cursorObj = cursor === "" ? undefined : { id: cursor as string }
+  }
+
+  const data = await prisma.rom.findMany({
+    ...(take && { take: Number(take) }),
+    ...(where && { where }),
+    ...(orderBy && { orderBy }),
+    ...(paginationType === "offset" && { skip: Number(skip) }),
+    ...(paginationType === "cursor" && { cursor: cursorObj }),
+  })
+
+  return {
+    ...(paginationType === "offset" && { total }),
+    ...(paginationType === "cursor" && {
+      nextCursor: data.length === take ? data[take - 1].id : undefined,
+    }),
+    data: data.map(convertEntity.rom.toUiRom),
+  }
 }

@@ -7,7 +7,11 @@ import { YTButton } from "~/components/ui/button/YTButton"
 import { TPlatformSlug } from "~/types/index"
 import { selectPlatform, setPlatform, setSkip } from "./searchSlice"
 
-export const Filters = () => {
+type Props = {
+  refetch: () => void
+}
+
+export const Filters: React.FunctionComponent<Props> = ({ refetch }) => {
   const dispatch = useDispatch()
   const platform = useSelector(selectPlatform)
 
@@ -19,8 +23,11 @@ export const Filters = () => {
 
   const select = (shortName: TPlatformSlug | undefined) => {
     dispatch(setPlatform(shortName))
-    dispatch(setSkip(0))
+    // dispatch(setSkip(0))
     setIsVisible(false)
+    setTimeout(() => {
+      refetch()
+    })
   }
 
   return (
