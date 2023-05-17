@@ -44,6 +44,8 @@ const PlaylistPage: NextPageWithLayout<
   const thumbnail =
     entries?.pages[0]?.data[0]?.rom?.images[0] || "/assets/placeholder.png"
 
+  const total = entries?.pages[0]?.total || 0
+
   return (
     <>
       <Head>
@@ -59,7 +61,7 @@ const PlaylistPage: NextPageWithLayout<
           playlist={playlist!}
           thumbnail={thumbnail}
           // total={entries?.total || 0}
-          total={0}
+          total={total}
         />
         <div className="basis-full">
           {entries &&

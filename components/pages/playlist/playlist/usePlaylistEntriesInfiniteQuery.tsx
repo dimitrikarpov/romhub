@@ -20,11 +20,10 @@ const fetchPlaylistEntriesInfinite = async (
       cursor: pageParam,
       playlistId,
       take: "10",
+      withTotal: "true",
     })}`,
   )
   const data = await response.json()
-
-  console.log({ data })
 
   return superjson.parse(data) as GetPlaylistsEntries["data"]
 }

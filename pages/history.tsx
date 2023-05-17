@@ -3,8 +3,8 @@ import { getSession } from "next-auth/react"
 import React, { ReactElement, useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { Item } from "~/components/pages/history/Item"
-import { useHistoryEntriesInfiniteQuery } from "~/components/pages/history/useHistoryEntriesInfiniteQuery"
 import { Layout } from "~/components/pages/layout/Layout"
+import { usePlaylistEntriesInfiniteQuery } from "~/components/pages/playlist/playlist/usePlaylistEntriesInfiniteQuery"
 import prisma from "~/lib/prismadb"
 import { NextPageWithLayout } from "./_app"
 
@@ -14,7 +14,7 @@ const History: NextPageWithLayout<
   const { ref, inView } = useInView()
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    useHistoryEntriesInfiniteQuery(id)
+    usePlaylistEntriesInfiniteQuery(id)
 
   useEffect(() => {
     if (inView && hasNextPage) {
