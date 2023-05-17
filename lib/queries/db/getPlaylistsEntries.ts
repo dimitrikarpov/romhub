@@ -43,7 +43,10 @@ export const getPlaylistsEntries = async ({
     ...(orderBy && { orderBy }),
     ...(take && { take: Number(take) }),
     ...(paginationType === "offset" && { skip: Number(skip) }),
-    ...(paginationType === "cursor" && { cursor: cursorObj }),
+    ...(paginationType === "cursor" && {
+      cursor: cursorObj,
+      skip: cursor === "" ? 0 : 1,
+    }),
   })
 
   return {

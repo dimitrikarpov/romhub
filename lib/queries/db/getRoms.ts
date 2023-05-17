@@ -25,8 +25,6 @@ export const getRoms = async ({
 
   const paginationType = typeof cursor === "string" ? "cursor" : "offset"
 
-  console.log({ paginationType, cursor })
-
   if (paginationType === "offset") {
     total = await prisma.rom.count(where ? { where } : undefined)
   }
@@ -40,7 +38,10 @@ export const getRoms = async ({
     ...(where && { where }),
     ...(orderBy && { orderBy }),
     ...(paginationType === "offset" && { skip: Number(skip) }),
-    ...(paginationType === "cursor" && { cursor: cursorObj }),
+    ...(paginationType === "cursor" && {
+      cursor: cursorObj,
+      skip: cursor === "" ? 0 : 1,
+    }),
   })
 
   return {
