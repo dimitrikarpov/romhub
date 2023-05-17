@@ -49,7 +49,7 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className="flex h-[876px] w-full max-w-[23rem] flex-col gap-6 rounded-2xl bg-gradient-to-b from-[rgba(60,65,114,0.8)] to-[rgba(15,15,15,1)] p-6">
+    <div className="sticky top-2 flex h-[876px] w-full max-w-[23rem] flex-col gap-6 rounded-2xl bg-gradient-to-b from-[rgba(60,65,114,0.8)] to-[rgba(15,15,15,1)] p-6">
       <img
         src={thumbnail}
         className="w-full rounded-xl"
