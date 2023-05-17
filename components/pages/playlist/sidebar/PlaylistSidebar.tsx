@@ -1,8 +1,6 @@
 import { useRouter } from "next/router"
 import { Trash2Icon } from "lucide-react"
 import { Playlist, User } from "@prisma/client"
-import TimeAgo from "javascript-time-ago"
-import en from "javascript-time-ago/locale/en"
 import { IconButton } from "~/components/ui/icon-button/IconButton"
 import { Title } from "./title/Title"
 import { Description } from "./description/Description"
@@ -13,24 +11,16 @@ import { ShareIconButton } from "./ShareIconButton"
 import { SaveOrDeleteSharedPlaylistButton } from "./SaveOrDeleteSharedPlaylistButton"
 import { useGenericMutation } from "~/lib/fetcher"
 
-// TODO: make a singleton to prevent
-//  [javascript-time-ago] `TimeAgo.addDefaultLocale()` can only be called once. To add other locales, use `TimeAgo.addLocale()`.
-// or use https://github.com/catamphetamine/javascript-time-ago/issues/52
-TimeAgo.addDefaultLocale(en)
-const timeAgo = new TimeAgo("en-US")
-
 type Props = {
   playlist: Playlist & { author: User }
   thumbnail?: string
   total: number
-  lastUpdated?: Date
 }
 
 export const PlaylistSidebar: React.FunctionComponent<Props> = ({
   playlist,
   thumbnail,
   total,
-  lastUpdated,
 }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -76,10 +66,6 @@ export const PlaylistSidebar: React.FunctionComponent<Props> = ({
 
       <div className="flex gap-4 text-xs font-normal leading-5 text-[#ffffffb3]">
         <div>{total} games</div>
-        <div>
-          Updated{" "}
-          {lastUpdated ? timeAgo.format(lastUpdated, "round-minute") : "never"}
-        </div>
       </div>
 
       <div className="flex gap-4">

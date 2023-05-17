@@ -21,7 +21,7 @@ export const getPlaylistEntriesInfinite = async ({
     where: { playlistId: playlistId as string },
     include: { rom: true, playlist: true },
     orderBy: { assignedAt: "desc" },
-    take: take,
+    take,
     skip: cursor !== "" ? 1 : 0,
     cursor: cursorObj,
   })

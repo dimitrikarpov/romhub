@@ -12,26 +12,49 @@ export const getPlaylistsEntries = async ({
   skip = 0,
   take = 15,
   orderBy,
+  cursor,
 }: {
   playlistId: string
-  skip?: number
   take?: number
   orderBy?: Prisma.PlaylistEntryOrderByWithAggregationInput | undefined
+  skip?: number
+  cursor?: string
 }) => {
-  let total = 0
-  let data = []
+  let total: number | undefined = undefined
+  let cursorObj: { id: string } | undefined = undefined
 
-  total = await prisma.playlistEntry.count({ where: { playlistId } })
-  data = await prisma.playlistEntry.findMany({
-    ...(skip && { skip: Number(skip) }),
-    ...(take && { take: Number(take) }),
-    ...(orderBy && { orderBy }),
+  console.log(2, { cursor, take })
+
+  const paginationType = typeof cursor === "string" ? "cursor" : "offset"
+
+  if (paginationType === "offset") {
+    total = await prisma.playlistEntry.count({
+      where: { playlistId },
+    })
+  }
+
+  if (paginationType === "cursor") {
+    cursorObj = cursor === "" ? undefined : { id: cursor as string }
+  }
+
+  console.log(3, { paginationType, cursorObj })
+
+  const data = await prisma.playlistEntry.findMany({
     where: { playlistId: playlistId },
     include: { rom: true, playlist: true },
+    ...(orderBy && { orderBy }),
+    ...(take && { take: Number(take) }),
+    ...(paginationType === "offset" && { skip: Number(skip) }),
+    ...(paginationType === "cursor" && { cursor: cursorObj }),
   })
 
+  console.log(4, { data })
+
   return {
-    total,
+    ...(paginationType === "offset" && { total }),
+    ...(paginationType === "cursor" && {
+      nextCursor: data.length === take ? data[take - 1].id : undefined,
+    }),
     data: data.map((item) => ({
       ...item,
       rom: convertEntity.rom.toUiRom(item.rom),
