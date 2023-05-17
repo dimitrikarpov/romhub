@@ -1,100 +1,83 @@
-import { useEffect, useState } from "react"
+import { Pagination as HeadlessPagination } from "react-headless-pagination"
+import clsx from "clsx"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
-import { YTButton } from "../button/YTButton"
 
 type Props = {
+  /* total entries */
+  total?: number
+  /* current skip (entries) */
   skip: number
-  setSkip: (skip: number) => void
-  total: number | undefined
-  pageSize?: number
+  /* page size (entries) */
+  take: number
+
+  onChange: (newSkip: number) => void
 }
 
 export const Paginator: React.FunctionComponent<Props> = ({
+  total,
   skip,
-  setSkip,
-  total = 0,
-  pageSize = 10,
+  take,
+  onChange,
 }) => {
-  const [value, setValue] = useState<number>(1)
+  if (!total) return null
 
-  const totalPages = Math.ceil(total / pageSize)
+  const currentPage = skip / take
+  const totalPages = Math.ceil(total / take)
 
-  useEffect(() => {
-    if (skip === 0) {
-      setValue(1)
-    }
-  }, [skip])
+  const handlePageChange = (newPageNumber: number) => {
+    console.log({ currentPage, newPageNumber })
 
-  const setPage = (page: number) => {
-    if (page > totalPages || page <= 0) return
-
-    setSkip(page * pageSize)
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    onChange(newPageNumber * take)
   }
-
-  const nextPage = async () => {
-    if (!canFetchNext(pageSize, skip, total)) return
-
-    setSkip(skip + pageSize)
-    setValue(value + 1)
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
-  const prevPage = async () => {
-    if (!canFetchPrev(pageSize, skip)) return
-
-    setSkip(skip - pageSize)
-    setValue(value - 1)
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value)
-
-    if (value > totalPages || value <= 0) return
-
-    setValue(value)
-  }
-
-  const onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter") return
-
-    setPage(value)
-  }
-
-  if (total <= pageSize) return null
 
   return (
-    <div className="flex items-center justify-center text-base/5 font-medium [&>*:not(:last-child)]:mr-3">
-      <YTButton disabled={!canFetchPrev(pageSize, skip)} onClick={prevPage}>
+    <HeadlessPagination
+      currentPage={currentPage}
+      setCurrentPage={handlePageChange}
+      totalPages={totalPages}
+      className="flex h-10 w-full select-none items-center text-sm"
+      truncableText="..."
+      truncableClassName="w-10 px-0.5 text-center"
+      edgePageCount={1}
+      middlePagesSiblingCount={2}
+    >
+      <HeadlessPagination.PrevButton
+        as={<button />}
+        className={clsx(
+          "mr-2 flex items-center text-gray-500 hover:text-gray-600 dark:hover:text-gray-200",
+          {
+            "cursor-pointer": skip / 15 !== 0,
+            "opacity-50": skip / 15 === 0,
+          },
+        )}
+      >
         <ArrowLeftIcon />
-      </YTButton>
+      </HeadlessPagination.PrevButton>
 
-      <div>
-        <input
-          type="number"
-          value={String(value)}
-          onChange={onInputChange}
-          onKeyDown={onInputKeyDown}
-          className="w-[50px] rounded-lg border-gray-600 bg-black text-center text-white"
-        />{" "}
-        / {totalPages}
-      </div>
+      <nav className="flex flex-grow justify-center">
+        <ul className="flex items-center">
+          <HeadlessPagination.PageButton
+            activeClassName="bg-primary-50 dark:bg-opacity-0 text-primary-600 dark:text-white"
+            inactiveClassName="text-gray-500"
+            className={
+              "hover:text-primary-600 focus:text-primary-600 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full focus:font-bold focus:outline-none"
+            }
+          />
+        </ul>
+      </nav>
 
-      <YTButton
-        disabled={!canFetchNext(pageSize, skip, total)}
-        onClick={nextPage}
+      <HeadlessPagination.NextButton
+        as={<button />}
+        className={clsx(
+          "mr-2 flex items-center text-gray-500 hover:text-gray-600 dark:hover:text-gray-200",
+          {
+            "cursor-pointer": currentPage !== totalPages - 1,
+            "opacity-50": currentPage === totalPages - 1,
+          },
+        )}
       >
         <ArrowRightIcon />
-      </YTButton>
-    </div>
+      </HeadlessPagination.NextButton>
+    </HeadlessPagination>
   )
-}
-
-const canFetchNext = (pageSize: number, skip: number, total: number) => {
-  return skip + pageSize <= total
-}
-
-const canFetchPrev = (pageSize: number, skip: number) => {
-  return skip >= pageSize
 }

@@ -36,6 +36,11 @@ const Home: NextPageWithLayout<
     setStartsWithLetter(letter)
   }
 
+  const onPageChange = (newSkip: number) => {
+    setSkip(newSkip)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   return (
     <>
       <Head>
@@ -51,12 +56,12 @@ const Home: NextPageWithLayout<
 
         <Gallery roms={romsQueryData?.data} />
 
-        <div className="px-0 py-12">
+        <div className="mx-auto w-fit px-0 py-12">
           <Paginator
             skip={skip}
-            setSkip={setSkip}
+            take={15}
             total={romsQueryData?.total}
-            pageSize={15}
+            onChange={onPageChange}
           />
         </div>
       </main>
