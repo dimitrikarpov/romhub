@@ -4,10 +4,11 @@ import type { GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 
 export const usePlaylistEntriesInfiniteQuery = (playlistId: string) => {
   return useInfiniteQuery<GetPlaylistsEntries["data"]>({
-    queryKey: ["playlist", { playlistId }],
+    queryKey: ["/api/playlists/entries", { playlistId }],
     queryFn: async ({ pageParam = "" }) =>
       fetchPlaylistEntriesInfinite(playlistId, pageParam),
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? false,
+    refetchOnWindowFocus: false,
   })
 }
 

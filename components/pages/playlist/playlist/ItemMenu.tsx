@@ -9,7 +9,7 @@ import {
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
-import { useQueryClient } from "react-query"
+import { InfiniteData, useQueryClient } from "react-query"
 import { SaveToPlaylist } from "~/components/features/save-to-playlist/SaveToPlaylist"
 import { Share } from "~/components/features/share/Share"
 import {
@@ -25,6 +25,7 @@ import { useGenericMutation } from "~/lib/fetcher"
 import { type DeletePlaylistEntryByRom } from "~/lib/queries/db/deletePlaylistEntryByRom"
 import { UiPlaylistEntry } from "~/types/index"
 import { useAddToWatchLaterMutation } from "./useAddToWatchLaterMutation"
+import { GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 
 type Props = {
   entry: UiPlaylistEntry
@@ -48,12 +49,28 @@ export const ItemMenu: React.FunctionComponent<Props> = ({ entry }) => {
       options: { method: "DELETE" },
     },
     {
-      invalidateQueries: ["/api/playlists/entries"],
-      onSuccess: () => {
-        queryClient.invalidateQueries(["/api/playlists/contains-rom"])
+      invalidateQueries: [["/api/playlists/contains-rom"]],
+      onSuccess: (data) => {
+        queryClient.setQueryData<
+          InfiniteData<GetPlaylistsEntries["data"]> | undefined
+        >(
+          ["/api/playlists/entries", { playlistId: entry.playlistId }],
+          (oldData) => {
+            if (!oldData) return oldData
+            const newPages = oldData?.pages.map((page) => ({
+              ...page,
+              data: page.data.filter(
+                (originEntry) => originEntry.id !== entry.id,
+              ),
+            }))
+            newPages[0].total = newPages[0].total
+              ? newPages[0].total - 1
+              : undefined
+            return { ...oldData, pages: newPages }
+          },
+        )
       },
     },
-    //     ["/api/playlists/entries", new URLSearchParams({ playlistId })].join("?"),
   )
 
   const onSaveToWatchLaterClick = () => {
