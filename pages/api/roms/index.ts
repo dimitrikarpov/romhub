@@ -7,19 +7,18 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "GET") {
-    const { skip, take, where, orderBy } = req.query
+    const { skip, take, where, cursor, orderBy } = req.query
 
     try {
-      const { total, data } = await getRoms({
+      const found = await getRoms({
         ...(skip && { skip: Number(skip) }),
         ...(take && { take: Number(take) }),
+        ...(typeof cursor === "string" && { cursor: cursor as string }),
         ...(where && { where: JSON.parse(where as string) }),
         ...(orderBy && { orderBy: JSON.parse(orderBy as string) }),
       })
 
-      return res
-        .status(200)
-        .json(superjson.stringify({ total, take, skip, data }))
+      return res.status(200).json(superjson.stringify(found))
     } catch (e) {
       return res.status(404).send("Not found!")
     }

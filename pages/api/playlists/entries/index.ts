@@ -5,7 +5,7 @@ import { getPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    const { playlistId, skip, take, orderBy } = req.query
+    const { playlistId, skip, take, cursor, orderBy, withTotal } = req.query
 
     if (!playlistId) return res.status(404).send("Not found")
 
@@ -13,7 +13,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       playlistId: playlistId as string,
       ...(skip && { skip: Number(skip) }),
       ...(take && { take: Number(take) }),
+      ...(typeof cursor === "string" && { cursor: cursor as string }),
       ...(orderBy && { orderBy: JSON.parse(orderBy as string) }),
+      ...(withTotal && { withTotal: true }),
     })
 
     if (!found) return res.status(404).send("Not found")

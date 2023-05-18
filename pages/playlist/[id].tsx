@@ -11,32 +11,40 @@ import {
   getPlaylistById,
   type GetPlaylistById,
 } from "~/lib/queries/db/getPlaylistById"
-import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
-import { UiPlaylistEntry } from "~/types/index"
 import { NextPageWithLayout } from "../_app"
-import { useState } from "react"
-import { Paginator } from "~/components/ui/paginator/Paginator"
+import React, { useEffect, useState } from "react"
+import { usePlaylistEntriesInfiniteQuery } from "~/components/pages/playlist/playlist/usePlaylistEntriesInfiniteQuery"
+import { useInView } from "react-intersection-observer"
 
 const PlaylistPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
   const router = useRouter()
   const { id } = router.query
-  const [skip, setSkip] = useState(0)
+  const { ref, inView } = useInView()
 
   const { data: playlist } = useFetch<GetPlaylistById>(
     { url: `/api/playlists/${id}` },
     { initialData: superjson.parse(initialData.playlist) },
   )
 
-  const { data: entries } = useFetch<GetPlaylistsEntries>({
-    url: "/api/playlists/entries",
-    search: { playlistId: id as string, skip, take: 10 },
-  })
+  const {
+    data: entries,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = usePlaylistEntriesInfiniteQuery(id as string)
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [inView])
 
   const thumbnail =
-    entries?.data?.[0]?.rom?.images?.[0] || "/assets/placeholder.png"
-  const lastEntryTimestamp = getLatestEntryTimestamp(entries?.data) // TODO: [perf] use memo
+    entries?.pages[0]?.data[0]?.rom?.images[0] || "/assets/placeholder.png"
+
+  const total = entries?.pages[0]?.total || 0
 
   return (
     <>
@@ -52,21 +60,24 @@ const PlaylistPage: NextPageWithLayout<
         <PlaylistSidebar
           playlist={playlist!}
           thumbnail={thumbnail}
-          total={entries?.total || 0}
-          lastUpdated={lastEntryTimestamp}
+          // total={entries?.total || 0}
+          total={total}
         />
         <div className="basis-full">
-          {entries?.data?.map((entry) => (
-            <Item entry={entry} key={entry.romId} />
-          ))}
-          <div className="px-0 py-12">
-            <Paginator
-              skip={skip}
-              setSkip={setSkip}
-              total={entries?.total}
-              pageSize={10}
-            />
-          </div>
+          {entries &&
+            entries.pages.map((group, i) => (
+              <React.Fragment key={i}>
+                {group.data.map((entry) => (
+                  <Item entry={entry} key={entry.id} />
+                ))}
+              </React.Fragment>
+            ))}
+
+          {isFetchingNextPage ? <div>Loading...</div> : null}
+
+          <span style={{ visibility: "hidden" }} ref={ref}>
+            intersection observer marker
+          </span>
         </div>
       </div>
     </>
@@ -105,13 +116,4 @@ export const getServerSideProps: GetServerSideProps<{
       },
     },
   }
-}
-
-const getLatestEntryTimestamp = (entries: UiPlaylistEntry[] = []) => {
-  const latestEntryTimestamp = entries.reduce((acc, entry) => {
-    const entryTime = new Date(String(entry.assignedAt)).getTime()
-    return entryTime > acc ? entryTime : acc
-  }, 0)
-
-  return latestEntryTimestamp ? new Date(latestEntryTimestamp) : undefined
 }

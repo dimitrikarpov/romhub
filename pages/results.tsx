@@ -1,76 +1,78 @@
-import { ReactElement } from "react"
-import { NextPageWithLayout } from "./_app"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import React, { ReactElement, useEffect } from "react"
+import { useInView } from "react-intersection-observer"
+import { useInfiniteQuery } from "react-query"
+import { useSelector } from "react-redux"
+import superjson from "superjson"
 import { Layout } from "~/components/pages/layout/Layout"
 import { Filters } from "~/components/pages/results/Filters"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  selectSearch,
-  selectPlatform,
-  selectSkip,
-  setSkip,
-} from "~/components/pages/results/searchSlice"
-import { Paginator } from "~/components/ui/paginator/Paginator"
 import { Item } from "~/components/pages/results/Item"
-import { useFetch } from "~/lib/fetcher"
-import { getRoms, type GetRoms } from "~/lib/queries/db/getRoms"
-import superjson from "superjson"
 import { NotFoundIcon } from "~/components/pages/results/NotFoundIcon"
+import {
+  selectPlatform,
+  selectSearch,
+} from "~/components/pages/results/searchSlice"
+import { type GetRoms } from "~/lib/queries/db/getRoms"
+import { TPlatformSlug } from "../types"
+import { NextPageWithLayout } from "./_app"
 
 const Results: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ initialData, search_query }) => {
-  const dispatch = useDispatch()
-  const skip = useSelector(selectSkip)
+> = ({ search_query }) => {
+  const { ref, inView } = useInView()
   const platform = useSelector(selectPlatform)
   const search = useSelector(selectSearch)
 
-  const romsQuery = useFetch<GetRoms>(
-    {
-      url: "/api/roms",
-      search: {
-        skip,
-        take: 5,
-        where: {
-          AND: [
-            {
-              platform: {
-                in: platform ? [platform] : undefined,
-              },
-            },
-            {
-              name: { contains: search || search_query },
-            },
-          ],
-        },
-      },
-    },
-    {
-      initialData: superjson.parse(initialData),
-    },
-  )
+  const {
+    data,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    refetch,
+    isFetched,
+  } = useInfiniteQuery<GetRoms["data"]>({
+    queryKey: ["results"],
+    queryFn: async ({ pageParam = "" }) =>
+      queryFn(pageParam, platform, search, search_query),
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? false,
+    refetchOnWindowFocus: false,
+  })
 
-  const doSkip = (skip: number) => {
-    dispatch(setSkip(skip))
-  }
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [inView])
 
-  const { data } = romsQuery
-  const roms = data?.data
-  const total = data?.total
+  useEffect(() => {
+    if (!search) return
+    refetch()
+  }, [search])
 
   return (
     <div className="mx-auto my-0 max-w-[900px] pb-12 pt-8">
       <div className="pb-12">
-        <Filters />
+        <Filters refetch={refetch} />
       </div>
 
       <div className="flex flex-col gap-8 pb-12">
-        {roms?.map((rom) => (
-          <Item rom={rom} key={rom.id} />
-        ))}
+        {data &&
+          data.pages.map((group, i) => (
+            <React.Fragment key={i}>
+              {group.data.map((entry) => (
+                <Item rom={entry} key={entry.id} />
+              ))}
+            </React.Fragment>
+          ))}
       </div>
 
-      {total === 0 && (
+      {isFetchingNextPage ? <div>Loading...</div> : null}
+
+      <span style={{ visibility: "hidden" }} ref={ref}>
+        intersection observer marker
+      </span>
+
+      {isFetched && data?.pages[0].data.length === 0 && (
         <div className="mx-auto my-0 flex flex-col items-center pt-[140px] text-center">
           <div className="[&_svg]:w-[424px]">
             <NotFoundIcon />
@@ -85,8 +87,6 @@ const Results: NextPageWithLayout<
           </div>
         </div>
       )}
-
-      <Paginator skip={skip} setSkip={doSkip} total={total} pageSize={5} />
     </div>
   )
 }
@@ -98,7 +98,6 @@ Results.getLayout = function getLayout(page: ReactElement) {
 export default Results
 
 export const getServerSideProps: GetServerSideProps<{
-  initialData: string
   search_query: string
 }> = async (context) => {
   const { search_query } = context.query
@@ -109,15 +108,37 @@ export const getServerSideProps: GetServerSideProps<{
     }
   }
 
-  const initialData = await getRoms({
-    where: { name: { contains: search_query } },
-    take: 5,
-  })
-
   return {
     props: {
-      initialData: superjson.stringify(initialData),
       search_query,
     },
   }
+}
+
+const queryFn = async (
+  pageParam: string,
+  platform: TPlatformSlug | undefined,
+  search: string | undefined,
+  search_query: string,
+) => {
+  const response = await fetch(
+    `/api/roms?${new URLSearchParams({
+      cursor: pageParam,
+      take: "5",
+      where: JSON.stringify({
+        AND: [
+          {
+            platform: {
+              in: platform ? [platform] : undefined,
+            },
+          },
+          {
+            name: { contains: search || search_query },
+          },
+        ],
+      }),
+    })}`,
+  )
+  const data = await response.json()
+  return superjson.parse(data) as GetRoms["data"]
 }

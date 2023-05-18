@@ -1,40 +1,46 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { getSession } from "next-auth/react"
-import { ReactElement, useState } from "react"
-import { List } from "~/components/pages/history/List"
+import React, { ReactElement, useEffect } from "react"
+import { useInView } from "react-intersection-observer"
+import { Item } from "~/components/pages/history/Item"
 import { Layout } from "~/components/pages/layout/Layout"
-import { Paginator } from "~/components/ui/paginator/Paginator"
-import { useFetch } from "~/lib/fetcher"
+import { usePlaylistEntriesInfiniteQuery } from "~/components/pages/playlist/playlist/usePlaylistEntriesInfiniteQuery"
 import prisma from "~/lib/prismadb"
-import { type GetPlaylistsEntries } from "~/lib/queries/db/getPlaylistsEntries"
 import { NextPageWithLayout } from "./_app"
 
 const History: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ id }) => {
-  const [skip, setSkip] = useState(0)
+  const { ref, inView } = useInView()
 
-  const { data } = useFetch<GetPlaylistsEntries>({
-    url: "/api/playlists/entries",
-    search: {
-      playlistId: id,
-      skip,
-      take: 15,
-      orderBy: { assignedAt: "desc" },
-    },
-  })
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    usePlaylistEntriesInfiniteQuery(id)
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [inView])
 
   return (
-    <div>
-      {!!data?.data && <List entries={data.data} />}
-      <div className="px-0 py-12">
-        <Paginator
-          skip={skip}
-          setSkip={setSkip}
-          total={data?.total}
-          pageSize={15}
-        />
-      </div>
+    <div className="mx-auto my-0 max-w-[628px] pt-12 [&>*:not(:last-child)]:mb-8">
+      <h2 className="mb-2 mt-6 text-base font-light text-[#f1f1f1]">
+        Watch history
+      </h2>
+      {data &&
+        data.pages.map((group, i) => (
+          <React.Fragment key={i}>
+            {group.data.map((entry) => {
+              return <Item entry={entry} key={entry.id} />
+            })}
+          </React.Fragment>
+        ))}
+
+      {isFetchingNextPage ? <div>Loading...</div> : null}
+
+      <span style={{ visibility: "hidden" }} ref={ref}>
+        intersection observer marker
+      </span>
     </div>
   )
 }
