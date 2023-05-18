@@ -1,4 +1,4 @@
-import { Pagination as HeadlessPagination } from "react-headless-pagination"
+import { Pagination } from "react-headless-pagination"
 import clsx from "clsx"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 
@@ -25,13 +25,11 @@ export const Paginator: React.FunctionComponent<Props> = ({
   const totalPages = Math.ceil(total / take)
 
   const handlePageChange = (newPageNumber: number) => {
-    console.log({ currentPage, newPageNumber })
-
     onChange(newPageNumber * take)
   }
 
   return (
-    <HeadlessPagination
+    <Pagination
       currentPage={currentPage}
       setCurrentPage={handlePageChange}
       totalPages={totalPages}
@@ -41,22 +39,22 @@ export const Paginator: React.FunctionComponent<Props> = ({
       edgePageCount={1}
       middlePagesSiblingCount={2}
     >
-      <HeadlessPagination.PrevButton
+      <Pagination.PrevButton
         as={<button />}
         className={clsx(
           "mr-2 flex items-center text-gray-500 hover:text-gray-600 dark:hover:text-gray-200",
           {
-            "cursor-pointer": skip / 15 !== 0,
-            "opacity-50": skip / 15 === 0,
+            "cursor-pointer": currentPage !== 0,
+            "opacity-50": currentPage === 0,
           },
         )}
       >
         <ArrowLeftIcon />
-      </HeadlessPagination.PrevButton>
+      </Pagination.PrevButton>
 
       <nav className="flex flex-grow justify-center">
         <ul className="flex items-center">
-          <HeadlessPagination.PageButton
+          <Pagination.PageButton
             activeClassName="bg-primary-50 dark:bg-opacity-0 text-primary-600 dark:text-white"
             inactiveClassName="text-gray-500"
             className={
@@ -66,7 +64,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
         </ul>
       </nav>
 
-      <HeadlessPagination.NextButton
+      <Pagination.NextButton
         as={<button />}
         className={clsx(
           "mr-2 flex items-center text-gray-500 hover:text-gray-600 dark:hover:text-gray-200",
@@ -77,7 +75,7 @@ export const Paginator: React.FunctionComponent<Props> = ({
         )}
       >
         <ArrowRightIcon />
-      </HeadlessPagination.NextButton>
-    </HeadlessPagination>
+      </Pagination.NextButton>
+    </Pagination>
   )
 }
