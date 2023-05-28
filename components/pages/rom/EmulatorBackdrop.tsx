@@ -1,14 +1,16 @@
-import { type RetroarchStatus } from "holy-retroarch"
-
 type Props = {
+  isEmulatorLoading: boolean
   isEmulatorReady: boolean
   image: string | undefined
+  onLoadClick: () => void
   onStartClick: () => void
 }
 
 export const EmulatorBackdrop: React.FunctionComponent<Props> = ({
+  isEmulatorLoading,
   isEmulatorReady,
   image,
+  onLoadClick,
   onStartClick,
 }) => {
   return (
@@ -17,7 +19,15 @@ export const EmulatorBackdrop: React.FunctionComponent<Props> = ({
       style={{ backgroundImage: `url(${image})` }}
     >
       <div className="flex h-full w-full items-center justify-center backdrop-blur">
-        {!isEmulatorReady && <span>loading...</span>}
+        {!isEmulatorLoading && !isEmulatorReady && (
+          <button
+            onClick={onLoadClick}
+            className="rounded border border-gray-400 bg-teal-600 px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+          >
+            load!
+          </button>
+        )}
+        {isEmulatorLoading && <span>loading...</span>}
         {!!isEmulatorReady && (
           <button
             onClick={onStartClick}

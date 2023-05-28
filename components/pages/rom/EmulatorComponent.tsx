@@ -1,41 +1,29 @@
-import { UiRom } from "~/types/index"
 import clsx from "clsx"
-import { type RetroarchStatus } from "holy-retroarch"
-import {
-  memo,
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
-import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
+import { Retroarch, createRetroarch } from "holy-retroarch"
+import { RefObject, memo, useCallback, useRef, useState } from "react"
+import { getCoreUrlByRomName } from "~/lib/getCoreUrlByFilename"
+import { UiRom } from "~/types/index"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
-import { useResizeObserver } from "./useSizeObserver"
+import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 import { useSaveToHistory } from "./useSaveToHistory"
-import { getRetroarch } from "~/lib/retroarch/retroarch"
+import { useResizeObserver } from "./useSizeObserver"
 
 type Props = {
-  coreUrl: string
-  romBuffer: Uint8Array
   rom: UiRom
 }
 
 export const EmulatorComponent: React.FunctionComponent<Props> = memo(
-  ({ coreUrl, romBuffer, rom }) => {
+  ({ rom }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const canvasBoxRef = useRef<HTMLDivElement>(null)
-    const [showBackdrop, setShowBackdrop] = useState(true)
+    const retroarchInstanceRef = useRef<Retroarch>()
+
+    const [isEmulatorLoading, setIsEmulatorLoading] = useState(false)
     const [isEmulatorReady, setIsEmulatorReady] = useState(false)
+
+    const [showBackdrop, setShowBackdrop] = useState(true)
     const [isInTheaterMod, setIsInTheaterMod] = useState(false)
     const saveRomToHistory = useSaveToHistory()
-
-    useEffect(() => {
-      getRetroarch().prepareCore(
-        coreUrl,
-        canvasRef.current as HTMLCanvasElement,
-      )
-    }, [])
 
     const onContainerResize = useCallback((target: HTMLDivElement) => {
       resizeCanvas(canvasBoxRef)
@@ -43,27 +31,49 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
     const containerRef = useResizeObserver(onContainerResize)
 
-    useEffect(() => {
-      const onStatusChange = (e: Event) => {
-        const detail: RetroarchStatus = (e as CustomEvent).detail
+    const onLoadClick = async () => {
+      setIsEmulatorLoading(true)
+      const romBuffer = await (await fetch(rom.file)).arrayBuffer()
+      const romBinary = new Uint8Array(romBuffer)
 
-        if (detail === "inited") {
-          const retroarch = getRetroarch()
-          retroarch?.copyConfig()
-          retroarch?.copyRom(romBuffer)
+      const coreUrl = getCoreUrlByRomName(rom.file) as string
+
+      retroarchInstanceRef.current = await createRetroarch({
+        coreUrl,
+        canvas: canvasRef.current as HTMLCanvasElement,
+        romBinary,
+        onReady: () => {
+          setIsEmulatorLoading(false)
           setIsEmulatorReady(true)
-        }
-      }
-
-      document.addEventListener("ra-status", onStatusChange, true)
-      return document.removeEventListener("ra-status", onStatusChange)
-    }, [])
+          console.log("brand new ON READY")
+        },
+        onStart: () => {
+          setShowBackdrop(false)
+          resizeCanvas(canvasBoxRef)
+          saveRomToHistory(rom.id)
+          console.log("brand new ON START")
+        },
+        onDestroy: () => {
+          console.log("brand new ON DESTROY")
+        },
+      })
+    }
 
     const onStartClick = () => {
-      getRetroarch().start()
-      setShowBackdrop(false)
-      saveRomToHistory(rom.id)
-      resizeCanvas(canvasBoxRef)
+      retroarchInstanceRef.current?.start()
+    }
+
+    const resizeCanvas = (canvasBoxRef: RefObject<HTMLDivElement>) => {
+      if (
+        retroarchInstanceRef.current?.status !== "started" ||
+        !canvasBoxRef.current
+      )
+        return
+
+      retroarchInstanceRef.current?.setCanvasSize(
+        canvasBoxRef.current.clientWidth,
+        canvasBoxRef.current.clientWidth / (800 / 600),
+      )
     }
 
     return (
@@ -92,9 +102,11 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
 
           {showBackdrop && (
             <EmulatorBackdrop
+              isEmulatorLoading={isEmulatorLoading}
               isEmulatorReady={isEmulatorReady}
-              image={rom.images?.[0]}
+              onLoadClick={onLoadClick}
               onStartClick={onStartClick}
+              image={rom.images?.[0]}
             />
           )}
         </div>
@@ -102,18 +114,3 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     )
   },
 )
-
-const resizeCanvas = (canvasBoxRef: RefObject<HTMLDivElement>) => {
-  const retroarch = getRetroarch()
-
-  if (
-    (retroarch.status !== "started" && retroarch.status !== "running") ||
-    !canvasBoxRef.current
-  )
-    return
-
-  retroarch.setCanvasSize(
-    canvasBoxRef.current.clientWidth,
-    canvasBoxRef.current.clientWidth / (800 / 600),
-  )
-}

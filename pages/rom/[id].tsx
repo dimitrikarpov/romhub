@@ -9,9 +9,7 @@ import { DonwloadButton } from "~/components/pages/rom/DownloadButton"
 import { EmulatorComponent } from "~/components/pages/rom/EmulatorComponent"
 import { SaveToPlaylistButton } from "~/components/pages/rom/SaveToPlaylistButton"
 import { ShareButton } from "~/components/pages/rom/ShareButton"
-import { useRomDownloader } from "~/components/pages/rom/useRomDownloader"
 import { convertEntity } from "~/lib/convertEntity"
-import { getCoreUrlByRomName } from "~/lib/getCoreUrlByFilename"
 import prisma from "~/lib/prismadb"
 import { UiRom } from "~/types/index"
 import { NextPageWithLayout } from "../_app"
@@ -19,9 +17,6 @@ import { NextPageWithLayout } from "../_app"
 const RomPage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ rom, url }) => {
-  const { rom: buffer } = useRomDownloader(rom.file)
-  const coreUrl = rom.file && getCoreUrlByRomName(rom.file)
-
   const { data: session } = useSession()
   const displaySaveToDialog = canSaveRomToOwnPlaylist(session)
 
@@ -37,13 +32,7 @@ const RomPage: NextPageWithLayout<
       </Head>
 
       <div className="mt-6 flex w-full grow flex-col">
-        {buffer && coreUrl && (
-          <EmulatorComponent
-            coreUrl={String(coreUrl)}
-            romBuffer={buffer}
-            rom={rom}
-          />
-        )}
+        <EmulatorComponent rom={rom} />
 
         <div className="mx-auto my-0 w-[80dvw]">
           <div className="px-0 py-8 text-xl font-semibold">
