@@ -2,6 +2,7 @@ import { UiRom } from "~/types/index"
 import { platforms } from "config/index"
 import { Session } from "next-auth"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
 
 type Props = {
   rom: UiRom
@@ -15,18 +16,18 @@ export const GalleryItem: React.FunctionComponent<Props> = ({ rom }) => {
   return (
     <div className="card-container">
       <div className="card">
-        <a href={`/rom/${rom.id}`} target="_blank">
+        <Link href={`/rom/${rom.id}`}>
           <img src={rom.images?.[0] || "/assets/placeholder.png"} alt="img" />
-        </a>
+        </Link>
 
         <div className="pb-5 pl-2 pr-2 pt-4">
           <p className="text-xs font-medium uppercase text-[#ababab]">
             {platforms[rom.platform].shortName}
           </p>
 
-          <a href={`/rom/${rom.id}`} target="_blank">
+          <Link href={`/rom/${rom.id}`}>
             <p className="line-clamp-2 text-base">{rom.name}</p>
-          </a>
+          </Link>
 
           {displayControls && (
             <div className="card__controls">

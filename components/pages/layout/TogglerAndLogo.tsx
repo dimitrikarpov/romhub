@@ -2,6 +2,7 @@ import { MenuIcon } from "lucide-react"
 import { useDispatch } from "react-redux"
 import { toggle } from "~/components/pages/layout/sidebar/sideBarSlice"
 import { useWindowSizeForSidebar } from "./sidebar/useWindowSizeForSidebar"
+import Link from "next/link"
 
 const TogglerAndLogo = () => {
   const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const TogglerAndLogo = () => {
       >
         <MenuIcon strokeWidth={2} />
       </div>
-      <a href="/">
+      <Link href="/">
         <div className="flex h-5 items-center gap-[5px] text-[21px] font-black text-white">
           <img
             src="/assets/mushroom.png"
@@ -24,7 +25,7 @@ const TogglerAndLogo = () => {
           />
           <span>RomHub</span>
         </div>
-      </a>
+      </Link>
     </div>
   )
 }

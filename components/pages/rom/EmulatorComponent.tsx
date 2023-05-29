@@ -1,6 +1,13 @@
 import clsx from "clsx"
 import { Retroarch, createRetroarch } from "holy-retroarch"
-import { RefObject, memo, useCallback, useRef, useState } from "react"
+import {
+  RefObject,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { getCoreUrlByRomName } from "~/lib/getCoreUrlByFilename"
 import { UiRom } from "~/types/index"
 import { EmulatorBackdrop } from "./EmulatorBackdrop"
@@ -30,6 +37,14 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     }, [])
 
     const containerRef = useResizeObserver(onContainerResize)
+
+    useEffect(() => {
+      return () => {
+        if (!retroarchInstanceRef.current) return
+
+        retroarchInstanceRef.current.destroy()
+      }
+    }, [])
 
     const onLoadClick = async () => {
       setIsEmulatorLoading(true)
