@@ -1,6 +1,7 @@
 import { UiRom } from "~/types/index"
 import { useState } from "react"
 import clsx from "clsx"
+import Link from "next/link"
 
 type Props = {
   rom: UiRom
@@ -46,7 +47,7 @@ export const RandomGridItem: React.FunctionComponent<Props> = ({ rom }) => {
           {rom.platform}
         </div>
       </div>
-      <a href={`/rom/${rom.id}`} target="_blank">
+      <Link href={`/rom/${rom.id}`}>
         <div className="h-full w-full">
           <img
             className="aspect-[1.78] w-full rounded-tl-[5.5px] rounded-tr-[5.5px] object-cover"
@@ -60,7 +61,7 @@ export const RandomGridItem: React.FunctionComponent<Props> = ({ rom }) => {
             {rom.platform}
           </p>
         </div>
-      </a>
+      </Link>
     </div>
   )
 }

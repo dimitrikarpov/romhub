@@ -4,6 +4,7 @@ import {
   Clock as WatchLaterIcon,
 } from "lucide-react"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
 import { useFetch } from "~/lib/fetcher"
 import { type GetUserPlaylists } from "~/lib/queries/db/getUserPlaylists"
 import { TPlaylistType } from "~/types/index"
@@ -42,12 +43,12 @@ export const Playlists = () => {
         playlistQuery.data?.map(({ type, title, id }) => {
           const Icon = getIconByType(type as TPlaylistType)
           return (
-            <a href={getUrl(type as TPlaylistType, id)} key={id}>
+            <Link href={getUrl(type as TPlaylistType, id)} key={id}>
               <div className="sidebarItem">
                 <Icon />
                 <p>{title}</p>
               </div>
-            </a>
+            </Link>
           )
         })}
     </>

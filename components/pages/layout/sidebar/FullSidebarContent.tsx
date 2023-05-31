@@ -2,25 +2,26 @@ import { DicesIcon, HomeIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { Playlists } from "../sidebar/Playlists"
 import { SignInButton } from "../top-bar/SignInButton"
+import Link from "next/link"
 
 export const FullSidebarContent = () => {
   const { data: session } = useSession()
 
   return (
     <>
-      <a href="/">
+      <Link href="/">
         <div className="sidebarItem">
           <HomeIcon />
           <p>Home</p>
         </div>
-      </a>
+      </Link>
 
-      <a href="/random">
+      <Link href="/random">
         <div className="sidebarItem">
           <DicesIcon />
           <p>Random Roms</p>
         </div>
-      </a>
+      </Link>
 
       {!session && (
         <div className="flex flex-col gap-3 border-0 border-b border-t border-[#ffffff33] px-3 py-5 text-sm  font-normal leading-5">
