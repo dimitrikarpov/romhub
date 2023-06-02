@@ -1,6 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
-import React, { ReactElement, useState } from "react"
+import React, { ReactElement, useEffect, useState } from "react"
 import superjson from "superjson"
 import { AlphabetPaginator } from "~/components/pages/gallery/AplhabetPaginator"
 import { Gallery } from "~/components/pages/gallery/Gallery"
@@ -11,13 +11,65 @@ import { Paginator } from "~/components/ui/paginator/Paginator"
 import { getRoms } from "~/lib/queries/db/getRoms"
 import { TPlatformSlug } from "../types"
 import { NextPageWithLayout } from "./_app"
+import { useRouter } from "next/router"
 
 const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
-  const [platform, setPlatform] = useState<TPlatformSlug | undefined>()
-  const [skip, setSkip] = useState(0)
-  const [startsWithLetter, setStartsWithLetter] = useState("a")
+  const router = useRouter()
+  const [platform, setPlatform] = useState<TPlatformSlug | undefined>(
+    router.query.platform as TPlatformSlug,
+  )
+  const [skip, setSkip] = useState(Number(router.query.skip) || 0)
+  const [startsWithLetter, setStartsWithLetter] = useState(
+    (router.query.startsWithLetter as string) || "a",
+  )
+
+  console.log({
+    router: {
+      platform: router.query.platform,
+      skip: router.query.skip,
+      startsWithLetter: router.query.startsWithLetter,
+    },
+    state: {
+      platform,
+      skip,
+      startsWithLetter,
+    },
+  })
+
+  // TODO: if state has skip, platform, startsWith and router is empty - we should reset local state
+
+  const setUrlParams = () => {
+    const urlParams = new URLSearchParams({
+      startsWithLetter,
+      skip: String(skip),
+      ...(platform && { platform }),
+    })
+
+    console.log("urlParams", urlParams.toString())
+    router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
+  }
+
+  useEffect(() => {
+    setUrlParams()
+  }, [])
+
+  useEffect(() => {
+    console.log("changed!")
+    setUrlParams()
+  }, [
+    skip,
+    platform,
+    startsWithLetter,
+    // router.query.startsWithLetter, router.query.skip, router.query.platform
+  ])
+
+  useEffect(() => {
+    return () => {
+      console.log("UNMOUNT")
+    }
+  }, [])
 
   const { data: romsQueryData } = useRomsQuery({
     skip,
