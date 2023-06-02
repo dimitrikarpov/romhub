@@ -17,28 +17,13 @@ const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
   const router = useRouter()
-  const [platform, setPlatform] = useState<TPlatformSlug | undefined>(
-    router.query.platform as TPlatformSlug,
-  )
-  const [skip, setSkip] = useState(
-    !!router.query.skip ? Number(router.query.skip) : 0,
-  )
-  const [startsWithLetter, setStartsWithLetter] = useState(
-    !!router.query.startsWithLetter
-      ? (router.query.startsWithLetter as string)
-      : "a",
-  )
+  const { skip, platform, startsWithLetter } = router.query
 
   console.log({
     router: {
       platform: router.query.platform,
       skip: router.query.skip,
       startsWithLetter: router.query.startsWithLetter,
-    },
-    state: {
-      platform,
-      skip,
-      startsWithLetter,
     },
   })
 
@@ -61,31 +46,23 @@ const Home: NextPageWithLayout<
     router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
   }
 
-  const setStateParamsFromUrl = () => {
-    const { platform, skip, startsWithLetter } = router.query
-
-    platform && setPlatform(String(platform) as TPlatformSlug)
-    skip && setSkip(Number(skip))
-    startsWithLetter && setStartsWithLetter(String(startsWithLetter))
-  }
-
   useEffect(() => {
+    // set url defaults
     const urlParams = new URLSearchParams({
-      startsWithLetter,
-      skip: String(skip),
-      ...(platform && { platform: String(platform) }),
+      startsWithLetter: "a",
+      skip: String(0),
     })
     router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
   }, [])
 
   useEffect(() => {
-    setStateParamsFromUrl()
+    // setStateParamsFromUrl()
   }, [router.query.startsWithLetter, router.query.skip, router.query.platform])
 
   const { data: romsQueryData } = useRomsQuery({
-    skip,
-    platform,
-    startsWithLetter,
+    skip: skip ? Number(skip) : 0,
+    platform: platform ? (String(platform) as TPlatformSlug) : undefined,
+    startsWithLetter: startsWithLetter ? String(startsWithLetter) : "a",
     initialData,
   })
 
@@ -130,15 +107,21 @@ const Home: NextPageWithLayout<
       </Head>
 
       <main className="mx-auto my-0 bg-[#0f0f0f] pt-8">
-        <PlatformFilter value={platform} onChange={selectPlatform} />
+        <PlatformFilter
+          value={platform ? (String(platform) as TPlatformSlug) : undefined}
+          onChange={selectPlatform}
+        />
 
-        <AlphabetPaginator value={startsWithLetter} onChange={selectLetter} />
+        <AlphabetPaginator
+          value={startsWithLetter ? String(startsWithLetter) : "a"}
+          onChange={selectLetter}
+        />
 
         <Gallery roms={romsQueryData?.data} />
 
         <div className="mx-auto w-fit px-0 py-12">
           <Paginator
-            skip={skip}
+            skip={skip ? Number(skip) : 0}
             take={15}
             total={romsQueryData?.total}
             onChange={onPageChange}
