@@ -2,7 +2,10 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
 import React, { ReactElement } from "react"
 import superjson from "superjson"
-import { AlphabetPaginator } from "~/components/pages/gallery/AplhabetPaginator"
+import {
+  AlphabetPaginator,
+  alphabet,
+} from "~/components/pages/gallery/AplhabetPaginator"
 import { Gallery } from "~/components/pages/gallery/Gallery"
 import { PlatformFilter } from "~/components/pages/gallery/PlatformFilter"
 import { useGalleryDeepLink } from "~/components/pages/gallery/useGalleryDeepLink"
@@ -85,11 +88,34 @@ export default Home
 
 export const getServerSideProps: GetServerSideProps<{
   initialData: string
-}> = async () => {
+}> = async (context) => {
+  const {
+    skip: RSkip,
+    platform: RPlatform,
+    startsWithLetter: RStartsWithLetter,
+  } = context.query
+
+  const skip = RSkip ? Number(RSkip) : 0
+  const platform = RPlatform ? (String(RPlatform) as TPlatformSlug) : undefined
+  const startsWithLetter = RStartsWithLetter ? String(RStartsWithLetter) : "a"
+
   const initialData = await getRoms({
+    skip,
     take: 15,
     orderBy: [{ name: "asc" }],
-    where: { AND: [{ name: { startsWith: "a" } }] },
+    where: {
+      AND: [
+        { platform: { in: platform ? [platform] : undefined } },
+        startsWithLetter !== "#"
+          ? {
+              name: { startsWith: startsWithLetter },
+            }
+          : {},
+      ],
+      ...(startsWithLetter === "#" && {
+        NOT: alphabet.map((letter) => ({ name: { startsWith: letter } })),
+      }),
+    },
   })
 
   return {
