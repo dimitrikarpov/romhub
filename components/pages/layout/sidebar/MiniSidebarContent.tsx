@@ -1,21 +1,22 @@
 import { DicesIcon, HomeIcon } from "lucide-react"
+import Link from "next/link"
 
 export const MiniSidebarContent = () => {
   return (
     <>
-      <a href="/">
+      <Link href="/">
         <div className="sidebarItem">
           <HomeIcon />
           <p>Home</p>
         </div>
-      </a>
+      </Link>
 
-      <a href="/random">
+      <Link href="/random">
         <div className="sidebarItem">
           <DicesIcon />
           <p>Random</p>
         </div>
-      </a>
+      </Link>
     </>
   )
 }

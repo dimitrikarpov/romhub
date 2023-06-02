@@ -1,4 +1,5 @@
 import { Playlist, PlaylistEntry } from "@prisma/client"
+import Link from "next/link"
 import { UiRom } from "~/types/index"
 
 type Props = {
@@ -10,17 +11,17 @@ export const Item: React.FunctionComponent<Props> = ({ entry }) => {
 
   return (
     <div className="flex gap-8">
-      <a href={`/rom/${entry.rom.id}`} target="_blank" className="shrink-0">
+      <Link href={`/rom/${entry.rom.id}`} className="shrink-0">
         <img
           src={image}
           className="aspect-[1.78] w-[246px] rounded-lg object-cover"
           alt={entry.rom.name}
         />
-      </a>
+      </Link>
       <div>
-        <a href={`/rom/${entry.rom.id}`} target="_blank">
+        <Link href={`/rom/${entry.rom.id}`}>
           <p className="text-xl font-normal text-[#f1f1f1]">{entry.rom.name}</p>
-        </a>
+        </Link>
         <p className="text-xs font-normal text-[#aaaaaa]">
           {entry.assignedAt.toLocaleDateString()}
         </p>
