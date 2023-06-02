@@ -17,7 +17,6 @@ const Home: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ initialData }) => {
   const { skip, platform, startsWithLetter, updateRoute } = useGalleryDeepLink()
-
   const { data: romsQueryData } = useRomsQuery({
     skip,
     platform,

@@ -17,8 +17,9 @@ export const useGalleryDeepLink = () => {
   useEffect(() => {
     // set url defaults
     const urlParams = new URLSearchParams({
-      startsWithLetter: "a",
-      skip: String(0),
+      startsWithLetter: startsWithLetter || "a",
+      skip: String(skip || 0),
+      ...(platform && { platform }),
     })
     router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
   }, [])
@@ -38,7 +39,9 @@ export const useGalleryDeepLink = () => {
       ...(platform && { platform }),
     })
 
-    router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
+    router.push(`/?${urlParams.toString()}`, `/?${urlParams.toString()}`, {
+      shallow: true,
+    })
   }
 
   return { skip, platform, startsWithLetter, updateRoute }
