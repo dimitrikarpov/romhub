@@ -20,9 +20,13 @@ const Home: NextPageWithLayout<
   const [platform, setPlatform] = useState<TPlatformSlug | undefined>(
     router.query.platform as TPlatformSlug,
   )
-  const [skip, setSkip] = useState(Number(router.query.skip) || 0)
+  const [skip, setSkip] = useState(
+    !!router.query.skip ? Number(router.query.skip) : 0,
+  )
   const [startsWithLetter, setStartsWithLetter] = useState(
-    (router.query.startsWithLetter as string) || "a",
+    !!router.query.startsWithLetter
+      ? (router.query.startsWithLetter as string)
+      : "a",
   )
 
   console.log({
@@ -38,38 +42,45 @@ const Home: NextPageWithLayout<
     },
   })
 
-  // TODO: if state has skip, platform, startsWith and router is empty - we should reset local state
-
-  const setUrlParams = () => {
+  const updateRoute = ({
+    platform,
+    skip,
+    startsWithLetter,
+  }: {
+    platform?: TPlatformSlug
+    skip?: number
+    startsWithLetter?: string
+  }) => {
     const urlParams = new URLSearchParams({
-      startsWithLetter,
-      skip: String(skip),
+      ...(startsWithLetter ? { startsWithLetter } : { startsWithLetter: "a" }),
       ...(platform && { platform }),
+      ...(skip ? { skip: String(skip) } : { skip: "0" }),
     })
 
     console.log("urlParams", urlParams.toString())
     router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
   }
 
+  const setStateParamsFromUrl = () => {
+    const { platform, skip, startsWithLetter } = router.query
+
+    platform && setPlatform(String(platform) as TPlatformSlug)
+    skip && setSkip(Number(skip))
+    startsWithLetter && setStartsWithLetter(String(startsWithLetter))
+  }
+
   useEffect(() => {
-    setUrlParams()
+    const urlParams = new URLSearchParams({
+      startsWithLetter,
+      skip: String(skip),
+      ...(platform && { platform: String(platform) }),
+    })
+    router.push(`/?${urlParams.toString()}`, undefined, { shallow: true })
   }, [])
 
   useEffect(() => {
-    console.log("changed!")
-    setUrlParams()
-  }, [
-    skip,
-    platform,
-    startsWithLetter,
-    // router.query.startsWithLetter, router.query.skip, router.query.platform
-  ])
-
-  useEffect(() => {
-    return () => {
-      console.log("UNMOUNT")
-    }
-  }, [])
+    setStateParamsFromUrl()
+  }, [router.query.startsWithLetter, router.query.skip, router.query.platform])
 
   const { data: romsQueryData } = useRomsQuery({
     skip,
@@ -79,17 +90,34 @@ const Home: NextPageWithLayout<
   })
 
   const selectPlatform = (slug: TPlatformSlug | undefined) => {
-    setSkip(0)
-    setPlatform(slug)
+    updateRoute({
+      skip: 0,
+      platform: slug,
+      startsWithLetter: String(router.query.startsWithLetter),
+    })
   }
 
   const selectLetter = (letter: string) => {
-    setSkip(0)
-    setStartsWithLetter(letter)
+    updateRoute({
+      skip: 0,
+      startsWithLetter: letter,
+      ...(router.query.platform && {
+        platform: String(router.query.platform) as TPlatformSlug,
+      }),
+    })
   }
 
   const onPageChange = (newSkip: number) => {
-    setSkip(newSkip)
+    updateRoute({
+      skip: newSkip,
+      ...(router.query.platform && {
+        platform: String(router.query.platform) as TPlatformSlug,
+      }),
+      // этот параметр должен быть всегда походу
+      ...(router.query.startsWithLetter && {
+        startsWithLetter: String(router.query.startsWithLetter),
+      }),
+    })
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
