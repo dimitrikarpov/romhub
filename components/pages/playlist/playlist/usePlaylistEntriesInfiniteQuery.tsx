@@ -22,6 +22,7 @@ const fetchPlaylistEntriesInfinite = async (
       playlistId,
       take: "10",
       withTotal: "true",
+      orderBy: JSON.stringify({ assignedAt: "desc" }),
     })}`,
   )
   const data = await response.json()
