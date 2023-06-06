@@ -10,7 +10,7 @@ import {
 } from "react"
 import { getCoreUrlByRomName } from "~/lib/getCoreUrlByFilename"
 import { UiRom } from "~/types/index"
-import { EmulatorBackdrop } from "./EmulatorBackdrop"
+import { LoadingOverlay } from "./LoadingOverlay"
 import { ControlsOverlay } from "./emulator-controls/ControlsOverlay"
 import { useSaveToHistory } from "./useSaveToHistory"
 import { useResizeObserver } from "./useSizeObserver"
@@ -24,11 +24,9 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const canvasBoxRef = useRef<HTMLDivElement>(null)
     const retroarchInstanceRef = useRef<Retroarch>()
-
     const [isEmulatorLoading, setIsEmulatorLoading] = useState(false)
     const [isEmulatorReady, setIsEmulatorReady] = useState(false)
-
-    const [showBackdrop, setShowBackdrop] = useState(true)
+    const [showLoading, setShowLoading] = useState(true)
     const [isInTheaterMod, setIsInTheaterMod] = useState(false)
     const saveRomToHistory = useSaveToHistory()
 
@@ -63,7 +61,7 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
           console.log("brand new ON READY")
         },
         onStart: () => {
-          setShowBackdrop(false)
+          setShowLoading(false)
           resizeCanvas(canvasBoxRef)
           saveRomToHistory(rom.id)
           console.log("brand new ON START")
@@ -115,8 +113,8 @@ export const EmulatorComponent: React.FunctionComponent<Props> = memo(
             />
           </div>
 
-          {showBackdrop && (
-            <EmulatorBackdrop
+          {showLoading && (
+            <LoadingOverlay
               isEmulatorLoading={isEmulatorLoading}
               isEmulatorReady={isEmulatorReady}
               onLoadClick={onLoadClick}

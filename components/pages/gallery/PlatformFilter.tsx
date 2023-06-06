@@ -3,8 +3,8 @@ import { TPlatformSlug } from "~/types/index"
 import { PlatformFilterItem } from "./PlatformFilterItem"
 
 type Props = {
-  value: TPlatformSlug | undefined
-  onChange: (value: TPlatformSlug | undefined) => void
+  value: TPlatformSlug
+  onChange: (value: TPlatformSlug) => void
 }
 
 export const PlatformFilter: React.FunctionComponent<Props> = ({
@@ -13,13 +13,6 @@ export const PlatformFilter: React.FunctionComponent<Props> = ({
 }) => {
   return (
     <div className="flex h-14 items-center gap-3 bg-[#0f0f0f] px-2 py-0">
-      <PlatformFilterItem
-        value={undefined}
-        title="All"
-        isActive={value === undefined}
-        onChange={onChange}
-      />
-
       {Object.entries(platforms).map(([slug, { name }]) => (
         <PlatformFilterItem
           value={slug as TPlatformSlug}

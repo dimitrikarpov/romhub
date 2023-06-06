@@ -1,4 +1,3 @@
-import superjson from "superjson"
 import { useFetch } from "~/lib/fetcher"
 import { type GetRoms } from "~/lib/queries/db/getRoms"
 import { TPlatformSlug } from "~/types/index"
@@ -8,12 +7,11 @@ export const useRomsQuery = ({
   skip,
   platform,
   startsWithLetter,
-  initialData,
 }: {
   skip: number
   platform: TPlatformSlug | undefined
   startsWithLetter: string
-  initialData: string
+  enabled?: boolean
 }) => {
   return useFetch<GetRoms>(
     {
@@ -38,7 +36,6 @@ export const useRomsQuery = ({
       },
     },
     {
-      initialData: superjson.parse(initialData),
       keepPreviousData: true,
     },
   )
