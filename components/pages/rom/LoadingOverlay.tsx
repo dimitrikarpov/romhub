@@ -6,7 +6,7 @@ type Props = {
   onStartClick: () => void
 }
 
-export const EmulatorBackdrop: React.FunctionComponent<Props> = ({
+export const LoadingOverlay: React.FunctionComponent<Props> = ({
   isEmulatorLoading,
   isEmulatorReady,
   image,
