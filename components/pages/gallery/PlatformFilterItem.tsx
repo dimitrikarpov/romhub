@@ -2,10 +2,10 @@ import { TPlatformSlug } from "~/types/index"
 import clsx from "clsx"
 
 type Props = {
-  value: TPlatformSlug | undefined
+  value: TPlatformSlug
   title: string
   isActive: boolean
-  onChange: (value: TPlatformSlug | undefined) => void
+  onChange: (value: TPlatformSlug) => void
 }
 
 export const PlatformFilterItem: React.FunctionComponent<Props> = ({
